@@ -1,1 +1,1 @@
-# what-s_your_personal_color
+# what_your_personal_color
