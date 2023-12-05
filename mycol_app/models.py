@@ -3,6 +3,12 @@ from django.db import models
 
 # Create your models here.
 class analysis(models.Model):
+    objects = None
+    r_average = models.FloatField(default=0.0)
+    g_average = models.FloatField(default=0.0)
+    b_average = models.FloatField(default=0.0)
+
+
     '''
     #image = models.ForeignKey(UploadedImage, on_delete=models.CASCADE)  #이미지 업로드 모델과의 연결
     personal_color = models.CharField(max_length=50)  #퍼스널 컬러
@@ -25,12 +31,3 @@ class analysis(models.Model):
     def __str__(self):
         return f"Diagnosis: {self.personal_color} - {self.second_color}"
     '''
-
-    objects = None
-    average_hsv = models.CharField(max_length=255, null=False, blank=False, default='')
-    average_lab = models.CharField(max_length=255, null=False, blank=False, default='')
-    average_rgb = models.CharField(max_length=255, null=False, blank=False, default='')
-
-    l_value = models.FloatField(default=0.0)
-    b_value = models.FloatField(default=0.0)
-    s_value = models.FloatField(default=0.0)

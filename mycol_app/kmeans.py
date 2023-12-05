@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from sklearn.datasets import load_sample_image
 from sklearn.preprocessing import StandardScaler
+from scipy.spatial import distance
+from collections import Counter
 import imageio.v2 as imageio
 
 from mycol_app.models import analysis
@@ -30,57 +32,22 @@ face_data = non_black_pixels.reshape((-1, 3))
 scaler = StandardScaler()
 face_data_scaled = scaler.fit_transform(face_data)
 
-# 최적의 클러스터 개수를 결정하기 위한 k 값 범위 설정
-k_values = range(2, 11)
-
-# 각 k 값에 대한 클러스터 내 제곱합(SSW) 저장
-inertia_values = []
-
-# k 값에 대한 k-means 클러스터링 수행 및 SSW 계산
-for k in k_values:
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    kmeans.fit(face_data_scaled)
-    inertia_values.append(kmeans.inertia_)
-
-# SSW를 플로팅하여 엘보우 지점 확인
-#plt.plot(k_values, inertia_values, marker='o')
-#plt.xlabel('Number of Clusters (k)')
-#plt.ylabel('Within-Cluster Sum of Squares (SSW)')
-#plt.title('Elbow Method for Optimal k')
-#plt.show()
-
-# 엘보우 지점 확인하여 최적의 k 값 결정
-optimal_k = 5  # 값 직접 입력하긔
-print(f'Optimal number of clusters (k): {optimal_k}')
-
 # 최적의 k 값으로 k-means 클러스터링 수행
-optimal_kmeans = KMeans(n_clusters=optimal_k, random_state=42)
-optimal_cluster_labels = optimal_kmeans.fit_predict(face_data_scaled)
-
-# 클러스터 결과 시각화 (이 예시에서는 3D 플로팅)
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.scatter(face_data_scaled[:, 0], face_data_scaled[:, 1], face_data_scaled[:, 2], c=optimal_cluster_labels)
-ax.set_xlabel('Red')
-ax.set_ylabel('Green')
-ax.set_zlabel('Blue')
-#plt.show()
-
-from collections import Counter
-
-# 최적의 k 값으로 k-means 클러스터링 수행
-optimal_k = 5
+optimal_k = 8
 optimal_kmeans = KMeans(n_clusters=optimal_k, random_state=42)
 optimal_cluster_labels = optimal_kmeans.fit_predict(face_data_scaled)
 
 # 클러스터 중심값(RGB 형식) 출력
 cluster_centers_rgb = scaler.inverse_transform(optimal_kmeans.cluster_centers_)
 
+print(f'=============================전체 클러스터 중심값=============================')
 for i, center in enumerate(cluster_centers_rgb):
     print(f'Cluster {i + 1} Center (RGB): {center}')
 
 # 각 클러스터에 속하는 픽셀 수 계산
 cluster_sizes = Counter(optimal_cluster_labels)
+
+print(f'=============================전체 클러스터 픽셀수=============================')
 
 for i, size in cluster_sizes.items():
     print(f'Cluster {i + 1} Size: {size} pixels')
@@ -89,23 +56,6 @@ total_pixels = sum(cluster_sizes.values())
 
 # 출력 전체 픽셀 수
 print(f'전체 픽셀 수: {total_pixels}')
-
-# 각 클러스터에 속하는 픽셀 수와 중심값(RGB)의 가중 평균 계산
-weighted_sum = np.zeros(3)  # 초기화: R, G, B의 가중 합
-for i in range(optimal_k):
-    cluster_size = cluster_sizes[i]
-    cluster_center_rgb = cluster_centers_rgb[i]
-    weighted_sum += cluster_center_rgb * cluster_size
-
-# 평균 RGB 계산
-average_rgb = weighted_sum / total_pixels
-
-# 출력
-print(f'평균 RGB 값: {average_rgb}')
-
-# 평균 RGB 값을 사용하여 이미지 생성
-average_rgb_image = np.full((100, 100, 3), average_rgb, dtype=np.uint8)
-
 
 # 클러스터 결과 시각화 (이 예시에서는 3D 플로팅)
 fig = plt.figure()
@@ -128,51 +78,114 @@ ax2.imshow(cluster_centers_image, aspect='auto')
 ax2.axis('off')
 ax2.set_title('Cluster Centers as Colors')
 
+# 가장 픽셀 수가 많은 클러스터 찾기
+most_pixels_cluster = max(cluster_sizes, key=cluster_sizes.get)
+
+# 첫 번째로 Color distance가 작은 클러스터 찾기
+min_distance_1 = float('inf')
+selected_cluster_1 = None
+
+for i, center in enumerate(cluster_centers_rgb):
+    if i != most_pixels_cluster:  # 가장 픽셀 수가 많은 클러스터는 제외
+        current_distance = distance.euclidean(cluster_centers_rgb[most_pixels_cluster], center)
+        if current_distance < min_distance_1:
+            min_distance_1, selected_cluster_1 = current_distance, i
+
+# 두 번째로 Color distance가 작은 클러스터 찾기
+min_distance_2 = float('inf')
+selected_cluster_2 = None
+
+for i, center in enumerate(cluster_centers_rgb):
+    if i != most_pixels_cluster and i != selected_cluster_1:  # 가장 픽셀 수가 많은 클러스터와 첫 번째로 선택된 클러스터는 제외
+        current_distance = distance.euclidean(cluster_centers_rgb[most_pixels_cluster], center)
+        if current_distance < min_distance_2:
+            min_distance_2, selected_cluster_2 = current_distance, i
+
+# 각 클러스터에 속하는 픽셀의 수를 RGB값에 곱한 뒤, 세 개의 클러스터의 픽셀 수로 나누어 평균 RGB 값을 계산
+most_pixels_cluster_size = cluster_sizes[most_pixels_cluster]
+selected_cluster_1_size = cluster_sizes[selected_cluster_1]
+selected_cluster_2_size = cluster_sizes[selected_cluster_2]
+
+most_pixels_rgb_sum = np.sum(face_data[optimal_cluster_labels == most_pixels_cluster], axis=0)
+selected_cluster_1_rgb_sum = np.sum(face_data[optimal_cluster_labels == selected_cluster_1], axis=0)
+selected_cluster_2_rgb_sum = np.sum(face_data[optimal_cluster_labels == selected_cluster_2], axis=0)
+
+most_pixels_rgb_mean_weighted = most_pixels_rgb_sum / most_pixels_cluster_size
+selected_cluster_1_rgb_mean_weighted = selected_cluster_1_rgb_sum / selected_cluster_1_size
+selected_cluster_2_rgb_mean_weighted = selected_cluster_2_rgb_sum / selected_cluster_2_size
+
+total_rgb_sum_weighted = (most_pixels_rgb_sum + selected_cluster_1_rgb_sum + selected_cluster_2_rgb_sum)
+total_rgb_mean_weighted = total_rgb_sum_weighted / (most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+
+print(f'=============================Color distance계산=============================')
+
+# 결과 출력
+print(f'가장 픽셀 수가 많은 클러스터: {most_pixels_cluster + 1}')
+print(f'첫 번째로 Color distance가 작은 클러스터: {selected_cluster_1 + 1}')
+print(f'두 번째로 Color distance가 작은 클러스터: {selected_cluster_2 + 1}')
+print(f'첫 번째 Color distance: {min_distance_1}')
+print(f'두 번째 Color distance: {min_distance_2}')
+
+print(f'=============================가중평균=============================')
+print(f'가장 픽셀 수가 많은 클러스터의 가중 평균 RGB 값: {most_pixels_rgb_mean_weighted}')
+print(f'첫 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_1_rgb_mean_weighted}')
+print(f'두 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_2_rgb_mean_weighted}')
+print(f'세개의 클러스터의 가중 평균 RGB 값: {total_rgb_mean_weighted}')
+
+
+# 각 클러스터에 해당하는 이미지 생성 및 출력
+fig, axes = plt.subplots(1, optimal_k + 1, figsize=(15, 3))
+
+# 원본 이미지
+axes[0].imshow(face_image)
+axes[0].axis('off')
+axes[0].set_title('Original Image')
+
+for i in range(optimal_k):
+    cluster_indices = np.where(optimal_cluster_labels == i)
+    cluster_pixels = face_data[cluster_indices]
+    cluster_image = np.zeros_like(face_data)
+    cluster_image[cluster_indices] = cluster_pixels
+
+    # 이미지 재구성
+    cluster_image_reshaped = cluster_image.reshape(non_black_pixels.shape)
+    result_image = np.zeros_like(face_image)
+    result_image[~np.all(face_image == [0, 0, 0], axis=-1)] = cluster_image_reshaped
+
+    axes[i + 1].imshow(result_image)
+    axes[i + 1].axis('off')
+    axes[i + 1].set_title(f'Cluster {i + 1}')
+
+
+
+# 결과 색상 출력
+fig, ax = plt.subplots(1, 4, figsize=(16, 4))
+
+ax[0].imshow(most_pixels_rgb_mean_weighted.reshape((1, 1, 3)) / 255)
+ax[0].set_title('Most Pixels ')
+ax[0].axis('off')
+
+ax[1].imshow(selected_cluster_1_rgb_mean_weighted.reshape((1, 1, 3)) / 255)
+ax[1].set_title('1st Smallest Color Distance ')
+ax[1].axis('off')
+
+ax[2].imshow(selected_cluster_2_rgb_mean_weighted.reshape((1, 1, 3)) / 255)
+ax[2].set_title('2nd Smallest Color Distance ')
+ax[2].axis('off')
+
+ax[3].imshow(total_rgb_mean_weighted.reshape((1, 1, 3)) / 255)
+ax[3].set_title('Total Weighted Mean Color')
+ax[3].axis('off')
+
 #plt.show()
 
-# 이미지 표시
-plt.imshow(average_rgb_image)
-plt.axis('off')
-plt.title('Average RGB Color')
-#plt.show()
-
-from collections import Counter
-from colormath.color_objects import sRGBColor, LabColor, HSVColor
-from colormath.color_conversions import convert_color
-
-
-# 평균 RGB 값 출력
-print(f'평균 RGB 값: {average_rgb}')
-
-# RGB to Lab conversion
-average_srgb = sRGBColor(average_rgb[0], average_rgb[1], average_rgb[2], is_upscaled=True)
-average_lab = convert_color(average_srgb, LabColor)
-
-# 출력 Lab 값
-print(f'평균 Lab 값: L={average_lab.lab_l}, a={average_lab.lab_a}, b={average_lab.lab_b}')
-
-# RGB to HSV conversion
-average_hsv = convert_color(average_srgb, HSVColor)
-
-# 출력 HSV 값
-# s, v값은 비율입니당~
-print(f'평균 HSV 값: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v}')
-
-# L, b, S값 출력
-print('=================')
-#print(f' L={average_lab.lab_l}, b={average_lab.lab_b}, S={average_hsv.hsv_s}')
-print(f'L={average_lab.lab_l}')
-print(f'b={average_lab.lab_b}')
-print(f'S={average_hsv.hsv_s}')
-
-# 엘보우 메서드를 통해 계산된 L, b, S 값
-l_value = average_lab.lab_l
-b_value = average_lab.lab_b
-s_value = average_hsv.hsv_s
+r_average = total_rgb_mean_weighted[0]
+g_average = total_rgb_mean_weighted[1]
+b_average = total_rgb_mean_weighted[2]
 
 # diagnosis 모델에 데이터 저장
 analysis_instance = analysis.objects.create(
-    l_value=l_value,
-    b_value=b_value,
-    s_value=s_value
+    r_average=r_average,
+    g_average=g_average,
+    b_average=b_average
 )

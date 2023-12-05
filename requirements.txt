@@ -8,3 +8,4 @@ opencv-python~=4.8.1.78
 Django~=4.2.7
 djangorestframework
 requests
+scipy
