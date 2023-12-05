@@ -14,3 +14,4 @@ class analysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = analysis
         fields = '__all__'
+
