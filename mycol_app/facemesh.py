@@ -7,7 +7,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 
 # 이미지 파일의 경우를 사용하세요.
-IMAGE_FILES = ["static/facemesh.jpg"]
+IMAGE_FILES = ["static/facemesh1.jpg"]
 
 with mp.solutions.face_mesh.FaceMesh(
         static_image_mode=True,

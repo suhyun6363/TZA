@@ -1,6 +1,6 @@
 # mycol_app/serializers.py
 from rest_framework import serializers
-from .models import analysis
+from .models import Analysis, UploadedImage
 
 '''
 class analysisSerializer(serializers.ModelSerializer):
@@ -10,8 +10,13 @@ class analysisSerializer(serializers.ModelSerializer):
         fields = {'personal_color', 'second_color', 'personal_color_palette', 'second_color_palette'}
 '''
 
-class analysisSerializer(serializers.ModelSerializer):
+class UploadedImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = analysis
+        model = UploadedImage
+        fields = ('id', 'image','uploaded_at')
+
+class AnalysisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Analysis
         fields = '__all__'
 

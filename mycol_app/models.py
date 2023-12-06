@@ -2,7 +2,13 @@ from django.db import models
 #from image_upload.models import UploadedImage   #이미지 업로드 모델 import
 
 # Create your models here.
-class analysis(models.Model):
+
+class UploadedImage(models.Model):
+    id = models.AutoField(primary_key=True)
+    image = models.ImageField(upload_to='uploads/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Analysis(models.Model):
     objects = None
     r_average = models.FloatField(default=0.0)
     g_average = models.FloatField(default=0.0)

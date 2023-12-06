@@ -16,7 +16,7 @@ from scipy.spatial import distance
 from collections import Counter
 import imageio.v2 as imageio
 
-from mycol_app.models import analysis
+from mycol_app.models import Analysis
 
 # 이미지 로드
 image_path = "static/face_only0.png"
