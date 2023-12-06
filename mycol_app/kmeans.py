@@ -1,4 +1,3 @@
-'''
 # Django 설정 초기화 코드 추가
 import os
 import django
@@ -190,4 +189,4 @@ analysis_instance = Analysis.objects.create(
     g_average=g_average,
     b_average=b_average
 )
-'''
+
