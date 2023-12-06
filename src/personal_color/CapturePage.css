@@ -1,5 +1,10 @@
 /* CapturePage.css */
 
+div {
+  padding-top: 20px;
+  text-align: center;
+}
+
 h2 {
-  color: #e91e63; /* 원하는 색상으로 변경 가능합니다. */
+  color: #e91e63;
 }

@@ -1,0 +1,40 @@
+/* CaptureImage.css */
+
+.capture-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capture-image-container h2 {
+  color: #e91e63;
+  font-size: 24px;
+}
+
+.capture-image-container img {
+  max-width: 100%;
+  border: 4px solid #e91e63;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 200px;
+}
+
+.retake-button,
+.result-button {
+  width: 15%;
+}
+
+.retake-button {
+  background-color: #ff4081;
+  margin-bottom: 80px;
+}
+
+.result-button {
+  background-color: #ff4081;
+}

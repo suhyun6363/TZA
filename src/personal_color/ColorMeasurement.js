@@ -25,6 +25,8 @@ const ColorMeasurement = () => {
       {isClicked ? (
         <div className="measurement-screen">
           <h2>퍼스널컬러 측정하기</h2>
+          <p>안경, 모자 등 얼굴을 가리는 것들을 제거해주세요</p>
+          <p>얼굴 주변의 머리카락들을 정리해주세요</p>
           <button onClick={handleMeasureButtonClick}>측정하기</button>
         </div>
       ) : (

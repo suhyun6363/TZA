@@ -1,0 +1,16 @@
+/* Result.css */
+
+.result-container {
+  text-align: center;
+  margin: 20px;
+}
+
+.result-container h2 {
+  color: #fff;
+  font-size: 24px;
+}
+
+.result-container p {
+  font-size: 16px;
+  color: #333;
+}
