@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from mycol_app.views import AnalysisList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('analysis/', AnalysisList.as_view(), name='analysis-list')
+    path('analysis/', include('mycol_app.urls')),
+    path('api/upload/', include('mycol_app.urls')),
 ]
