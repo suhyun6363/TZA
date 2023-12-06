@@ -37,15 +37,29 @@ class analysisApi(APIView):
 
 class UploadImageView(APIView):
     def post(self, request, format=None):
-        image_data = request.data.get('image')  # 'image'는 axios POST 요청에서 전송한 이미지 데이터의 키일 것입니다.
+        image = request.FILES.get('image')  # 이미지 파일 받아오기
+        if image:
+            # 받아온 이미지를 UploadedImage 모델에 저장
+            uploaded_image = UploadedImage(image=image)
+            uploaded_image.save()
 
-        # 받아온 이미지 데이터를 Serializer를 사용해 처리
-        serializer = UploadedImageSerializer(data={'image': image_data})
-        if serializer.is_valid():
-            serializer.save()
+            # 저장된 이미지 정보를 시리얼라이저를 통해 JSON 형태로 반환
+            serializer = UploadedImageSerializer(uploaded_image)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "Image upload failed."}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class UploadImageView(APIView):
+#     def post(self, request, format=None):
+#         image_data = request.data.get('image')  # 'image'는 axios POST 요청에서 전송한 이미지 데이터의 키일 것입니다.
+#
+#         # 받아온 이미지 데이터를 Serializer를 사용해 처리
+#         serializer = UploadedImageSerializer(data={'image': image_data})
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GetImageView(APIView):
     def get_image(request, image_id):
