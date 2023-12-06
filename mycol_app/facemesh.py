@@ -1,4 +1,3 @@
-'''
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -81,4 +80,3 @@ with mp.solutions.face_mesh.FaceMesh(
         cv2.destroyAllWindows()
 
         cv2.imwrite('static/face_only' + str(idx) + '.png', face_only)
-'''
