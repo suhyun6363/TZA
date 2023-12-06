@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 import "./WebcamCapture.css";
-import axios from 'axios';
+import axios from "axios";
 
 const WebcamCapture = ({ onCapture }) => {
   const webcamRef = useRef(null);
@@ -19,12 +19,8 @@ const WebcamCapture = ({ onCapture }) => {
       const imageSrc = webcamRef.current.getScreenshot();
       try {
         // 이미지를 서버로 전송
-        const formData = new FormData();
-        formData.append('image, imageScr');
-        const response = await axios.post("http://localhost:8000/api/upload/", {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        const response = await axios.post("http://127.0.0.1:8000/api/upload/", {
+          image: imageSrc,
         });
         // 성공적으로 전송된 경우 처리
         console.log("이미지 업로드 성공:", response.data);
