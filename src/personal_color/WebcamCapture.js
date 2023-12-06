@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import "./WebcamCapture.css";
 import axios from "axios";
-import axios from "axios";
 
 const WebcamCapture = ({ onCapture }) => {
   const navigate = useNavigate();
