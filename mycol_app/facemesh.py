@@ -1,3 +1,4 @@
+'''
 import cv2
 import mediapipe as mp
 import numpy as np
@@ -7,7 +8,7 @@ mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 
 # 이미지 파일의 경우를 사용하세요.
-IMAGE_FILES = ["static/facemesh1.jpg"]
+IMAGE_FILES = ["static/facemesh.jpg"]
 
 with mp.solutions.face_mesh.FaceMesh(
         static_image_mode=True,
@@ -80,3 +81,4 @@ with mp.solutions.face_mesh.FaceMesh(
         cv2.destroyAllWindows()
 
         cv2.imwrite('static/face_only' + str(idx) + '.png', face_only)
+'''

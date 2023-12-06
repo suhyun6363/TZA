@@ -1,3 +1,4 @@
+'''
 # Django 설정 초기화 코드 추가
 import os
 import django
@@ -184,8 +185,9 @@ g_average = total_rgb_mean_weighted[1]
 b_average = total_rgb_mean_weighted[2]
 
 # diagnosis 모델에 데이터 저장
-analysis_instance = analysis.objects.create(
+analysis_instance = Analysis.objects.create(
     r_average=r_average,
     g_average=g_average,
     b_average=b_average
 )
+'''
