@@ -1,4 +1,5 @@
 // WebcamCapture.js
+// 얼굴촬영하는 페이지
 
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -54,7 +55,9 @@ const WebcamCapture = ({ onCapture }) => {
 
           console.log("이미지 업로드 성공:", uploadResponse.data);
           // 전환을 위해 '/image'로 이동
-          navigate("/image");
+          navigate("/image", {
+            state: { capturedImage: imageSrc },
+          });
         } catch (error) {
           // 전송 실패한 경우 오류 처리
           console.error("이미지 업로드 실패:", error);

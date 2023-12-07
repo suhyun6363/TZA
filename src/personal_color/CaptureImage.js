@@ -1,4 +1,5 @@
 // CaptureImage.js
+// 촬영본 확인하는 페이지
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,9 +19,8 @@ const CaptureImage = ({ capturedImage }) => {
   return (
     <div className="capture-image-container">
       <h2>촬영된 이미지</h2>
-      <img src={capturedImage} alt="Captured" />
+      {capturedImage && <img src={capturedImage} alt="Captured" />}
 
-      {/* 버튼을 수평으로 나란히 나열하기 위해 수정 */}
       <div className="button-container">
         <button className="retake-button" onClick={handleRetakeClick}>
           다시 촬영하기
