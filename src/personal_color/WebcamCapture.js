@@ -17,7 +17,7 @@ const WebcamCapture = ({ onCapture }) => {
     const overlayImage = document.getElementById("person-image");
   }, []);
 
-  const handleCaptureClick = () => {
+  const handleCaptureClick = async () => {
     setCountdown(5); // 초기화
 
     // 1초마다 countdown 값을 감소시키는 타이머
@@ -32,12 +32,19 @@ const WebcamCapture = ({ onCapture }) => {
       if (webcamRef.current) {
         const imageSrc = webcamRef.current.getScreenshot();
 
+        // 이미지 데이터 URL을 Blob으로 변환
+        const response = await fetch(imageSrc);
+        const blobImage = await response.blob();
+
         try {
-          // 이미지를 서버로 전송
+          // FormData에 이미지 추가
           const formData = new FormData();
+
           formData.append("image", imageSrc);
-          const response = await axios.post(
-            "http://10.207.19.197:8000/api/upload/",
+
+          // 이미지를 서버로 전송
+          const uploadResponse = await axios.post(
+            "http://localhost:8000/api/upload/",
             formData,
             {
               headers: {
@@ -45,18 +52,15 @@ const WebcamCapture = ({ onCapture }) => {
               },
             }
           );
-
           // 성공적으로 전송된 경우 처리
-          console.log("이미지 업로드 성공:", response.data);
-          navigate("/image");
 
+          console.log("이미지 업로드 성공:", uploadResponse.data);
           // 전환을 위해 '/image'로 이동
+          navigate("/image");
         } catch (error) {
           // 전송 실패한 경우 오류 처리
           console.error("이미지 업로드 실패:", error);
         }
-        // 서버로 이미지가 안보내져도 화면이 넘어가긴함!
-        navigate("/image");
       }
     }, 5000); // 5초 후에 실행
   };
