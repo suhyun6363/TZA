@@ -37,7 +37,7 @@ const WebcamCapture = ({ onCapture }) => {
           const formData = new FormData();
           formData.append("image", imageSrc);
           const response = await axios.post(
-            "http://localhost:8000/api/upload/",
+            "http://10.207.19.197:8000/api/upload/",
             formData,
             {
               headers: {
@@ -48,6 +48,7 @@ const WebcamCapture = ({ onCapture }) => {
 
           // 성공적으로 전송된 경우 처리
           console.log("이미지 업로드 성공:", response.data);
+          navigate("/image");
 
           // 전환을 위해 '/image'로 이동
         } catch (error) {
