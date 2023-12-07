@@ -1,12 +1,14 @@
 // CaptureImage.js
-// 촬영본 확인하는 페이지
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./CaptureImage.css";
 
-const CaptureImage = ({ capturedImage }) => {
+const CaptureImage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // location 상태에서 촬영된 이미지를 가져옵니다
+  const capturedImage = location.state && location.state.capturedImage;
 
   const handleRetakeClick = () => {
     navigate("/capture");

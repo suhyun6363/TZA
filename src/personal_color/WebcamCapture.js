@@ -40,7 +40,7 @@ const WebcamCapture = ({ onCapture }) => {
         try {
           // FormData에 이미지 추가
           const formData = new FormData();
-          formData.append("image", blobImage, "captured_image.jpg"); // 여기 수정
+          formData.append("image", blobImage, "captured_image.jpg");
 
           // 이미지를 서버로 전송
           const uploadResponse = await axios.post(
@@ -54,7 +54,7 @@ const WebcamCapture = ({ onCapture }) => {
           );
 
           console.log("이미지 업로드 성공:", uploadResponse.data);
-          // 전환을 위해 '/image'로 이동
+
           navigate("/image", {
             state: { capturedImage: imageSrc },
           });
