@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+#sys.setrecursionlimit(10**7)
+
 
 
 
@@ -22,5 +24,4 @@ def main():
 
 
 if __name__ == '__main__':
-    #sys.setrecursionlimit(10**6)
     main()
