@@ -4,6 +4,9 @@ import os
 import sys
 
 
+
+
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
@@ -19,4 +22,5 @@ def main():
 
 
 if __name__ == '__main__':
+    #sys.setrecursionlimit(10**6)
     main()
