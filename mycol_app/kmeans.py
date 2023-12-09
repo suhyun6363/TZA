@@ -1,6 +1,7 @@
 # Django 설정 초기화 코드 추가
 import os
 import django
+from django.core.files.base import ContentFile
 
 # 프로젝트 디렉토리의 경로 추가
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
@@ -10,11 +11,13 @@ django.setup()
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-from sklearn.datasets import load_sample_image
 from sklearn.preprocessing import StandardScaler
 from scipy.spatial import distance
-from collections import Counter
 import imageio.v2 as imageio
+
+from collections import Counter
+from colormath.color_objects import sRGBColor, LabColor, HSVColor
+from colormath.color_conversions import convert_color
 
 from mycol_app.models import Analysis
 
@@ -157,7 +160,6 @@ for i in range(optimal_k):
     axes[i + 1].set_title(f'Cluster {i + 1}')
 
 
-
 # 결과 색상 출력
 fig, ax = plt.subplots(1, 4, figsize=(16, 4))
 
@@ -179,14 +181,87 @@ ax[3].axis('off')
 
 #plt.show()
 
-r_average = total_rgb_mean_weighted[0]
-g_average = total_rgb_mean_weighted[1]
-b_average = total_rgb_mean_weighted[2]
+print(f'=============================변환=============================')
+# 평균 RGB 값 출력
+print(f'평균 RGB 값: {total_rgb_mean_weighted}')
 
-# diagnosis 모델에 데이터 저장
+# RGB to Lab conversion
+average_srgb = sRGBColor(total_rgb_mean_weighted[0], total_rgb_mean_weighted[1], total_rgb_mean_weighted[2], is_upscaled=True)
+average_lab = convert_color(average_srgb, LabColor)
+
+# 출력 Lab 값
+print(f'Lab: L={average_lab.lab_l}, a={average_lab.lab_a}, b={average_lab.lab_b}')
+
+# RGB to HSV conversion
+average_hsv = convert_color(average_srgb, HSVColor)
+
+# 출력 HSV 값
+# s, v값은 비율입니당~
+print(f'HSV: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v}')
+
+# L, b, S값 출력
+print(f'=============================LbS=============================')
+print(f' L={average_lab.lab_l}, b={average_lab.lab_b}, S={average_hsv.hsv_s}')
+
+#영역이미지 저장코드추가
+
+# 이미지를 저장할 디렉토리
+output_directory = "cluster_images"
+os.makedirs(output_directory, exist_ok=True)
+
+# 모델에 출력할 값 정하기
+l_average = average_lab.lab_l
+b_average = average_lab.lab_b
+s_average = average_hsv.hsv_s
+
+# Analysis 모델에 데이터 저장
 analysis_instance = Analysis.objects.create(
-    r_average=r_average,
-    g_average=g_average,
-    b_average=b_average
+    l_average=l_average,
+    b_average=b_average,
+    s_average=s_average,
 )
 
+# 클러스터 이미지 및 Total Weighted Mean Color 이미지 저장
+cluster_images = []  # 클러스터 이미지 파일 경로를 저장할 리스트
+
+for i, cluster_indices in enumerate([most_pixels_cluster, selected_cluster_1, selected_cluster_2]):
+    cluster_pixels = face_data[optimal_cluster_labels == cluster_indices]
+    cluster_image = np.zeros_like(face_data)
+    cluster_image[optimal_cluster_labels == cluster_indices] = cluster_pixels
+
+    # 이미지 재구성
+    cluster_image_reshaped = cluster_image.reshape(non_black_pixels.shape)
+    result_image = np.zeros_like(face_image)
+    result_image[~np.all(face_image == [0, 0, 0], axis=-1)] = cluster_image_reshaped
+
+    # 이미지 저장
+    cluster_filename = f'cluster_{i + 1}.png'
+    cluster_filepath = os.path.join(output_directory, cluster_filename)
+    imageio.imwrite(cluster_filepath, result_image)
+
+    # 클러스터 이미지 파일 경로를 리스트에 추가
+    cluster_images.append(cluster_filepath)
+
+    # 이미지를 File 객체로 변환하여 업로드
+    cluster_image_content = ContentFile(result_image.tobytes())
+    setattr(analysis_instance, f'cluster_image_{i + 1}', cluster_image_content)
+    analysis_instance.save()
+
+# 클러스터 이미지 파일 경로를 모델에 저장
+analysis_instance.cluster_image_1 = cluster_images[0]
+analysis_instance.cluster_image_2 = cluster_images[1]
+analysis_instance.cluster_image_3 = cluster_images[2]
+analysis_instance.save()
+
+# Total Weighted Mean Color 이미지 저장
+total_weighted_mean_color_image = np.zeros((50, 50, 3), dtype=np.uint8)
+total_weighted_mean_color_image[:, :] = total_rgb_mean_weighted.astype(np.uint8)
+total_weighted_mean_color_filename = os.path.join(output_directory, 'total_weighted_mean_color.png')
+
+# 모델에 저장
+imageio.imwrite(total_weighted_mean_color_filename, total_weighted_mean_color_image)
+analysis_instance.total_weighted_mean_color_image = total_weighted_mean_color_filename
+analysis_instance.save()
+
+# 메시지 출력
+print(f'이미지 저장경로: {output_directory}')

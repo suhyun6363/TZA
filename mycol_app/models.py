@@ -5,6 +5,7 @@ from django.db import models
 
 
 class UploadedImage(models.Model):
+    objects = None
     id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='uploads/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
@@ -14,9 +15,13 @@ class UploadedImage(models.Model):
 
 class Analysis(models.Model):
     objects = None
-    r_average = models.FloatField(default=0.0)
-    g_average = models.FloatField(default=0.0)
+    l_average = models.FloatField(default=0.0)
     b_average = models.FloatField(default=0.0)
+    s_average = models.FloatField(default=0.0)
+    cluster_image_1 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
+    cluster_image_2 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
+    cluster_image_3 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
+    total_weighted_mean_color_image = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
 
 
     '''
