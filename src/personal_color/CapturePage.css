@@ -1,10 +1,19 @@
 /* CapturePage.css */
+@font-face {
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf")
+}
+@font-face {
+font-family: "Apple";
+src: url("./font/AppleSDGothicNeoUL.ttf")
+}
 
 div {
-  padding-top: 20px;
   text-align: center;
+  font-family: 'Apple';
 }
 
 h2 {
   color: #e91e63;
 }
+
