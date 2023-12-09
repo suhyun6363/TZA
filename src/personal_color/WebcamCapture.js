@@ -1,4 +1,5 @@
 // WebcamCapture.js
+// 얼굴촬영하는 페이지
 
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ const WebcamCapture = ({ onCapture }) => {
   const webcamRef = useRef(null);
   const [countdown, setCountdown] = useState(5);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [showCountdown, setShowCountdown] = useState(false); // 새로운 state 추가
 
   useEffect(() => {
     const webcamElement = webcamRef.current.video;
@@ -19,16 +21,18 @@ const WebcamCapture = ({ onCapture }) => {
 
   const handleCaptureClick = async () => {
     setCountdown(5); // 초기화
-
+    setShowCountdown(true); // countdown-indicator를 표시하기 위해 state 업데이트
+  
     // 1초마다 countdown 값을 감소시키는 타이머
     const countdownTimer = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
-
+  
     // 5초 뒤에 실행되는 타이머
     setTimeout(async () => {
       clearInterval(countdownTimer); // 카운트다운 타이머 중지
-
+      setShowCountdown(false); // countdown-indicator를 숨기기 위해 state 업데이트
+  
       if (webcamRef.current) {
         const imageSrc = webcamRef.current.getScreenshot();
 
@@ -39,7 +43,7 @@ const WebcamCapture = ({ onCapture }) => {
         try {
           // FormData에 이미지 추가
           const formData = new FormData();
-          formData.append("image", blobImage, "captured_image.jpg"); // 여기 수정
+          formData.append("image", blobImage, "captured_image.jpg");
 
           // 이미지를 서버로 전송
           const uploadResponse = await axios.post(
@@ -53,8 +57,10 @@ const WebcamCapture = ({ onCapture }) => {
           );
 
           console.log("이미지 업로드 성공:", uploadResponse.data);
-          // 전환을 위해 '/image'로 이동
-          navigate("/image");
+
+          navigate("/image", {
+            state: { capturedImage: imageSrc },
+          });
         } catch (error) {
           // 전송 실패한 경우 오류 처리
           console.error("이미지 업로드 실패:", error);
@@ -62,27 +68,29 @@ const WebcamCapture = ({ onCapture }) => {
       }
     }, 5000); // 5초 후에 실행
   };
+  
 
   return (
-    <div id="video-container">
-      {/* mirrored 속성을 true로 설정하여 웹캠 피드를 좌우로 뒤집습니다. */}
-      <Webcam
-        audio={false}
-        ref={webcamRef}
-        screenshotFormat="image/jpeg"
-        mirrored={true}
-      />
+    <div>
+      <div id="video-container">
+        {/* mirrored 속성을 true로 설정하여 웹캠 피드를 좌우로 뒤집습니다. */}
+        <Webcam
+          audio={false}
+          ref={webcamRef}
+          screenshotFormat="image/jpeg"
+          mirrored={true}
+        />
 
-      {/* 이미지를 겹치게 표시할 부분 */}
-      <div className="overlay-image-container">
-        <img id="person-image" src="/person.png" alt="Person Image" />
+        {/* 이미지를 겹치게 표시할 부분 */}
+        <div className="overlay-image-container">
+          <img id="person-image" src="/person.png" alt="Person Image" />
+        </div>
       </div>
-
       {/* 촬영 버튼 */}
       <button onClick={handleCaptureClick}>촬영하기</button>
 
       {/* 카운트다운 표시 */}
-      {countdown > 0 && (
+      {showCountdown && (
         <div className="countdown-indicator">{countdown}초 후에 촬영됩니다</div>
       )}
     </div>

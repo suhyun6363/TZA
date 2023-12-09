@@ -1,8 +1,7 @@
 /* WebcamCapture.css */
 
 #video-container {
-  position: relative;
-}
+  position: relative;}
 
 .overlay-image-container {
   position: absolute;
@@ -15,7 +14,7 @@
 /* 촬영버튼 스타일 */
 button {
   position: absolute;
-  bottom: 20px;
+  bottom: 180px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #e91e63;
@@ -36,7 +35,7 @@ button:hover {
 /* 카운트다운 표시 */
 .countdown-indicator {
   position: absolute;
-  top: calc(100% + 10px);
+  bottom: 120px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 18px;
