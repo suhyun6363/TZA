@@ -1,4 +1,5 @@
 // ColorMeasurement.js
+// 초기화면
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
