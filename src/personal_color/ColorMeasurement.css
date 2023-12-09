@@ -1,11 +1,11 @@
 /* ColorMeasurement.css */
 @font-face {
   font-family: "AbhayaLibre";
-  src: url("./font/AbhayaLibre-ExtraBold.ttf")
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
 }
 @font-face {
-font-family: "Apple";
-src: url("./font/AppleSDGothicNeoUL.ttf")
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
 }
 
 .color-measurement {
@@ -29,7 +29,7 @@ src: url("./font/AppleSDGothicNeoUL.ttf")
   border-radius: 12px; /* 모서리의 굴곡을 조절합니다. */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   text-align: center;
-  font-family: 'Apple';
+  font-family: "Apple";
 }
 
 .measurement-screen h2 {
@@ -40,7 +40,7 @@ src: url("./font/AppleSDGothicNeoUL.ttf")
 
 .measurement-screen button {
   background-color: #e91e63;
-  bottom: 300px;
+  bottom: 100px;
   color: #fff;
   border: none;
   padding: 15px 30px; /* 버튼의 패딩을 늘려 크기를 키웁니다. */
@@ -48,7 +48,7 @@ src: url("./font/AppleSDGothicNeoUL.ttf")
   font-size: 20px; /* 버튼의 폰트 크기를 키웁니다. */
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-family: 'Apple';
+  font-family: "Apple";
 }
 
 .measurement-screen button:hover {

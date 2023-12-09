@@ -1,19 +1,25 @@
 /* CapturePage.css */
 @font-face {
   font-family: "AbhayaLibre";
-  src: url("./font/AbhayaLibre-ExtraBold.ttf")
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
 }
 @font-face {
-font-family: "Apple";
-src: url("./font/AppleSDGothicNeoUL.ttf")
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
 }
 
-div {
-  text-align: center;
-  font-family: 'Apple';
+.capture-page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 h2 {
   color: #e91e63;
+  margin-bottom: 20px;
+  position: absolute;
+  top: 20px; /* 조절 필요한 경우, 원하는 위치로 상단 여백을 조절합니다. */
 }
-
