@@ -1,22 +1,40 @@
+import os
+import sys
+
 import cv2
 import mediapipe as mp
 import numpy as np
+
+sys.path.append(os.path.join(os.path.dirname(__file__), 'config'))
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+import django
+django.setup()
+
+from mycol_app.models import UploadedImage
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_face_mesh = mp.solutions.face_mesh
 
 # 이미지 파일의 경우를 사용하세요.
-IMAGE_FILES = ["static/facemesh.jpg"]
+#IMAGE_FILES = ["static/facemesh.jpg"]
+uploaded_images = UploadedImage.objects.order_by('-id').first()
+IMAGE_FILES = [uploaded_images]
 
 with mp.solutions.face_mesh.FaceMesh(
         static_image_mode=True,
         max_num_faces=1,
         refine_landmarks=True,
         min_detection_confidence=0.5) as face_mesh:
+    # for idx, file in enumerate(IMAGE_FILES):
+    for idx, uploaded_image in enumerate(IMAGE_FILES):
+        # image = cv2.imread(file)
+        image_path = uploaded_image.image.path
+        file_name = os.path.basename(image_path)
+        print("File Name:", file_name)
 
-    for idx, file in enumerate(IMAGE_FILES):
-        image = cv2.imread(file)
+        image = cv2.imread(image_path)
 
         # 작업 전에 BGR 이미지를 RGB로 변환합니다.
         results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
