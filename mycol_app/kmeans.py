@@ -205,8 +205,11 @@ print(f' L={average_lab.lab_l}, b={average_lab.lab_b}, S={average_hsv.hsv_s}')
 
 #영역이미지 저장코드추가
 
+# 현재 스크립트의 디렉토리를 기준으로 상대경로 설정
+project_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+
 # 이미지를 저장할 디렉토리
-output_directory = "cluster_images"
+output_directory = os.path.join(project_directory, "media", "cluster_images")
 os.makedirs(output_directory, exist_ok=True)
 
 # 모델에 출력할 값 정하기
