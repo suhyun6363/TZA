@@ -26,6 +26,7 @@ button {
   font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Apple";
 }
 
 button:hover {
@@ -41,4 +42,5 @@ button:hover {
   transform: translateX(-50%);
   font-size: 18px;
   color: #fff;
+  font-family: "Apple";
 }
