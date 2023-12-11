@@ -1,3 +1,4 @@
+// Result.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Result.css";
@@ -8,7 +9,7 @@ const Result = () => {
   const [personalColorResult, setPersonalColorResult] = useState("");
 
   useEffect(() => {
-    const apiUrl = "http://your-api-endpoint"; //서버파고수정하기~
+    const apiUrl = "http://127.0.0.1:8000/뭐시기뭐시기"; // 서버 주소로 수정
 
     // axios를 사용하여 데이터 가져오기
     axios
@@ -24,19 +25,25 @@ const Result = () => {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+  }, []);
 
   return (
     <div className="result-container">
-      <h2>결과 반환 페이지</h2>
+      <h2>결과 확인하기</h2>
 
-      {faceImages.map((faceImage, index) => (
-        <img key={index} src={faceImage} alt={`Face ${index + 1}`} />
-      ))}
+      <div className="face-images">
+        {faceImages.map((faceImage, index) => (
+          <img key={index} src={faceImage} alt={`Face ${index + 1}`} />
+        ))}
+      </div>
 
-      <img src={averageSkinImage} alt="Average Skin" />
+      <img
+        className="average-skin-image"
+        src={averageSkinImage}
+        alt="Average Skin"
+      />
 
-      <p>{personalColorResult}</p>
+      <p className="personal-color-result">{personalColorResult}</p>
     </div>
   );
 };

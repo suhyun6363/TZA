@@ -26,26 +26,28 @@
   margin: 20px 20px;
   padding: 50px 100px 50px 100px;
   border: 4px solid #e91e63;
-  border-radius: 12px; /* 모서리의 굴곡을 조절합니다. */
+  border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  text-align: center;
   font-family: "Apple";
+  text-align: center;
 }
 
 .measurement-screen h2 {
   color: #e91e63;
-  font-size: 40px; /* 제목의 폰트 크기를 키웁니다. */
-  margin-bottom: 50px; /* 하단 여백을 늘려 제목과 내용 사이의 간격을 키웁니다. */
+  font-size: 40px;
+  margin-top: 150px;
+  text-align: center;
+  margin-left: -55px;
 }
 
 .measurement-screen button {
   background-color: #e91e63;
-  bottom: 100px;
+  bottom: 150px;
   color: #fff;
   border: none;
-  padding: 15px 30px; /* 버튼의 패딩을 늘려 크기를 키웁니다. */
+  padding: 15px 30px;
   border-radius: 6px;
-  font-size: 20px; /* 버튼의 폰트 크기를 키웁니다. */
+  font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: "Apple";
