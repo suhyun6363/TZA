@@ -8,6 +8,7 @@
 .result-container h2 {
   color: #e91e63;
   margin-bottom: 20px;
+  font-family: "Apple";
 }
 
 .face-images {
@@ -30,4 +31,5 @@
   font-size: 16px;
   color: #333;
   margin-top: 20px;
+  font-family: "Apple";
 }
