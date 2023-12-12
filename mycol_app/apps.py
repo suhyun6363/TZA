@@ -1,10 +1,11 @@
 from django.apps import AppConfig
-import os
-from importlib.util import spec_from_file_location, module_from_spec
 
 class MycolAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'mycol_app'
+
+    def ready(self):
+        import mycol_app.signals
 
 '''
     def ready(self):
