@@ -1,17 +1,12 @@
 from django.db import models
-#from image_upload.models import UploadedImage   #이미지 업로드 모델 import
-
-# Create your models here.
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class UploadedImage(models.Model):
     objects = None
     id = models.AutoField(primary_key=True)
     image = models.ImageField(upload_to='uploads/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
-
-
 
 class Analysis(models.Model):
     objects = None
