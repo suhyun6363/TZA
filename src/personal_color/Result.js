@@ -1,5 +1,5 @@
 // Result.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const ImageComponent = () => {
   const [imageSrcList, setImageSrcList] = useState([]);
@@ -12,21 +12,20 @@ const ImageComponent = () => {
       'http://127.0.0.1:8000/media/cluster_images/cluster_3.png',
       'http://127.0.0.1:8000/media/face_only0.png',
       'http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png'
-      
     ];
 
     // 각 이미지 가져오기
     const getImageData = async () => {
-      const promises = imageUrls.map(url => {
+      const promises = imageUrls.map((url) => {
         return new Promise((resolve, reject) => {
           const xhr = new XMLHttpRequest();
-          xhr.open('GET', url);
-          xhr.responseType = 'blob';
+          xhr.open("GET", url);
+          xhr.responseType = "blob";
           xhr.onload = () => {
             const reader = new FileReader();
             reader.onloadend = () => {
               // Base64로 변환된 이미지 데이터를 배열에 추가
-              setImageSrcList(prevList => [...prevList, reader.result]);
+              setImageSrcList((prevList) => [...prevList, reader.result]);
               resolve();
             };
             reader.onerror = reject;
@@ -39,7 +38,7 @@ const ImageComponent = () => {
       try {
         await Promise.all(promises);
       } catch (error) {
-        console.error('Error fetching image:', error);
+        console.error("Error fetching image:", error);
       }
     };
 
