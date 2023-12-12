@@ -9,7 +9,7 @@ const Result = () => {
   const [personalColorResult, setPersonalColorResult] = useState("");
 
   useEffect(() => {
-    const apiUrl = "http://127.0.0.1:8000/뭐시기뭐시기"; // 서버 주소로 수정
+    const apiUrl = "http://127.0.0.1:8000/analysis"; // 서버 주소로 수정
 
     // axios를 사용하여 데이터 가져오기
     axios
