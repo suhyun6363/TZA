@@ -29,7 +29,7 @@ const CaptureImage = () => {
         </button>
 
         <button className="result-button" onClick={handleResultClick}>
-          결과보기
+          분석 보기
         </button>
       </div>
     </div>

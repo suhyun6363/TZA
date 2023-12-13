@@ -31,7 +31,7 @@ const ColorMeasurement = () => {
           <button onClick={handleMeasureButtonClick}>측정하기</button>
         </div>
       ) : (
-        <p>화면을 클릭하세요</p>
+        <p id="click-msg">화면을 클릭하세요</p>
       )}
     </div>
   );

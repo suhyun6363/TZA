@@ -2,7 +2,19 @@
 
 #video-container {
   position: relative;
+  border: 4px solid #e91e63;
+  border-radius: 12px;
+  width: 648px; /* Container width */
+  height: 496px; /* Container height */
+  overflow: hidden;
 }
+
+#video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 
 .overlay-image-container {
   position: absolute;
@@ -15,10 +27,10 @@
 /* 촬영버튼 스타일 */
 button {
   position: absolute;
-  bottom: 40px;
+  bottom: 200px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #e91e63;
+  background-color: #ff4081;
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -30,7 +42,7 @@ button {
 }
 
 button:hover {
-  background-color: #d81b60;
+  background-color: #ff4081;
   color: #fff;
 }
 
