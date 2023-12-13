@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class UploadedImage(models.Model):
     objects = None
@@ -13,16 +11,19 @@ class Analysis(models.Model):
     l_average = models.FloatField(default=0.0)
     b_average = models.FloatField(default=0.0)
     s_average = models.FloatField(default=0.0)
+
+    personal_color = models.CharField(max_length=50, default="", null=True)  # 퍼스널 컬러
+    second_color = models.CharField(max_length=50, default="", null=True)  # 세컨드 컬러
+
     cluster_image_1 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
     cluster_image_2 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
     cluster_image_3 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
     total_weighted_mean_color_image = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
 
 
+
     '''
     #image = models.ForeignKey(UploadedImage, on_delete=models.CASCADE)  #이미지 업로드 모델과의 연결
-    personal_color = models.CharField(max_length=50)  #퍼스널 컬러
-    second_color = models.CharField(max_length=50)  #세컨드 컬러
 
     personal_color_palette = models.ImageField(upload_to='personal_color_palettes/', blank=True, null=True)
     second_color_palette = models.ImageField(upload_to='second_color_palettes/', blank=True, null=True)

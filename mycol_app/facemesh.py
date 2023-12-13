@@ -370,3 +370,82 @@ def process_uploaded_image(uploaded_images):
 
     # 메시지 출력
     print(f'이미지 저장경로: {output_directory}')
+
+
+####### 추가 #######
+
+    # 주어진 타입의 RGB 값들
+    spring_type_rgb = np.array([
+        (251, 211, 168), (255, 202, 149),
+        (253, 197, 161), (252, 204, 130)
+    ])
+
+    summer_type_rgb = np.array([
+        (253, 231, 174), (255, 219, 192),
+        (254, 217, 170), (254, 210, 122)
+    ])
+
+    fall_type_rgb = np.array([
+        (255, 221, 150), (247, 206, 152),
+        (249, 201, 128), (212, 169, 101)
+    ])
+
+    winter_type_rgb = np.array([
+        (255, 220, 147), (242, 206, 148),
+        (247, 207, 121), (216, 173, 102)
+    ])
+
+    # 주어진 타입과 total_rgb_mean_weighted 간의 거리 계산 함수
+    def calculate_distance(type_rgb, target_rgb):
+        return np.mean(np.linalg.norm(type_rgb - target_rgb, axis=1))
+
+    # 새로운 타입별 거리 계산
+    spring_light_distance = calculate_distance(np.array([spring_type_rgb[0], spring_type_rgb[1]]),
+                                               total_rgb_mean_weighted)
+    spring_clear_distance = calculate_distance(np.array([spring_type_rgb[2], spring_type_rgb[3]]),
+                                               total_rgb_mean_weighted)
+
+    summer_light_distance = calculate_distance(np.array([summer_type_rgb[0], summer_type_rgb[1]]),
+                                               total_rgb_mean_weighted)
+    summer_mute_distance = calculate_distance(np.array([summer_type_rgb[2], summer_type_rgb[3]]),
+                                              total_rgb_mean_weighted)
+
+    fall_deep_distance = calculate_distance(np.array([fall_type_rgb[0], fall_type_rgb[1]]), total_rgb_mean_weighted)
+    fall_mute_distance = calculate_distance(np.array([fall_type_rgb[2], fall_type_rgb[3]]), total_rgb_mean_weighted)
+
+    winter_clear_distance = calculate_distance(np.array([winter_type_rgb[0], winter_type_rgb[1]]),
+                                               total_rgb_mean_weighted)
+    winter_deep_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
+                                              total_rgb_mean_weighted)
+
+    # 거리를 토대로 정렬
+    distances = [
+        ("봄 Light", spring_light_distance),
+        ("봄 Clear", spring_clear_distance),
+        ("여름 Light", summer_light_distance),
+        ("여름 Mute", summer_mute_distance),
+        ("가을 Deep", fall_deep_distance),
+        ("가을 Mute", fall_mute_distance),
+        ("겨울 Clear", winter_clear_distance),
+        ("겨울 Deep", winter_deep_distance)
+    ]
+
+    distances.sort(key=lambda x: x[1])
+
+    # personal_color 및 second_color 계산
+    personal_color = distances[0][0]
+    second_color = distances[1][0]
+
+    # personal_color 및 second_color 값 모델에 저장
+    analysis_instance.personal_color = personal_color
+    analysis_instance.second_color = second_color
+    analysis_instance.save()
+
+
+    # 결과 출력
+    print(f'베스트 퍼스널 컬러: {distances[0][0]}')
+    print(f'세컨드 컬러: {distances[1][0]}')
+
+
+
+
