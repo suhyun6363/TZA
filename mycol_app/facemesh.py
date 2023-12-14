@@ -406,7 +406,7 @@ def process_uploaded_image(uploaded_images):
 
     winter_clear_distance = calculate_distance(np.array([winter_type_rgb[0], winter_type_rgb[1]]),
                                                total_rgb_mean_weighted)
-    winter_dark_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
+    winter_deep_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
                                               total_rgb_mean_weighted)
 
     # 거리를 토대로 정렬
@@ -418,7 +418,7 @@ def process_uploaded_image(uploaded_images):
         ("가을 Deep", fall_deep_distance),
         ("가을 Mute", fall_mute_distance),
         ("겨울 Clear", winter_clear_distance),
-        ("겨울 Dark", winter_dark_distance)
+        ("겨울 Deep", winter_deep_distance)
     ]
 
     distances.sort(key=lambda x: x[1])
