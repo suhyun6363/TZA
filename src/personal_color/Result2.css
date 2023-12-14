@@ -7,14 +7,51 @@
     src: url("./font/AppleSDGothicNeoUL.ttf");
   }
 
-#check-result {
+  .result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 100% viewport 높이를 사용하여 화면 전체 높이로 설정 */
+  }
+  
+  #check-result {
     color: #e91e63;
-    margin-top: 20px;
     text-align: center;
+    font-family: "Apple";
     margin-bottom: 20px;
-    font-family: "Apple";
-}
+    position: static;
+  }
 
-p {
+  .image-section {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .image-section p {
+    margin: 10px 0;
     font-family: "Apple";
-}
+  }
+
+  .skin-image {
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  
+  
+  .result-section {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .result-section b {
+    margin: 10px 0;
+    font-family: "Apple";
+  }
+  
+  .result-section p {
+    margin: 10px 0;
+    font-family: "Apple";
+  }

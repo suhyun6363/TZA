@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PersonalColorDiagnosis from "./PersonalColorsDiagnosis";
 import "./Result2.css";
 
 const Result2 = () => {
@@ -55,18 +56,21 @@ const Result2 = () => {
     }, []);
   
     return (
-      <div>
+      <div className="result-container">
         {loading ? (
           <p>Loading...</p>
         ) : (
           <div>
             <h2 id="check-result">진단 결과 확인하기</h2>
-            <div>
-              <p>Personal Color: {analysisData.personal_color}</p>
-              <p>Second Color: {analysisData.second_color}</p>
+            <div className="image-section">
+              <p>추출 이미지</p>
+              <img src={imageSrc} alt="Total Weighted Mean Color" className="skin-image" />
             </div>
-            <div>
-              <img src={imageSrc} alt="Total Weighted Mean Color" style={{ width: "100%", height: "auto" }}/>
+            <div className="result-section">
+              <b>Personal Color: {analysisData.personal_color}</b>
+              <PersonalColorDiagnosis personalColor={analysisData.personal_color} />
+              <b>Second Color: {analysisData.second_color}</b>
+              <PersonalColorDiagnosis personalColor={analysisData.second_color} />
             </div>
           </div>
         )}

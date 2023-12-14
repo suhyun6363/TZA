@@ -43,6 +43,8 @@ const ImageComponent = () => {
     getImageData();
   }, []);
 
+  console.log(imageSrcList);
+
   const handleMeasureButtonClick = () => {
     // 측정하기
     navigate("/result2");
