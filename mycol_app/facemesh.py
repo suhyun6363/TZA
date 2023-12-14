@@ -309,17 +309,8 @@ def process_uploaded_image(uploaded_images):
     #output_directory = os.path.join(BASE_DIR, "media", "cluster_images")
     os.makedirs(output_directory, exist_ok=True)
 
-    # 모델에 출력할 값 정하기
-    l_average = average_lab.lab_l
-    b_average = average_lab.lab_b
-    s_average = average_hsv.hsv_s
-
     # Analysis 모델에 데이터 저장
-    analysis_instance = Analysis.objects.create(
-        l_average=l_average,
-        b_average=b_average,
-        s_average=s_average,
-    )
+    analysis_instance = Analysis.objects.create()
 
     # 클러스터 이미지 및 Total Weighted Mean Color 이미지 저장
     cluster_images = []  # 클러스터 이미지 파일 경로를 저장할 리스트
@@ -415,7 +406,7 @@ def process_uploaded_image(uploaded_images):
 
     winter_clear_distance = calculate_distance(np.array([winter_type_rgb[0], winter_type_rgb[1]]),
                                                total_rgb_mean_weighted)
-    winter_deep_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
+    winter_dark_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
                                               total_rgb_mean_weighted)
 
     # 거리를 토대로 정렬
@@ -427,7 +418,7 @@ def process_uploaded_image(uploaded_images):
         ("가을 Deep", fall_deep_distance),
         ("가을 Mute", fall_mute_distance),
         ("겨울 Clear", winter_clear_distance),
-        ("겨울 Deep", winter_deep_distance)
+        ("겨울 Dark", winter_dark_distance)
     ]
 
     distances.sort(key=lambda x: x[1])
@@ -443,8 +434,11 @@ def process_uploaded_image(uploaded_images):
 
 
     # 결과 출력
-    print(f'베스트 퍼스널 컬러: {distances[0][0]}')
-    print(f'세컨드 컬러: {distances[1][0]}')
+    # print(f'베스트 퍼스널 컬러: {distances[0][0]}')
+    # print(f'세컨드 컬러: {distances[1][0]}')
+
+    print(personal_color)
+    print(second_color)
 
 
 

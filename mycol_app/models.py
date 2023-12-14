@@ -8,9 +8,6 @@ class UploadedImage(models.Model):
 
 class Analysis(models.Model):
     objects = None
-    l_average = models.FloatField(default=0.0)
-    b_average = models.FloatField(default=0.0)
-    s_average = models.FloatField(default=0.0)
 
     personal_color = models.CharField(max_length=50, default="", null=True)  # 퍼스널 컬러
     second_color = models.CharField(max_length=50, default="", null=True)  # 세컨드 컬러
@@ -23,8 +20,6 @@ class Analysis(models.Model):
 
 
     '''
-    #image = models.ForeignKey(UploadedImage, on_delete=models.CASCADE)  #이미지 업로드 모델과의 연결
-
     personal_color_palette = models.ImageField(upload_to='personal_color_palettes/', blank=True, null=True)
     second_color_palette = models.ImageField(upload_to='second_color_palettes/', blank=True, null=True)
 
