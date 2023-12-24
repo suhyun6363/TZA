@@ -7,6 +7,7 @@ import CapturePage from "./personal_color/CapturePage";
 import ColorMeasurement from "./personal_color/ColorMeasurement";
 import CaptureImage from "./personal_color/CaptureImage";
 import Result from "./personal_color/Result";
+import Result2 from "./personal_color/Result2";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/capture" element={<CapturePage />} />
           <Route path="/image" element={<CaptureImage />} />
           <Route path="/result" element={<Result />} />
+          <Route path="/result2" element={<Result2 />} />
         </Routes>
       </header>
     </div>

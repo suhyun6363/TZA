@@ -1,35 +1,39 @@
-/* Result.css */
-.result-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@font-face {
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
 }
-
-.result-container h2 {
-  color: #e91e63;
-  margin-bottom: 20px;
+@font-face {
   font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
 }
 
-.face-images {
+.outer-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  height: 100vh;
 }
 
-.face-images img {
-  max-width: 100%;
-  margin: 0 10px;
+.inner-container {
+  margin: 10%;
 }
 
-.average-skin-image {
-  max-width: 100%;
-  margin-top: 20px;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나누기, 필요에 따라 조절 가능 */
+  gap: 16px; /* 격자 간격, 필요에 따라 조절 가능 */
+  justify-content: center; /* 가운데 정렬 추가 */
 }
 
-.personal-color-result {
-  font-size: 16px;
-  color: #333;
-  margin-top: 20px;
+.grid-item {
+  width: 100%;
+  height: auto;
+  max-width: 100%; /* 이미지가 부모 요소를 넘지 않도록 설정 */
+  border: 1px solid #ddd; /* 이미지 사이에 경계선 추가 */
+  border-radius: 8px; /* 이미지 모서리를 둥글게 만듦 */
+}
+
+#etc-button {
+  bottom: 60px;
   font-family: "Apple";
 }

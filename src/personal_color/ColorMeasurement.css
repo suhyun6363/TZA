@@ -31,15 +31,15 @@
 .measurement-screen h2 {
   color: #e91e63;
   font-size: 40px;
-  margin-top: 150px;
   text-align: center;
-  margin-left: -55px;
   font-family: "Apple";
+  position: static !important;
+  margin-bottom: 40px;
 }
 
 .measurement-screen button {
-  background-color: #e91e63;
-  bottom: 150px;
+  background-color: #ff4081;
+  bottom: 200px;
   color: #fff;
   border: none;
   padding: 15px 30px;
@@ -51,7 +51,15 @@
 }
 
 .measurement-screen button:hover {
-  background-color: #d81b60;
+  background-color: #ff4081;
+}
+
+#click-msg {
+  font-size: 40px;
+  color: #555;
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Apple";
 }
 
 .color-measurement p {
