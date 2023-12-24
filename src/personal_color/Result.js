@@ -7,11 +7,11 @@ const ImageComponent = () => {
   useEffect(() => {
     // Django 서버에 있는 이미지들의 URL 배열
     const imageUrls = [
-      'http://127.0.0.1:8000/media/cluster_images/cluster_1.png',
-      'http://127.0.0.1:8000/media/cluster_images/cluster_2.png',
-      'http://127.0.0.1:8000/media/cluster_images/cluster_3.png',
-      'http://127.0.0.1:8000/media/face_only0.png',
-      'http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png'
+      "http://127.0.0.1:8000/media/cluster_images/cluster_1.png",
+      "http://127.0.0.1:8000/media/cluster_images/cluster_2.png",
+      "http://127.0.0.1:8000/media/cluster_images/cluster_3.png",
+      "http://127.0.0.1:8000/media/face_only0.png",
+      "http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png",
     ];
 
     // 각 이미지 가져오기
