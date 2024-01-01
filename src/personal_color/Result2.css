@@ -1,57 +1,67 @@
 @font-face {
-    font-family: "AbhayaLibre";
-    src: url("./font/AbhayaLibre-ExtraBold.ttf");
-  }
-  @font-face {
-    font-family: "Apple";
-    src: url("./font/AppleSDGothicNeoUL.ttf");
-  }
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
+}
 
-  .result-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh; /* 100% viewport 높이를 사용하여 화면 전체 높이로 설정 */
-  }
-  
-  #check-result {
-    color: #e91e63;
-    text-align: center;
-    font-family: "Apple";
-    margin-bottom: 20px;
-    position: static;
-  }
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
 
-  .image-section {
-    text-align: center;
-    margin-top: 20px;
-  }
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
 
-  .image-section p {
-    margin: 10px 0;
-    font-family: "Apple";
-  }
+#check-result {
+  color: #e91e63;
+  text-align: center;
+  font-family: "Apple";
+  margin-bottom: 20px;
+  position: static;
+}
 
-  .skin-image {
-    width: 150px;
-    height: 150px;
-    margin-top: 20px;
-    border-radius: 8px;
-  }
-  
-  
-  .result-section {
-    text-align: center;
-    margin-top: 20px;
-  }
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .result-section b {
-    margin: 10px 0;
-    font-family: "Apple";
-  }
-  
-  .result-section p {
-    margin: 10px 0;
-    font-family: "Apple";
-  }
+.image-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.image-section p {
+  margin: 10px 0;
+  font-family: "Apple";
+}
+
+.skin-image {
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.result-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.result-section b {
+  margin: 10px 0;
+  font-family: "Apple";
+}
+
+.result-section p {
+  margin: 10px 0;
+  font-family: "Apple";
+}
+
+.qr-code {
+  margin-top: 20px;
+}

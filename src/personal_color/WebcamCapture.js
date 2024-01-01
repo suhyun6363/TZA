@@ -22,17 +22,17 @@ const WebcamCapture = ({ onCapture }) => {
   const handleCaptureClick = async () => {
     setCountdown(5); // 초기화
     setShowCountdown(true); // countdown-indicator를 표시하기 위해 state 업데이트
-  
+
     // 1초마다 countdown 값을 감소시키는 타이머
     const countdownTimer = setInterval(() => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
-  
+
     // 5초 뒤에 실행되는 타이머
     setTimeout(async () => {
       clearInterval(countdownTimer); // 카운트다운 타이머 중지
       setShowCountdown(false); // countdown-indicator를 숨기기 위해 state 업데이트
-  
+
       if (webcamRef.current) {
         const imageSrc = webcamRef.current.getScreenshot();
 
@@ -68,7 +68,6 @@ const WebcamCapture = ({ onCapture }) => {
       }
     }, 5000); // 5초 후에 실행
   };
-  
 
   return (
     <div>

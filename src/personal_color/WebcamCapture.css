@@ -15,7 +15,6 @@
   object-fit: cover;
 }
 
-
 .overlay-image-container {
   position: absolute;
   top: 50%;
@@ -54,5 +53,17 @@ button:hover {
   transform: translateX(-50%);
   font-size: 18px;
   color: #fff;
+  font-family: "Apple";
+}
+
+/* 안경 경고 문구 */
+.glasses-warning {
+  position: absolute;
+  bottom: 40px; /* 조정: 원하는 위치로 조절하세요 */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #ff4081;
+  font-weight: bold;
   font-family: "Apple";
 }
