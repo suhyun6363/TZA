@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PersonalColorDiagnosis from "./PersonalColorsDiagnosis";
+import { useNavigate } from "react-router-dom";
 import QRCode from "qrcode.react";
 import "./Result2.css";
 
@@ -10,6 +11,7 @@ const Result2 = () => {
     second_color: "",
   });
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const imageUrl =
@@ -63,6 +65,11 @@ const Result2 = () => {
   // 두 정보를 합쳐서 하나의 문자열로 만듭니다.
   const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
 
+  const handleMeasureButtonClick = () => {
+    // 측정하기
+    navigate("/draping");
+  }; 
+
   return (
     <div className="result-container">
       {loading ? (
@@ -98,6 +105,7 @@ const Result2 = () => {
                   personalColor={analysisData.second_color}
                 />
               </div>
+              <button id="etc-button" onClick={handleMeasureButtonClick}>나와 어울리는 베스트 컬러 확인하기</button>
             </div>
           </div>
         </div>

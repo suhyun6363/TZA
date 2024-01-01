@@ -8,6 +8,8 @@ import ColorMeasurement from "./personal_color/ColorMeasurement";
 import CaptureImage from "./personal_color/CaptureImage";
 import Result from "./personal_color/Result";
 import Result2 from "./personal_color/Result2";
+import Draping from "./personal_color/Draping";
+import Draping2 from "./personal_color/Draping2";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/image" element={<CaptureImage />} />
           <Route path="/result" element={<Result />} />
           <Route path="/result2" element={<Result2 />} />
+          <Route path="/draping" element={<Draping />} />
+          <Route path="/draping2" element={<Draping2 />} />
         </Routes>
       </header>
     </div>
