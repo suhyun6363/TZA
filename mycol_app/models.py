@@ -18,11 +18,7 @@ class Analysis(models.Model):
     total_weighted_mean_color_image = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
 
 
-
     '''
-    personal_color_palette = models.ImageField(upload_to='personal_color_palettes/', blank=True, null=True)
-    second_color_palette = models.ImageField(upload_to='second_color_palettes/', blank=True, null=True)
-
     #메이크업 추천 정보
     makeup_recommendation = models.TextField()
 
