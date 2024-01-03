@@ -9,6 +9,3 @@ Django~=4.2.7
 djangorestframework
 requests
 scipy
-qrcode
-dlib
-channels
