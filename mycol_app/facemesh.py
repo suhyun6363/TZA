@@ -28,7 +28,6 @@ mp_face_mesh = mp.solutions.face_mesh
 def process_uploaded_image(uploaded_images):
 
     # 이미지 파일의 경우를 사용하세요.
-    #IMAGE_FILES = ["static/facemesh.jpg"]
     uploaded_images = UploadedImage.objects.order_by('-id').first()
     IMAGE_FILES = [uploaded_images]
 
@@ -96,6 +95,13 @@ def process_uploaded_image(uploaded_images):
                 # 얼굴 부분만을 따로 잘라내기
                 face_only = cv2.bitwise_and(image, outside_mask)
 
+                # 얼굴 윤곽선 바깥 영역을 검정색으로 채우기
+                inside_mask = np.zeros_like(annotated_image)
+                inside_mask = cv2.fillPoly(inside_mask, [face_outline_points], (255, 255, 255))
+
+                # 얼굴 부분만을 따로 잘라내기
+                face_inside = cv2.bitwise_and(image, inside_mask)
+
                 cv2.fillConvexPoly(face_only, left_eye_points, color=(0, 0, 0))
                 cv2.fillConvexPoly(face_only, right_eye_points, color=(0, 0, 0))
                 cv2.fillConvexPoly(face_only, left_eyebrow_points, color=(0, 0, 0))
@@ -105,7 +111,7 @@ def process_uploaded_image(uploaded_images):
                 cv2.fillConvexPoly(face_only, right_nostril_points, color=(0, 0, 0))
 
             #cv2.imshow('Face Only', face_only)
-            cv2.waitKey(0)
+            #cv2.waitKey(0)
             cv2.destroyAllWindows()
 
             # 이미지 저장 경로 설정
@@ -113,14 +119,19 @@ def process_uploaded_image(uploaded_images):
             os.makedirs(output_directory, exist_ok=True)
 
             # 이미지 파일명 설정
-            output_filepath = os.path.join(output_directory, f'face_only{idx}.png')
+            output_filepath = os.path.join(output_directory, f'face_analysis.png')
+            output_filepath2 = os.path.join(output_directory, f'face_draping.png')
 
-            # 이미지 저장
+            # face_only 이미지 저장
             cv2.imwrite(output_filepath, face_only)
 
-    # 이미지 로드
+            # face_inside 이미지 저장
+            cv2.imwrite(output_filepath2, face_inside)
+
+    # face_only 이미지 로드
     face_image = imageio.imread(output_filepath)
 
+########## kmeans ##############
     # [0, 0, 0]인 픽셀 제거
     non_black_pixels = face_image[~np.all(face_image == [0, 0, 0], axis=-1)]
 
@@ -439,7 +450,6 @@ def process_uploaded_image(uploaded_images):
 
     print(personal_color)
     print(second_color)
-
 
 
 
