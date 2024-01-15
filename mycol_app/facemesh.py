@@ -42,7 +42,7 @@ def process_uploaded_image(uploaded_images):
             # image = cv2.imread(file)
             image_path = uploaded_image.image.path
             file_name = os.path.basename(image_path)
-            print("File Name:", file_name)
+            # print("File Name:", file_name)
 
             image = cv2.imread(image_path)
 
@@ -63,19 +63,19 @@ def process_uploaded_image(uploaded_images):
 
                 # 얼굴의 왼쪽 눈과 오른쪽 눈을 검정색으로 채우기
 
-                # eye indices
+                # 눈의 인덱스
                 left_eye = [243, 190, 56, 28, 27, 29, 30, 247, 226, 31, 228, 229, 230, 231, 232, 233, 243]
                 right_eye = [463, 453, 452, 451, 450, 449, 448, 261, 446, 467, 260, 259, 257, 258, 286, 414, 463]
-                # eyebrow indices
+                # 눈썹의 인덱스
                 left_eyebrow = [336, 296, 334, 293, 300, 276, 283, 282, 295, 285]
                 right_eyebrow = [70, 63, 105, 66, 107, 55, 65, 52, 53, 46]
-                # lips indices
+                # 입술의 인덱스
                 # lips = [61, 185, 40, 39, 37, 0, 267, 269, 270, 409, 291, 375, 321, 405, 314, 17, 84, 181, 91, 146, 61]
                 lips = [164, 393, 391, 322, 410, 287, 273, 335, 406, 313, 18,83, 182, 106, 43, 57, 186, 92, 165, 167]
-                # nostril indices
+                # 콧구멍의 인덱스
                 left_nostril = [218, 239, 241, 242, 99, 240, 235, 219]
                 right_nostril = [438, 439, 455, 460, 328, 462, 458, 459]
-                # face indices
+                # 얼굴 윤곽 인덱스
                 face_outline = [10, 338, 297, 332, 284, 251, 389, 356, 454, 323, 361, 288, 397, 365, 379, 378, 400, 377, 152, 148, 176, 149, 150, 136, 172, 58, 132, 93, 234, 127, 162, 21, 54, 103, 67, 109]
 
                 left_eye_points = np.array([(int(face_landmarks.landmark[i].x * image.shape[1]), int(face_landmarks.landmark[i].y * image.shape[0])) for i in left_eye])
@@ -150,22 +150,22 @@ def process_uploaded_image(uploaded_images):
     # 클러스터 중심값(RGB 형식) 출력
     cluster_centers_rgb = scaler.inverse_transform(optimal_kmeans.cluster_centers_)
 
-    print(f'=============================전체 클러스터 중심값=============================')
-    for i, center in enumerate(cluster_centers_rgb):
-        print(f'Cluster {i + 1} Center (RGB): {center}')
+    # print(f'=============================전체 클러스터 중심값=============================')
+    # for i, center in enumerate(cluster_centers_rgb):
+    #     print(f'Cluster {i + 1} Center (RGB): {center}')
 
     # 각 클러스터에 속하는 픽셀 수 계산
     cluster_sizes = Counter(optimal_cluster_labels)
 
-    print(f'=============================전체 클러스터 픽셀수=============================')
-
-    for i, size in cluster_sizes.items():
-        print(f'Cluster {i + 1} Size: {size} pixels')
+    # print(f'=============================전체 클러스터 픽셀수=============================')
+    #
+    # for i, size in cluster_sizes.items():
+    #     print(f'Cluster {i + 1} Size: {size} pixels')
 
     total_pixels = sum(cluster_sizes.values())
 
     # 출력 전체 픽셀 수
-    print(f'전체 픽셀 수: {total_pixels}')
+    # print(f'전체 픽셀 수: {total_pixels}')
 
     # 클러스터 결과 시각화 (이 예시에서는 3D 플로팅)
     fig = plt.figure()
@@ -227,20 +227,20 @@ def process_uploaded_image(uploaded_images):
     total_rgb_sum_weighted = (most_pixels_rgb_sum + selected_cluster_1_rgb_sum + selected_cluster_2_rgb_sum)
     total_rgb_mean_weighted = total_rgb_sum_weighted / (most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
 
-    print(f'=============================Color distance계산=============================')
-
-    # 결과 출력
-    print(f'가장 픽셀 수가 많은 클러스터: {most_pixels_cluster + 1}')
-    print(f'첫 번째로 Color distance가 작은 클러스터: {selected_cluster_1 + 1}')
-    print(f'두 번째로 Color distance가 작은 클러스터: {selected_cluster_2 + 1}')
-    print(f'첫 번째 Color distance: {min_distance_1}')
-    print(f'두 번째 Color distance: {min_distance_2}')
-
-    print(f'=============================가중평균=============================')
-    print(f'가장 픽셀 수가 많은 클러스터의 가중 평균 RGB 값: {most_pixels_rgb_mean_weighted}')
-    print(f'첫 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_1_rgb_mean_weighted}')
-    print(f'두 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_2_rgb_mean_weighted}')
-    print(f'세개의 클러스터의 가중 평균 RGB 값: {total_rgb_mean_weighted}')
+    # print(f'=============================Color distance계산=============================')
+    #
+    # # 결과 출력
+    # print(f'가장 픽셀 수가 많은 클러스터: {most_pixels_cluster + 1}')
+    # print(f'첫 번째로 Color distance가 작은 클러스터: {selected_cluster_1 + 1}')
+    # print(f'두 번째로 Color distance가 작은 클러스터: {selected_cluster_2 + 1}')
+    # print(f'첫 번째 Color distance: {min_distance_1}')
+    # print(f'두 번째 Color distance: {min_distance_2}')
+    #
+    # print(f'=============================가중평균=============================')
+    # print(f'가장 픽셀 수가 많은 클러스터의 가중 평균 RGB 값: {most_pixels_rgb_mean_weighted}')
+    # print(f'첫 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_1_rgb_mean_weighted}')
+    # print(f'두 번째로 Color distance가 작은 클러스터의 가중 평균 RGB 값: {selected_cluster_2_rgb_mean_weighted}')
+    # print(f'세개의 클러스터의 가중 평균 RGB 값: {total_rgb_mean_weighted}')
 
 
     # 각 클러스터에 해당하는 이미지 생성 및 출력
@@ -288,27 +288,27 @@ def process_uploaded_image(uploaded_images):
 
     #plt.show()
 
-    print(f'=============================변환=============================')
-    # 평균 RGB 값 출력
-    print(f'평균 RGB 값: {total_rgb_mean_weighted}')
+    # print(f'=============================변환=============================')
+    # # 평균 RGB 값 출력
+    # print(f'평균 RGB 값: {total_rgb_mean_weighted}')
 
     # RGB to Lab conversion
     average_srgb = sRGBColor(total_rgb_mean_weighted[0], total_rgb_mean_weighted[1], total_rgb_mean_weighted[2], is_upscaled=True)
     average_lab = convert_color(average_srgb, LabColor)
 
     # 출력 Lab 값
-    print(f'Lab: L={average_lab.lab_l}, a={average_lab.lab_a}, b={average_lab.lab_b}')
+    # print(f'Lab: L={average_lab.lab_l}, a={average_lab.lab_a}, b={average_lab.lab_b}')
 
     # RGB to HSV conversion
     average_hsv = convert_color(average_srgb, HSVColor)
 
     # 출력 HSV 값
     # s, v값은 비율입니당~
-    print(f'HSV: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v}')
+    # print(f'HSV: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v}')
 
     # L, b, S값 출력
-    print(f'=============================LbS=============================')
-    print(f' L={average_lab.lab_l}, b={average_lab.lab_b}, S={average_hsv.hsv_s}')
+    # print(f'=============================LbS=============================')
+    # print(f' L={average_lab.lab_l}, b={average_lab.lab_b}, S={average_hsv.hsv_s}')
 
     #영역이미지 저장코드추가
 
@@ -371,7 +371,7 @@ def process_uploaded_image(uploaded_images):
     analysis_instance.save()
 
     # 메시지 출력
-    print(f'이미지 저장경로: {output_directory}')
+    # print(f'이미지 저장경로: {output_directory}')
 
 
 ####### 추가 #######
