@@ -10,7 +10,7 @@ import axios from "axios";
 const WebcamCapture = ({ onCapture }) => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
-  const [countdown, setCountdown] = useState(5);
+  const [countdown, setCountdown] = useState(3);
   const [capturedImage, setCapturedImage] = useState(null);
   const [showCountdown, setShowCountdown] = useState(false); // 새로운 state 추가
 
@@ -20,7 +20,7 @@ const WebcamCapture = ({ onCapture }) => {
   }, []);
 
   const handleCaptureClick = async () => {
-    setCountdown(5); // 초기화
+    setCountdown(3); // 초기화
     setShowCountdown(true); // countdown-indicator를 표시하기 위해 state 업데이트
 
     // 1초마다 countdown 값을 감소시키는 타이머
@@ -28,10 +28,13 @@ const WebcamCapture = ({ onCapture }) => {
       setCountdown((prevCountdown) => prevCountdown - 1);
     }, 1000);
 
-    // 5초 뒤에 실행되는 타이머
+    // 3초 뒤에 실행되는 타이머
     setTimeout(async () => {
       clearInterval(countdownTimer); // 카운트다운 타이머 중지
       setShowCountdown(false); // countdown-indicator를 숨기기 위해 state 업데이트
+
+      // 촬영 후 /loading으로 이동
+      navigate("/loading");
 
       if (webcamRef.current) {
         const imageSrc = webcamRef.current.getScreenshot();
@@ -66,7 +69,7 @@ const WebcamCapture = ({ onCapture }) => {
           console.error("이미지 업로드 실패:", error);
         }
       }
-    }, 5000); // 5초 후에 실행
+    }, 3000); // 3초 후에 실행
   };
 
   return (
