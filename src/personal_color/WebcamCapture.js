@@ -1,5 +1,5 @@
-// WebcamCapture.js
-// 얼굴촬영하는 페이지
+//WebcamCapture.js
+//얼굴촬영하는 페이지
 
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -100,3 +100,64 @@ const WebcamCapture = ({ onCapture }) => {
 };
 
 export default WebcamCapture;
+
+
+
+// import React, { useRef, useState } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+
+// const WebcamCapture = () => {
+//   const fileInputRef = useRef(null);
+//   const [capturedImage, setCapturedImage] = useState(null);
+//   const navigate = useNavigate();
+
+//   const handleImageUpload = async () => {
+//     const fileInput = fileInputRef.current;
+//     const file = fileInput.files[0];
+    
+
+//     if (file) {
+//       try {
+//         // FormData에 이미지 추가
+//         const formData = new FormData();
+//         formData.append("image", file, file.name);
+
+//         navigate("/loading", {
+//           state: { capturedImage: URL.createObjectURL(file) }, // Pass the image URL to the next route
+//         });
+
+//         // 이미지를 서버로 전송
+//         const uploadResponse = await axios.post(
+//           "http://127.0.0.1:8000/api/upload/",
+//           formData,
+//           {
+//             headers: {
+//               "Content-Type": "multipart/form-data",
+//             },
+//           }
+//         );
+
+//         console.log("이미지 업로드 성공:", uploadResponse.data);
+
+//         // 여기에서 적절한 처리를 추가하거나 다른 페이지로 이동할 수 있습니다.
+//       } catch (error) {
+//         // 전송 실패한 경우 오류 처리
+//         console.error("이미지 업로드 실패:", error);
+//       }
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {/* 파일 선택을 위한 input */}
+//       <input type="file" accept="image/*" ref={fileInputRef} />
+
+//       {/* 이미지 업로드 버튼 */}
+//       <button onClick={handleImageUpload}>이미지 업로드</button>
+//     </div>
+//   );
+// };
+
+
+// export default WebcamCapture;

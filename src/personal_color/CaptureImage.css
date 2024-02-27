@@ -31,13 +31,13 @@
 
 .retake-button,
 .result-button {
-  width: 13%;
 }
 
 .retake-button {
   background-color: #ff4081;
-  margin-bottom: 70px;
-  font-family: "Apple";
+  /* 버튼 크기 키우기 */
+  margin-bottom: 20px; /* 버튼 간 간격 조절 */
+  font-size: 16px; 
 }
 
 .result-button {

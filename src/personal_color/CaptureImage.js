@@ -81,6 +81,7 @@ const CaptureImage = () => {
             </button>
           </div>
         )}
+        
       </div>
     </div>
   );
