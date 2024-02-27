@@ -14,8 +14,7 @@ def detect_uploaded_image(uploaded_image_instance):
     glasses_detected = False
 
     # 훈련한 모델 실행
-    command = f"python config/yolov5/detect.py --source {image_path} --weights config/yolov5/static/best.pt --img-size 640 --save-txt --save-conf --exist-ok --project {settings.BASE_DIR} --save-crop"
-    # command = f"python config/yolov5/detect.py --source {image_path} --weights config/yolov5/static/cap_best.pt --img-size 640 --save-txt --save-conf --exist-ok --project {settings.BASE_DIR} --save-crop"
+    command = f"python config/yolov5/detect.py --source {image_path} --weights config/yolov5/static/best_50.pt --img-size 640 --save-txt --save-conf --exist-ok --project {settings.BASE_DIR} --save-crop"
 
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, text=True)
     reference_vals = result.stdout.strip().split('\n')
