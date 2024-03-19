@@ -168,25 +168,43 @@ def process_uploaded_image(uploaded_images):
     # print(f'전체 픽셀 수: {total_pixels}')
 
     # 클러스터 결과 시각화 (이 예시에서는 3D 플로팅)
-    fig = plt.figure()
+    # fig = plt.figure()
 
-    # 3D 플로팅
-    ax = fig.add_subplot(121, projection='3d')
-    ax.scatter(face_data_scaled[:, 0], face_data_scaled[:, 1], face_data_scaled[:, 2], c=optimal_cluster_labels)
-    ax.scatter(cluster_centers_rgb[:, 0], cluster_centers_rgb[:, 1], cluster_centers_rgb[:, 2], c='red', marker='X', s=200, label='Cluster Centers')
-    ax.set_xlabel('Red')
-    ax.set_ylabel('Green')
-    ax.set_zlabel('Blue')
-    ax.legend()
-    ax.set_title('3D Plot')
+    def plot_3d_clusters_with_centers(data, labels, ax):
+        unique_labels = np.unique(labels)
 
-    # 색상으로 표현
-    cluster_centers_image = cluster_centers_rgb.reshape((1, optimal_k, 3))
-    cluster_centers_image = cluster_centers_image.astype(np.uint8)
-    ax2 = fig.add_subplot(122)
-    ax2.imshow(cluster_centers_image, aspect='auto')
-    ax2.axis('off')
-    ax2.set_title('Cluster Centers as Colors')
+        # 각 클러스터 영역 플로팅
+        for cluster_label in unique_labels:
+            cluster_indices = np.where(labels == cluster_label)
+            ax.scatter(data[cluster_indices, 0], data[cluster_indices, 1], data[cluster_indices, 2],
+                       label=f'Cluster {cluster_label + 1}', alpha=0.5, zorder=1)
+
+        ax.set_xlabel('Red')
+        ax.set_ylabel('Green')
+        ax.set_zlabel('Blue')
+        ax.legend()
+
+        # 색상으로 표현
+        cluster_centers_image = cluster_centers_rgb.reshape((1, optimal_k, 3))
+        cluster_centers_image = cluster_centers_image.astype(np.uint8)
+        ax2 = fig.add_subplot(122)
+        ax2.imshow(cluster_centers_image, aspect='auto')
+        ax2.axis('off')
+        ax2.set_title('Cluster Centers as Colors')
+
+    # 3D 플로팅 및 클러스터 중심값 출력
+    fig = plt.figure(figsize=(10, 5))
+    ax = fig.add_subplot(111, projection='3d')
+    plot_3d_clusters_with_centers(face_data_scaled, optimal_cluster_labels, ax)
+
+    # 각 축의 범위 설정
+    ax.set_xlim([min(face_data_scaled[:, 0]), max(face_data_scaled[:, 0])])
+    ax.set_ylim([min(face_data_scaled[:, 1]), max(face_data_scaled[:, 1])])
+    ax.set_zlim([min(face_data_scaled[:, 2]), max(face_data_scaled[:, 2])])
+
+    plt.subplots_adjust(right=1.0)
+
+    # plt.show()
 
     # 가장 픽셀 수가 많은 클러스터 찾기
     most_pixels_cluster = max(cluster_sizes, key=cluster_sizes.get)
@@ -292,8 +310,14 @@ def process_uploaded_image(uploaded_images):
     # # 평균 RGB 값 출력
     # print(f'평균 RGB 값: {total_rgb_mean_weighted}')
 
+    # 보정 RGB
+    new_rgb_values = (total_rgb_mean_weighted[0] - 31, total_rgb_mean_weighted[1] - 31, total_rgb_mean_weighted[2] - 29)
+    # print(f'보정 RGB 값: {new_rgb_values}')
+
     # RGB to Lab conversion
-    average_srgb = sRGBColor(total_rgb_mean_weighted[0], total_rgb_mean_weighted[1], total_rgb_mean_weighted[2], is_upscaled=True)
+    # average_srgb = sRGBColor(total_rgb_mean_weighted[0], total_rgb_mean_weighted[1], total_rgb_mean_weighted[2], is_upscaled=True)
+    average_srgb = sRGBColor(new_rgb_values[0], new_rgb_values[1], new_rgb_values[2], is_upscaled=True)
+
     average_lab = convert_color(average_srgb, LabColor)
 
     # 출력 Lab 값
@@ -304,7 +328,7 @@ def process_uploaded_image(uploaded_images):
 
     # 출력 HSV 값
     # s, v값은 비율입니당~
-    # print(f'HSV: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v}')
+    # print(f'HSV: H={average_hsv.hsv_h}, S={average_hsv.hsv_s}, V={average_hsv.hsv_v * 100:.2f}')
 
     # L, b, S값 출력
     # print(f'=============================LbS=============================')
@@ -374,83 +398,100 @@ def process_uploaded_image(uploaded_images):
     # print(f'이미지 저장경로: {output_directory}')
 
 
-####### 추가 #######
+####### 기준값 변경 #######
 
-    # 주어진 타입의 RGB 값들
-    spring_type_rgb = np.array([
-        (251, 211, 168), (255, 202, 149),
-        (253, 197, 161), (252, 204, 130)
-    ])
+    # L, b, s, v 값
+    L_value = average_lab.lab_l  # L 값
+    a_value = average_lab.lab_a  # a 값
+    b_value = average_lab.lab_b  # b 값
+    s_value = average_hsv.hsv_s * 100  # s 값
+    v_value = average_hsv.hsv_v * 100  # v 값
 
-    summer_type_rgb = np.array([
-        (253, 231, 174), (255, 219, 192),
-        (254, 217, 170), (254, 210, 122)
-    ])
+    # 평균값에 따라 첫 번째 타입 분류
+    if v_value > 65.20 and b_value > 18.50 and s_value > 33:
+        result = "Spring warm bright"
+    elif v_value > 65.20 and b_value > 18.50 and s_value <= 33:
+        result = "Spring warm light"
+    elif v_value > 65.20 and b_value <= 18.50 and s_value <= 33:
+        result = "Summer cool light"
+    elif v_value <= 65.20 and b_value <= 18.50 and s_value <= 33:
+        result = "Summer cool mute"
+    elif v_value <= 65.20 and b_value > 18.50 and s_value <= 33:
+        result = "Autumn warm mute"
+    elif v_value <= 65.20 and b_value > 18.50 and s_value > 33:
+        result = "Autumn warm deep"
+    elif v_value <= 65.20 and b_value <= 18.50 and s_value > 33:
+        result = "Winter cool deep"
+    elif v_value > 65.20 and b_value <= 18.50 and s_value > 33:
+        result = "Winter cool bright"
 
-    fall_type_rgb = np.array([
-        (255, 221, 150), (247, 206, 152),
-        (249, 201, 128), (212, 169, 101)
-    ])
 
-    winter_type_rgb = np.array([
-        (255, 220, 147), (242, 206, 148),
-        (247, 207, 121), (216, 173, 102)
-    ])
 
-    # 주어진 타입과 total_rgb_mean_weighted 간의 거리 계산 함수
-    def calculate_distance(type_rgb, target_rgb):
-        return np.mean(np.linalg.norm(type_rgb - target_rgb, axis=1))
+    # Normalize values to the range [0, 1]
+    b_normalized = (b_value + 128) / 255.0  # Assuming b range is -128 to 127
+    v_normalized = v_value / 100.0
+    s_normalized = s_value / 100.0
 
-    # 새로운 타입별 거리 계산
-    spring_light_distance = calculate_distance(np.array([spring_type_rgb[0], spring_type_rgb[1]]),
-                                               total_rgb_mean_weighted)
-    spring_clear_distance = calculate_distance(np.array([spring_type_rgb[2], spring_type_rgb[3]]),
-                                               total_rgb_mean_weighted)
+    # Calculate differences
+    normalized_diff_v = (v_normalized - 0.652)
+    normalized_diff_b = (b_normalized - 0.185)
+    normalized_diff_s = (s_normalized - 0.33)
 
-    summer_light_distance = calculate_distance(np.array([summer_type_rgb[0], summer_type_rgb[1]]),
-                                               total_rgb_mean_weighted)
-    summer_mute_distance = calculate_distance(np.array([summer_type_rgb[2], summer_type_rgb[3]]),
-                                              total_rgb_mean_weighted)
+    # Determine the smallest absolute difference among normalized_diff_v, normalized_diff_b, and normalized_diff_s
+    min_diff = min(abs(normalized_diff_v), abs(normalized_diff_b), abs(normalized_diff_s))
 
-    fall_deep_distance = calculate_distance(np.array([fall_type_rgb[0], fall_type_rgb[1]]), total_rgb_mean_weighted)
-    fall_mute_distance = calculate_distance(np.array([fall_type_rgb[2], fall_type_rgb[3]]), total_rgb_mean_weighted)
+    # Calculate second_vbs based on the normalized differences
+    if min_diff == abs(normalized_diff_v):
+        new_v_value = v_value - normalized_diff_v * 100 * 2
+        new_b_value = b_value
+        new_s_value = s_value
+    elif min_diff == abs(normalized_diff_b):
+        new_v_value = v_value
+        new_b_value = b_value - normalized_diff_b * 255 * 2
+        new_s_value = s_value
+    else:
+        new_v_value = v_value
+        new_b_value = b_value
+        new_s_value = s_value - normalized_diff_s * 100 * 2
 
-    winter_clear_distance = calculate_distance(np.array([winter_type_rgb[0], winter_type_rgb[1]]),
-                                               total_rgb_mean_weighted)
-    winter_deep_distance = calculate_distance(np.array([winter_type_rgb[2], winter_type_rgb[3]]),
-                                              total_rgb_mean_weighted)
+    # Applying the logic to new values
+    if new_v_value > 65.20 and new_b_value > 18.50 and new_s_value > 33:
+        second_result = "Spring warm bright"
+    elif new_v_value > 65.20 and new_b_value > 18.50 and new_s_value <= 33:
+        second_result = "Spring warm light"
+    elif new_v_value > 65.20 and new_b_value <= 18.50 and new_s_value <= 33:
+        second_result = "Summer cool light"
+    elif new_v_value <= 65.20 and new_b_value <= 18.50 and new_s_value <= 33:
+        second_result = "Summer cool mute"
+    elif new_v_value <= 65.20 and new_b_value > 18.50 and new_s_value <= 33:
+        second_result = "Autumn warm mute"
+    elif new_v_value <= 65.20 and new_b_value > 18.50 and new_s_value > 33:
+        second_result = "Autumn warm deep"
+    elif new_v_value <= 65.20 and new_b_value <= 18.50 and new_s_value > 33:
+        second_result = "Winter cool deep"
+    elif new_v_value > 65.20 and new_b_value <= 18.50 and new_s_value > 33:
+        second_result = "Winter cool bright"
 
-    # 거리를 토대로 정렬
-    distances = [
-        ("봄 Light", spring_light_distance),
-        ("봄 Clear", spring_clear_distance),
-        ("여름 Light", summer_light_distance),
-        ("여름 Mute", summer_mute_distance),
-        ("가을 Deep", fall_deep_distance),
-        ("가을 Mute", fall_mute_distance),
-        ("겨울 Clear", winter_clear_distance),
-        ("겨울 Deep", winter_deep_distance)
-    ]
 
-    distances.sort(key=lambda x: x[1])
+    # print(f'v_normalized: {v_normalized}')
+    # print(f'b_normalized: {b_normalized}')
+    # print(f's_normalized: {s_normalized}')
+    # # Printing the new values
+    # print(f'new_v_value: {new_v_value}')
+    # print(f'new_b_value: {new_b_value}')
+    # print(f'new_s_value: {new_s_value}')
 
-    # personal_color 및 second_color 계산
-    personal_color = distances[0][0]
-    second_color = distances[1][0]
+
+    print(f'========================')
 
     # personal_color 및 second_color 값 모델에 저장
-    analysis_instance.personal_color = personal_color
-    analysis_instance.second_color = second_color
+    analysis_instance.personal_color = result
+    analysis_instance.second_color = second_result
     analysis_instance.save()
 
-
-    # 결과 출력
-    # print(f'베스트 퍼스널 컬러: {distances[0][0]}')
-    # print(f'세컨드 컬러: {distances[1][0]}')
-
-    print(personal_color)
-    print(second_color)
-
+    # Print the results
+    print(result)
+    print(second_result)
 
 
 

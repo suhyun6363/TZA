@@ -20,7 +20,7 @@ def run_draping():
     personal_color = analysis_instance.personal_color
     second_color = analysis_instance.second_color
 
-    print(personal_color)
+    # print(personal_color)
 
     # 이미지 로드
     output_directory = os.path.join(settings.MEDIA_ROOT)
@@ -32,7 +32,7 @@ def run_draping():
     # 각 개인 색상에 대한 RGB 값 딕셔너리
     def select_rgb_values(personal_color):
         personal_color_rgb_values = {
-            "봄 Light": [
+            "Spring warm light": [
                 (189, 129, 63),
                 (248, 192, 168),
                 (245, 138, 114),
@@ -42,7 +42,7 @@ def run_draping():
                 (162, 219, 233),
                 (149, 112, 177)
             ],
-            "봄 Clear": [
+            "Spring warm bright": [
                 (20, 15, 12),
                 (246, 177, 161),
                 (216, 49, 38),
@@ -52,7 +52,7 @@ def run_draping():
                 (47, 85, 166),
                 (47, 85, 166)
             ],
-            "여름 Light": [
+            "Summer cool light": [
                 (68, 88, 140),
                 (200, 143, 192),
                 (238, 89, 146),
@@ -62,7 +62,7 @@ def run_draping():
                 (120, 110, 177),
                 (146, 114, 178)
             ],
-            "여름 Mute": [
+            "Summer cool mute": [
                 (137, 132, 144),
                 (184, 136, 188),
                 (198, 67, 116),
@@ -72,7 +72,7 @@ def run_draping():
                 (106, 88, 165),
                 (135, 97, 120)
             ],
-            "가을 Mute": [
+            "Autumn warm mute": [
                 (170, 125, 79),
                 (242, 164, 129),
                 (225, 106, 83),
@@ -82,7 +82,7 @@ def run_draping():
                 (80, 156, 172),
                 (119, 70, 153)
             ],
-            "가을 Deep": [
+            "Autumn warm deep": [
                 (20, 15, 12),
                 (245, 150, 135),
                 (116, 21, 20),
@@ -92,7 +92,7 @@ def run_draping():
                 (20, 93, 120),
                 (59, 32, 19)
             ],
-            "겨울 Clear": [
+            "Winter cool bright": [
                 (20, 15, 11),
                 (187, 84, 160),
                 (237, 48, 139),
@@ -102,7 +102,7 @@ def run_draping():
                 (108, 83, 162),
                 (142, 83, 160)
             ],
-            "겨울 Deep": [
+            "Winter cool deep": [
                 (62, 63, 103),
                 (159, 51, 147),
                 (169, 31, 93),
@@ -122,8 +122,8 @@ def run_draping():
     selected_rgb_values_2 = select_rgb_values(second_color)
 
     # 출력
-    print(f"Selected RGB Values for {personal_color}: {selected_rgb_values_1}")
-    print(f"Selected RGB Values for {second_color}: {selected_rgb_values_2}")
+    # print(f"Selected RGB Values for {personal_color}: {selected_rgb_values_1}")
+    # print(f"Selected RGB Values for {second_color}: {selected_rgb_values_2}")
 
     selected_rgb_values_1 = select_rgb_values(personal_color)
     selected_rgb_values_2 = select_rgb_values(second_color)
