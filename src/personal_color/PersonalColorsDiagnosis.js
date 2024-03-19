@@ -2,30 +2,38 @@
 import React, { useEffect, useState } from "react";
 import PersonalColors from "./PersonalColors";
 
-const PersonalColorDiagnosis = ({ personalColor }) => {
-  const [chart, setChart] = useState(null);
+const PersonalColorDiagnosis = ({ personalColor, type }) => {
+  const [members, setMembers] = useState(null);
 
   useEffect(() => {
-    const foundChart = PersonalColors.find((item) => item.color === personalColor);
+    if (type === "celebrities") {
+      const foundChart = PersonalColors.find((item) => item.color === personalColor);
 
-    if (foundChart) {
-      setChart(foundChart);
-    } else {
-      setChart(null);
+      if (foundChart) {
+        setMembers(foundChart.members);
+      } else {
+        setMembers([]); // 해당 색상에 대한 정보가 없으면 빈 배열로 설정
+      }
     }
-  }, [personalColor]);
+  }, [personalColor, type]);
 
   return (
     <div>
-      {chart ? (
-        <div>
-          <p>{`${personalColor}`}에 해당하는 연예인: {chart.members.join(", ")}</p>
-          <img
-            src={`image/${personalColor}.png`}
-            alt={`${personalColor} 차트`}
-            style={{ width: "100%", height: "200px" }}
-          />
-        </div>
+      {type === "celebrities" && members ? ( // 연예인 정보를 표시할 때
+        <>
+        <p>{`${personalColor}`}에 해당하는 연예인: {members.join(", ")}</p>
+        <img
+          src={`image/${personalColor.replace(/\s+/g, '_').toLowerCase()}_c.png`}
+          alt={`${personalColor} 대표 연예인 이미지`}
+          style={{ width: "60%", height: "200px" }}
+        />
+      </>
+      ) : type === "chart" ? ( // 컬러 차트 이미지를 표시할 때
+        <img
+          src={`image/${personalColor.replace(/\s+/g, '_').toLowerCase()}.png`}
+          alt={`${personalColor} 차트`}
+          style={{ width: "100%", height: "200px" }}
+        />
       ) : (
         <p>정보를 찾을 수 없습니다.</p>
       )}
@@ -34,5 +42,3 @@ const PersonalColorDiagnosis = ({ personalColor }) => {
 };
 
 export default PersonalColorDiagnosis;
-
-

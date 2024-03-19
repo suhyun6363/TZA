@@ -1,4 +1,3 @@
-// CaptureImage.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -8,7 +7,7 @@ const CaptureImage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [wearingInfo, setWearingInfo] = useState({});
-  const [showResultButton, setShowResultButton] = useState(true);
+  const [showResultButton, setShowResultButton] = useState(true); 
 
   // location 상태에서 촬영된 이미지를 가져옵니다
   const capturedImage = location.state && location.state.capturedImage;
@@ -19,7 +18,7 @@ const CaptureImage = () => {
         const response = await axios.get("http://127.0.0.1:8000/wearing/latest");
         setWearingInfo(response.data);
 
-        // 값이 있는 경우 분석 보기 버튼 숨기기
+        // 값이 있는 경우 분석 보기 버튼 표시X
         if (
           response.data.cap_wearing !== undefined &&
           response.data.glasses_wearing !== undefined &&
@@ -27,6 +26,7 @@ const CaptureImage = () => {
         ) {
           setShowResultButton(false);
         }
+
       } catch (error) {
         console.error("착용 정보를 가져오는 데 실패했습니다.", error);
       }

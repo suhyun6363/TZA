@@ -31,16 +31,17 @@
 
 .retake-button,
 .result-button {
+  margin-bottom: 20px; /* 버튼 사이의 여백 */
 }
 
 .retake-button {
   background-color: #ff4081;
   /* 버튼 크기 키우기 */
-  margin-bottom: 20px; /* 버튼 간 간격 조절 */
-  font-size: 16px; 
+  margin-bottom: -50px; /* 버튼 간 간격 조절 */
 }
 
 .result-button {
   background-color: #ff4081;
   font-family: "Apple";
+  margin-bottom: 20px; /* 버튼 아래쪽 간격 조절 */
 }
