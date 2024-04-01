@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="홈"
+        android:textStyle="bold"
+        android:icon="@drawable/ic_home"/>
+    <item
+        android:id="@+id/menu_recommend"
+        android:title="추천"
+        android:textStyle="bold"
+        android:icon="@drawable/ic_recommend"/>
+    <item
+        android:id="@+id/menu_makeup"
+        android:title="메이크업"
+        android:textStyle="bold"
+        android:icon="@drawable/ic_makeup"/>
+    <item
+        android:id="@+id/menu_mypage"
+        android:title="마이페이지"
+        android:textStyle="bold"
+        android:icon="@drawable/ic_mypage"/>
+</menu>

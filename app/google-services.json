@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "680405604449",
+    "project_id": "mycol-6b49b",
+    "storage_bucket": "mycol-6b49b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680405604449:android:70ba8d0ee143dc17edb220",
+        "android_client_info": {
+          "package_name": "kr.ac.duksung.mycol"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4r1DnBogOFPkh3N10hjCfUG8ezRnrGLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
