@@ -37,15 +37,20 @@ class AnalysisList(APIView):
         serializer = AnalysisSerializer(analyses, many=True)
         return Response(serializer.data)
 
-class GetColorView(APIView):
+# class GetColorView(APIView):
+class GetLatestAnalysisView(APIView):
     def get(self, request, format=None):
         # Analysis 모델의 가장 최근 객체를 가져옵니다.
         latest_analysis = Analysis.objects.latest('id')
 
-        # personal_color와 second_color를 JSON 형태로 응답합니다.
-        response_data = {
-            'personal_color': latest_analysis.personal_color,
-            'second_color': latest_analysis.second_color,
-        }
+        # Analysis 객체의 모든 값을 시리얼라이저를 통해 JSON 형태로 응답합니다.
+        serializer = AnalysisSerializer(latest_analysis)
+        return Response(serializer.data)
 
-        return JsonResponse(response_data)
+        # # personal_color와 second_color를 JSON 형태로 응답합니다.
+        # response_data = {
+        #     'personal_color': latest_analysis.personal_color,
+        #     'second_color': latest_analysis.second_color,
+        # }
+        #
+        # return JsonResponse(response_data)
