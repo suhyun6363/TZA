@@ -6,11 +6,6 @@ class UploadedImage(models.Model):
     image = models.ImageField(upload_to='uploads/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-class WearingDetect(models.Model):
-    objects = None
-    cap_wearing = models.CharField(max_length=50, default="", null=True)
-    glasses_wearing = models.CharField(max_length=50, default="", null=True)
-
 class Analysis(models.Model):
     objects = None
 

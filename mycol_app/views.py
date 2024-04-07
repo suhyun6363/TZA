@@ -2,8 +2,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, generics
-from .models import Analysis, UploadedImage, WearingDetect
-from .serializers import AnalysisSerializer, UploadedImageSerializer, WearingDetectSerializer
+from .models import Analysis, UploadedImage
+from .serializers import AnalysisSerializer, UploadedImageSerializer
 
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -45,19 +45,4 @@ class GetLatestAnalysisView(APIView):
 
         # Analysis 객체의 모든 값을 시리얼라이저를 통해 JSON 형태로 응답합니다.
         serializer = AnalysisSerializer(latest_analysis)
-        return Response(serializer.data)
-
-class WearingDetectView(APIView):
-    def get(self, request):
-        detect = WearingDetect.objects.all()
-        serializer = WearingDetectSerializer(detect, many=True)
-        return Response(serializer.data)
-
-class GetLatestDetectView(APIView):
-    def get(self, request, format=None):
-        # Analysis 모델의 가장 최근 객체를 가져옵니다.
-        latest_wearingDetect = WearingDetect.objects.latest('id')
-
-        # Analysis 객체의 모든 값을 시리얼라이저를 통해 JSON 형태로 응답합니다.
-        serializer = WearingDetectSerializer(latest_wearingDetect)
         return Response(serializer.data)

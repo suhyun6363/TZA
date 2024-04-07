@@ -1,6 +1,6 @@
 # mycol_app/serializers.py
 from rest_framework import serializers
-from .models import Analysis, UploadedImage, WearingDetect
+from .models import Analysis, UploadedImage
 
 class UploadedImageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,9 +11,3 @@ class AnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analysis
         fields = '__all__'
-
-class WearingDetectSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WearingDetect
-        fields = '__all__'
-
