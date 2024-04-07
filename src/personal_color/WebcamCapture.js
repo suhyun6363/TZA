@@ -102,7 +102,7 @@ const WebcamCapture = ({ onCapture }) => {
 export default WebcamCapture;
 
 
-
+// 파일 선택해서 이미지 업로드하는 용
 // import React, { useRef, useState } from "react";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
