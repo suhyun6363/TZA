@@ -17,10 +17,10 @@
   z-index: 2;
 }
 
-h2 {
+.capture-page-container h2 {
   color: #e91e63;
   margin-bottom: 20px;
   position: absolute;
-  top: 100px; /* 조절 필요한 경우, 원하는 위치로 상단 여백을 조절합니다. */
+  top: 10px; /* 조절 필요한 경우, 원하는 위치로 상단 여백을 조절합니다. */
   font-family: "Apple";
 }

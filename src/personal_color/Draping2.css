@@ -1,39 +1,40 @@
 @font-face {
-    font-family: "AbhayaLibre";
-    src: url("./font/AbhayaLibre-ExtraBold.ttf");
-  }
-  @font-face {
-    font-family: "Apple";
-    src: url("./font/AppleSDGothicNeoUL.ttf");
-  }
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
 
 .outer-container {
-    display: flex;
-    justify-content: center;
-  }
-  
-  .inner-container {
-    width: 80%;
-  }
-  
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-  
-  .grid-item-container {
-    font-family: "Apple", sans-serif; 
-    font-size: 60px; 
-    font-weight: bold;
-  }
-  
-  .grid-item {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-  }
-  
-  
-  
+  display: flex;
+  justify-content: center;
+}
+
+.inner-container {
+  width: 80%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.grid-item-container {
+  font-family: "Apple", sans-serif;
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.grid-item {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+#etc-button {
+  font-family: "Apple";
+}

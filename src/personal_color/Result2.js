@@ -66,50 +66,64 @@ const Result2 = () => {
   const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
 
   const handleMeasureButtonClick = () => {
-    // 측정하기
-    navigate("/draping");
-  }; 
+    // 연예인 이미지 페이지로
+    navigate("/result3");
+  };
 
   return (
-    <div className="result-container">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <h2 id="check-result">진단 결과 확인하기</h2>
-          <div className="flex-container">
-            <div className="image-section">
-              <p>추출 이미지</p>
-              <img
-                src={imageSrc}
-                alt="Total Weighted Mean Color"
-                className="skin-image"
-              />
-            </div>
-            <div className="result-section">
-              {/* QR 코드를 먼저 표시합니다. */}
-              <QRCode value={combinedInfo} className="qr-code" />
-
-              {/* personal_color 정보를 그 다음에 표시합니다. */}
-              <div>
-                <b>Personal Color: {analysisData.personal_color}</b>
-                <PersonalColorDiagnosis
-                  personalColor={analysisData.personal_color}
-                />
+    <div className="result2-page">
+      <div className="result2-container">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div>
+            <h2 id="result2-check-result">퍼스널 컬러 진단 결과</h2>
+            <div className="result2-flex-container">
+              <div className="image-and-qr">
+                <div className="result2-image-section">
+                  <p>추출 이미지</p>
+                  <img
+                    src={imageSrc}
+                    alt="Total Weighted Mean Color"
+                    className="skin-image"
+                  />
+                </div>
+                <div className="qr-section">
+                  {/* QR 코드를 표시합니다. */}
+                  <QRCode value={combinedInfo} className="qr-code" />
+                </div>
               </div>
-
-              {/* second_color 정보를 그 다음에 표시합니다. */}
-              <div>
-                <b>Second Color: {analysisData.second_color}</b>
-                <PersonalColorDiagnosis
-                  personalColor={analysisData.second_color}
-                />
+              <div className="result2-section">
+                {/* personal_color 정보를 그 다음에 표시합니다. */}
+                <div className="color-info">
+                  <div>
+                    <b>Personal Color: {analysisData.personal_color}</b>
+                    <PersonalColorDiagnosis
+                      personalColor={analysisData.personal_color}
+                      type="chart" // PersonalColorDiagnosis에게 컬러 차트 이미지를 표시하도록 타입을 전달
+                    />
+                  </div>
+                  <div>
+                    <b>Second Color: {analysisData.second_color}</b>
+                    <PersonalColorDiagnosis
+                      personalColor={analysisData.second_color}
+                      type="chart" // PersonalColorDiagnosis에게 컬러 차트 이미지를 표시하도록 타입을 전달
+                    />
+                  </div>
+                </div>
               </div>
-              <button id="etc-button" onClick={handleMeasureButtonClick}>나와 어울리는 베스트 컬러 확인하기</button>
+              <div className="result2-button-container">
+                <button
+                  id="result2-etc-button"
+                  onClick={handleMeasureButtonClick}
+                >
+                  컬러 대표 연예인 확인하기
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

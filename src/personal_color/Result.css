@@ -1,39 +1,35 @@
-@font-face {
-  font-family: "AbhayaLibre";
-  src: url("./font/AbhayaLibre-ExtraBold.ttf");
-}
-@font-face {
-  font-family: "Apple";
-  src: url("./font/AppleSDGothicNeoUL.ttf");
+.inner-container {
+  margin-top: 20px;
 }
 
-.outer-container {
-  display: flex;
+.grid-container-cluster {
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-
-.inner-container {
-  margin: 10%;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2개의 열로 나누기, 필요에 따라 조절 가능 */
-  gap: 16px; /* 격자 간격, 필요에 따라 조절 가능 */
-  justify-content: center; /* 가운데 정렬 추가 */
+  width: 25%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .grid-item {
-  width: 100%;
-  height: auto;
-  max-width: 100%; /* 이미지가 부모 요소를 넘지 않도록 설정 */
-  border: 1px solid #ddd; /* 이미지 사이에 경계선 추가 */
-  border-radius: 8px; /* 이미지 모서리를 둥글게 만듦 */
+  width: 10px; /* 이미지의 너비를 조절합니다 */
+  height: 10px; /* 이미지의 높이를 조절합니다 */
+  max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 #etc-button {
-  bottom: 60px;
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: "Apple";
 }
