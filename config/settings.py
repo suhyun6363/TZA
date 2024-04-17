@@ -148,5 +148,5 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'config', 'yolov5', 'static'),
+    os.path.join(BASE_DIR, 'config', 'yolov5', 'yolov5/static'),
 ]

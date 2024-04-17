@@ -15,6 +15,7 @@ def detect_uploaded_image(uploaded_image_instance):
 
     # 훈련한 모델 실행
     command = f"python config/yolov5/detect.py --source {image_path} --weights config/yolov5/static/best_50.pt --img-size 640 --save-txt --save-conf --exist-ok --project {settings.BASE_DIR} --save-crop"
+    # command = f"python config/detect.py --source {image_path} --weights config/static/best_50.pt --img-size 640 --save-txt --save-conf --exist-ok --project {settings.BASE_DIR} --save-crop"
 
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, text=True)
     reference_vals = result.stdout.strip().split('\n')
@@ -109,39 +110,39 @@ def detect_uploaded_image(uploaded_image_instance):
                         label_value = label_str.split(': ')[1].split(',')[0].strip()
 
                         # 사각형 좌표 추출
-                        rect_str = next((val for val in reference_vals if "xyxy :" in val), None)
-
-                        coordinates_str = rect_str.split("xyxy : ")[1].strip()
-                        rect_coordinates = coordinates_str.split(', ')
-
-                        # 좌표값 추출
-                        upperLeftX = float(rect_coordinates[0])
-                        upperLeftY = float(rect_coordinates[1])
-                        lowerRightX = float(rect_coordinates[2])
-                        lowerRightY = float(rect_coordinates[3])
-
-                        #######################################
-                        # 모자의 bb안에 이마영역이 포함됐는지 확인
-
-                        # 받아온 xyxy좌표로 bounding box 생성
-                        bounding_box = {
-                            'upper_left': {'x': upperLeftX, 'y': upperLeftY},
-                            'lower_right': {'x': lowerRightX, 'y': lowerRightY}
-                        }
-
-                        if label_value == 'Cap':
-                            # forehead_points가 bounding_box 안에 있는지 확인
-                            is_inside_bb = all(
-                                bounding_box['upper_left']['x'] <= x <= bounding_box['lower_right']['x'] and
-                                bounding_box['upper_left']['y'] <= y <= bounding_box['lower_right']['y']
-                                for x, y in forehead_points)
-                            print("is_inside_bb (Cap):", is_inside_bb)
-
-                            if is_inside_bb:
-                                print("************모자를 빼주세요!!!************")
-                                wearing_instance.cap_wearing = '모자를 빼주세요!'
-                                wearing_instance.save()
-                                cap_detected = True
+                        # rect_str = next((val for val in reference_vals if "xyxy :" in val), None)
+                        #
+                        # coordinates_str = rect_str.split("xyxy : ")[1].strip()
+                        # rect_coordinates = coordinates_str.split(', ')
+                        #
+                        # # 좌표값 추출
+                        # upperLeftX = float(rect_coordinates[0])
+                        # upperLeftY = float(rect_coordinates[1])
+                        # lowerRightX = float(rect_coordinates[2])
+                        # lowerRightY = float(rect_coordinates[3])
+                        #
+                        # #######################################
+                        # # 모자의 bb안에 이마영역이 포함됐는지 확인
+                        #
+                        # # 받아온 xyxy좌표로 bounding box 생성
+                        # bounding_box = {
+                        #     'upper_left': {'x': upperLeftX, 'y': upperLeftY},
+                        #     'lower_right': {'x': lowerRightX, 'y': lowerRightY}
+                        # }
+                        #
+                        # if label_value == 'Cap':
+                        #     # forehead_points가 bounding_box 안에 있는지 확인
+                        #     is_inside_bb = all(
+                        #         bounding_box['upper_left']['x'] <= x <= bounding_box['lower_right']['x'] and
+                        #         bounding_box['upper_left']['y'] <= y <= bounding_box['lower_right']['y']
+                        #         for x, y in forehead_points)
+                        #     print("is_inside_bb (Cap):", is_inside_bb)
+                        #
+                        #     if is_inside_bb:
+                        #         print("************모자를 빼주세요!!!************")
+                        #         wearing_instance.cap_wearing = '모자를 빼주세요!'
+                        #         wearing_instance.save()
+                        #         cap_detected = True
 
             # 안경 감지 처리
             for reference_val in reference_vals:

@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')  # 맥에서 사용하려면 이걸 추가하라네..
+import matplotlib.pyplot as plt
 import os
 import sys
 import cv2
@@ -30,6 +33,7 @@ def process_uploaded_image(uploaded_images):
     # 이미지 파일의 경우를 사용하세요.
     uploaded_images = UploadedImage.objects.order_by('-id').first()
     IMAGE_FILES = [uploaded_images]
+    print("이미지들어옴")
 
     # facemesh
     with mp.solutions.face_mesh.FaceMesh(
@@ -111,7 +115,7 @@ def process_uploaded_image(uploaded_images):
                 cv2.fillConvexPoly(face_only, right_nostril_points, color=(0, 0, 0))
 
             #cv2.imshow('Face Only', face_only)
-            cv2.waitKey(0)
+            #cv2.waitKey(0)
             cv2.destroyAllWindows()
 
             # 이미지 저장 경로 설정
@@ -130,6 +134,7 @@ def process_uploaded_image(uploaded_images):
 
     # face_only 이미지 로드
     face_image = imageio.imread(output_filepath)
+    print("facemesh 완료")
 
 ########## kmeans ##############
     # [0, 0, 0]인 픽셀 제거
@@ -191,6 +196,8 @@ def process_uploaded_image(uploaded_images):
         ax2.imshow(cluster_centers_image, aspect='auto')
         ax2.axis('off')
         ax2.set_title('Cluster Centers as Colors')
+
+    print("색상으로표현")
 
     # 3D 플로팅 및 클러스터 중심값 출력
     fig = plt.figure(figsize=(10, 5))
@@ -304,6 +311,7 @@ def process_uploaded_image(uploaded_images):
     ax[3].set_title('Total Weighted Mean Color')
     ax[3].axis('off')
 
+    print("중간")
     #plt.show()
 
     # print(f'=============================변환=============================')
@@ -311,8 +319,10 @@ def process_uploaded_image(uploaded_images):
     # print(f'평균 RGB 값: {total_rgb_mean_weighted}')
 
     # 보정 RGB
+    # new_rgb_values = (total_rgb_mean_weighted[0] - 31, total_rgb_mean_weighted[1] - 31, total_rgb_mean_weighted[2] - 29)
     new_rgb_values = (total_rgb_mean_weighted[0] - 31, total_rgb_mean_weighted[1] - 31, total_rgb_mean_weighted[2] - 29)
-    # print(f'보정 RGB 값: {new_rgb_values}')
+
+    print(f'보정 RGB 값: {new_rgb_values}')
 
     # RGB to Lab conversion
     # average_srgb = sRGBColor(total_rgb_mean_weighted[0], total_rgb_mean_weighted[1], total_rgb_mean_weighted[2], is_upscaled=True)
@@ -373,6 +383,7 @@ def process_uploaded_image(uploaded_images):
         setattr(analysis_instance, f'cluster_image_{i + 1}', cluster_image_content)
         analysis_instance.save()
 
+    print("저장부분시작")
     # 클러스터 이미지 파일 경로를 모델에 저장
     analysis_instance.cluster_image_1 = 'cluster_images/cluster_1.png'
     analysis_instance.cluster_image_2 = 'cluster_images/cluster_2.png'
@@ -401,11 +412,11 @@ def process_uploaded_image(uploaded_images):
 ####### 기준값 변경 #######
 
     # L, b, s, v 값
-    L_value = average_lab.lab_l  # L 값
+    L_value = average_lab.lab_l   # L 값
     a_value = average_lab.lab_a  # a 값
-    b_value = average_lab.lab_b  # b 값
-    s_value = average_hsv.hsv_s * 100  # s 값
-    v_value = average_hsv.hsv_v * 100  # v 값
+    b_value = average_lab.lab_b + 3 # b 값
+    s_value = average_hsv.hsv_s * 100 - 10  # s 값
+    v_value = average_hsv.hsv_v * 100 + 15  # v 값
 
     # 평균값에 따라 첫 번째 타입 분류
     if v_value > 65.20 and b_value > 18.50 and s_value > 33:
@@ -424,6 +435,11 @@ def process_uploaded_image(uploaded_images):
         result = "Winter cool deep"
     elif v_value > 65.20 and b_value <= 18.50 and s_value > 33:
         result = "Winter cool bright"
+
+    print(f'v_value: {v_value}')
+    print(f'b_value: {b_value}')
+    print(f's_value: {s_value}')
+
 
 
 
