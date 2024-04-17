@@ -440,7 +440,10 @@ def process_uploaded_image(uploaded_images):
     print(f'b_value: {b_value}')
     print(f's_value: {s_value}')
 
-
+    analysis_instance.v = v_value
+    analysis_instance.b = b_value
+    analysis_instance.s = s_value
+    analysis_instance.save()
 
 
     # Normalize values to the range [0, 1]

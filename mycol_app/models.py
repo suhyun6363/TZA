@@ -16,6 +16,9 @@ class Analysis(models.Model):
 
     personal_color = models.CharField(max_length=50, default="", null=True)  # 퍼스널 컬러
     second_color = models.CharField(max_length=50, default="", null=True)  # 세컨드 컬러
+    v = models.FloatField(default=0.0, null=True)
+    b = models.FloatField(default=0.0, null=True)
+    s = models.FloatField(default=0.0, null=True)
 
     cluster_image_1 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
     cluster_image_2 = models.ImageField(upload_to='cluster_images/', null=True, blank=True)
