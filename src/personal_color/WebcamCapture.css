@@ -48,7 +48,7 @@ button:hover {
 /* 카운트다운 표시 */
 .countdown-indicator {
   position: absolute;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 18px;

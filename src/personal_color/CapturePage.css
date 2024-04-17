@@ -17,7 +17,7 @@
   z-index: 2;
 }
 
-h2 {
+.capture-page-container h2 {
   color: #e91e63;
   margin-bottom: 20px;
   position: absolute;

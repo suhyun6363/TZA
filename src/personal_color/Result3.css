@@ -1,41 +1,60 @@
 @font-face {
-    font-family: "AbhayaLibre";
-    src: url("./font/AbhayaLibre-ExtraBold.ttf");
-  }
-  
-  @font-face {
-    font-family: "Apple";
-    src: url("./font/AppleSDGothicNeoUL.ttf");
-  }
-  
-  .result-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  #check-result {
-    color: #e91e63;
-    text-align: center;
-    font-family: "Apple";
-    margin-bottom: 0px;
-    position: static;
-  }
-  
-  .flex-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
+}
 
-  .result-section {
-    text-align: center;
-    margin-bottom: 200px; /* 아래쪽 간격 추가 */
-  }
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
 
-  #etc-button {
-    font-family: "Apple";
-  }
-  
+#result3-check-result {
+  color: #e91e63;
+  text-align: center;
+  font-family: "Apple";
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.result3-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#result3-check-result {
+  color: #e91e63;
+  text-align: center;
+  font-family: "Apple";
+  margin-bottom: 0px;
+  position: static;
+}
+
+.result3-flex-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result3-section {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.result3-section p {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-family: "Apple";
+}
+
+.result3-button-container {
+  margin-bottom: 100px;
+}
+.result3-section img {
+}
+
+#result3-etc-button {
+  font-family: "Apple";
+  font-family: "Apple";
+}

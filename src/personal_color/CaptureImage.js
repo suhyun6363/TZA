@@ -57,7 +57,7 @@ const CaptureImage = () => {
             {wearingInfo.glasses_wearing && (
               <p>{wearingInfo.glasses_wearing}</p>
             )}
-            <div className="button-container">
+            <div className="button-container-captureimage">
               <button className="retake-button" onClick={handleRetakeClick}>
                 다시 촬영하기
               </button>
