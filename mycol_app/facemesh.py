@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')  # 맥에서 사용하려면 이걸 추가하라네..
+import matplotlib.pyplot as plt
 import os
 import sys
 import cv2
@@ -46,6 +49,9 @@ def process_uploaded_image(uploaded_images):
 
             image = cv2.imread(image_path)
 
+            # 원 그리기 위해 추가
+            height, width, _ = image.shape
+
             # 작업 전에 BGR 이미지를 RGB로 변환합니다.
             results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
@@ -86,21 +92,44 @@ def process_uploaded_image(uploaded_images):
                 left_nostril_points = np.array([(int(face_landmarks.landmark[i].x * image.shape[1]), int(face_landmarks.landmark[i].y * image.shape[0])) for i in left_nostril])
                 right_nostril_points = np.array([(int(face_landmarks.landmark[i].x * image.shape[1]), int(face_landmarks.landmark[i].y * image.shape[0])) for i in right_nostril])
                 face_outline_points = np.array([(int(face_landmarks.landmark[i].x * image.shape[1]), int(face_landmarks.landmark[i].y * image.shape[0])) for i in face_outline])
+                face_center = face_outline_points.mean(axis=0).astype(int)
 
+                # 얼굴 윤곽에서 최소 및 최대 Y 좌표를 찾아 높이 계산
+                min_y = min(face_outline_points[:, 1])
+                max_y = max(face_outline_points[:, 1])
+                face_height = max_y - min_y
 
-                 # 얼굴 윤곽선 바깥 영역을 검정색으로 채우기
+                # 반지름을 얼굴 높이의 60%로 설정
+                face_radius = int(face_height * 0.6)
+
+                # 얼굴 중앙에 원 그리기
+                mask = np.zeros((height, width), dtype=np.uint8)
+                cv2.circle(mask, tuple(face_center), face_radius, (255, 255, 255), -1)
+
+                # 원 바깥 부분을 검정색으로 채우기
+                face_draping = cv2.bitwise_and(annotated_image, annotated_image, mask=mask)
+
+                # 얼굴 윤곽선 바깥 영역을 검정색으로 채우기
                 mask = np.zeros_like(annotated_image)
                 outside_mask = cv2.fillPoly(mask, [face_outline_points], (255, 255, 255))
+
+                # 이미지 저장 경로 설정
+                output_directory = os.path.join(settings.MEDIA_ROOT)
+                os.makedirs(output_directory, exist_ok=True)
+                output_filepath2 = os.path.join(output_directory, 'face_draping.png')
+
+                # 변경된 face_draping 이미지 저장
+                cv2.imwrite(output_filepath2, face_draping)
 
                 # 얼굴 부분만을 따로 잘라내기
                 face_only = cv2.bitwise_and(image, outside_mask)
 
-                # 얼굴 윤곽선 바깥 영역을 검정색으로 채우기
-                inside_mask = np.zeros_like(annotated_image)
-                inside_mask = cv2.fillPoly(inside_mask, [face_outline_points], (255, 255, 255))
+                # # 얼굴 윤곽선 바깥 영역을 검정색으로 채우기
+                # inside_mask = np.zeros_like(annotated_image)
+                # inside_mask = cv2.fillPoly(inside_mask, [face_outline_points], (255, 255, 255))
 
                 # 얼굴 부분만을 따로 잘라내기
-                face_inside = cv2.bitwise_and(image, inside_mask)
+                # face_inside = cv2.bitwise_and(image, inside_mask)
 
                 cv2.fillConvexPoly(face_only, left_eye_points, color=(0, 0, 0))
                 cv2.fillConvexPoly(face_only, right_eye_points, color=(0, 0, 0))
@@ -120,16 +149,13 @@ def process_uploaded_image(uploaded_images):
 
             # 이미지 파일명 설정
             output_filepath = os.path.join(output_directory, f'face_analysis.png')
-            output_filepath2 = os.path.join(output_directory, f'face_draping.png')
 
             # face_only 이미지 저장
             cv2.imwrite(output_filepath, face_only)
 
-            # face_inside 이미지 저장
-            cv2.imwrite(output_filepath2, face_inside)
-
     # face_only 이미지 로드
     face_image = imageio.imread(output_filepath)
+    print("facemesh 완료")
 
 ########## kmeans ##############
     # [0, 0, 0]인 픽셀 제거
@@ -379,9 +405,10 @@ def process_uploaded_image(uploaded_images):
     analysis_instance.cluster_image_3 = 'cluster_images/cluster_3.png'
     analysis_instance.save()
 
-    # Total Weighted Mean Color 이미지 저장
+    # Total Weighted Mean Color, face_analysis 이미지 저장
     # 위와 마찬가지로 파일의 상대 경로를 저장합니다.
     analysis_instance.total_weighted_mean_color_image = 'cluster_images/total_weighted_mean_color.png'
+    analysis_instance.face_analysis_image = '/face_analysis.png'
     analysis_instance.save()
 
     # Total Weighted Mean Color 이미지 저장
@@ -403,9 +430,9 @@ def process_uploaded_image(uploaded_images):
     # L, b, s, v 값
     L_value = average_lab.lab_l  # L 값
     a_value = average_lab.lab_a  # a 값
-    b_value = average_lab.lab_b  # b 값
-    s_value = average_hsv.hsv_s * 100  # s 값
-    v_value = average_hsv.hsv_v * 100  # v 값
+    b_value = average_lab.lab_b + 3  # b 값
+    s_value = average_hsv.hsv_s * 100 - 10  # s 값
+    v_value = average_hsv.hsv_v * 100 + 15  # v 값
 
     # 평균값에 따라 첫 번째 타입 분류
     if v_value > 65.20 and b_value > 18.50 and s_value > 33:
@@ -425,7 +452,14 @@ def process_uploaded_image(uploaded_images):
     elif v_value > 65.20 and b_value <= 18.50 and s_value > 33:
         result = "Winter cool bright"
 
+    print(f'v_value: {v_value}')
+    print(f'b_value: {b_value}')
+    print(f's_value: {s_value}')
 
+    analysis_instance.v = v_value
+    analysis_instance.b = b_value
+    analysis_instance.s = s_value
+    analysis_instance.save()
 
     # Normalize values to the range [0, 1]
     b_normalized = (b_value + 128) / 255.0  # Assuming b range is -128 to 127
