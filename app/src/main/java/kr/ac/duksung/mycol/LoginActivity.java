@@ -54,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 // 로그인 실패
-                                Toast.makeText(LoginActivity.this, "로그인 실패: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(LoginActivity.this, "로그인 실패: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

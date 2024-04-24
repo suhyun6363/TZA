@@ -58,8 +58,7 @@ public class SignupActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     finish(); // 현재 액티비티 종료
                                 } else {
-                                    Toast.makeText(SignupActivity.this, "회원가입 실패: " + task.getException().getMessage(),
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
