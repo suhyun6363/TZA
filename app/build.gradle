@@ -10,7 +10,8 @@ android {
 
     defaultConfig {
         applicationId "kr.ac.duksung.mycol"
-        minSdk 21
+        //minSdk 21
+        minSdk 24 // zxing이랑 버전 맞추기위해서 올림
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -51,4 +52,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     // Firebase Authentication을 사용하는 경우 아래 종속성을 추가하세요.
     implementation 'com.google.firebase:firebase-auth:22.3.1'
+
+    // QR코드 스캐닝
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 }

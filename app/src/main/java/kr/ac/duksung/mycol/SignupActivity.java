@@ -51,14 +51,14 @@ public class SignupActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 // 회원가입 성공시
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignupActivity.this, "회원가입 성공",
+                                    Toast.makeText(SignupActivity.this, "회원가입 완료",
                                             Toast.LENGTH_SHORT).show();
                                     // 회원가입이 성공하면 LoginActivity로 이동
                                     Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                     startActivity(intent);
                                     finish(); // 현재 액티비티 종료
                                 } else {
-                                    Toast.makeText(SignupActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignupActivity.this, "회원가입 실패. 회원가입을 다시 해주세요.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- 카메라 접근 권한 추가 -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mycol"
-        tools:targetApi="31">
+        tools:targetApi="31"
+        android:hardwareAccelerated="true">
 
         <activity
             android:name=".LoginActivity"
@@ -29,6 +33,14 @@
         <activity
             android:name=".SignupActivity"
             android:exported="false" />
+        <activity
+            android:name=".ScanQRActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+
+        <activity
+            android:name=".DiagnosticActivity"
+            android:exported="false"/>
 
 
     </application>
