@@ -411,7 +411,7 @@ def process_uploaded_image(uploaded_images):
     # Total Weighted Mean Color, face_analysis 이미지 저장
     # 위와 마찬가지로 파일의 상대 경로를 저장합니다.
     analysis_instance.total_weighted_mean_color_image = 'cluster_images/total_weighted_mean_color.png'
-    analysis_instance.face_analysis_image = '/face_analysis_{analysis_id}.png'
+    analysis_instance.face_analysis_image = f'/face_analysis_{analysis_id}.png'
     analysis_instance.save()
 
     # Total Weighted Mean Color 이미지 저장
