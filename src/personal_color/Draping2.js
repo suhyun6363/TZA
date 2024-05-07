@@ -10,12 +10,12 @@ const SecondImageComponent = () => {
     const getImageData = async () => {
       try {
         const imageUrls = [];
-        for (let i = 1; i <= 8; i++) {
-          const imageUrl = `http://127.0.0.1:8000/media/second_draping/second_${i}.png`;
+        for (let i = 1; i <= 5; i++) {
+          const imageUrl = `http://3.36.217.107/media/second_draping/second_${i}.png`;
           imageUrls.push(imageUrl);
         }
 
-        const responses = await Promise.all(imageUrls.map(url => fetch(url)));
+        const responses = await Promise.all(imageUrls.map((url) => fetch(url)));
 
         const imageData = await Promise.all(
           responses.map(async (response) => {
@@ -62,7 +62,9 @@ const SecondImageComponent = () => {
             </div>
           ))}
         </div>
-        <button id="etc-button" onClick={handleMeasureButtonClick}>처음으로 돌아가기</button>
+        {/* <button id="etc-button" onClick={handleMeasureButtonClick}>
+          처음으로 돌아가기
+        </button> */}
       </div>
     </div>
   );

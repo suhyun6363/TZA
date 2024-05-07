@@ -12,7 +12,7 @@ const Result3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-   const analysisUrl = "http://127.0.0.1:8000/analysis";
+    const analysisUrl = "http://3.36.217.107/analysis/";
 
     const fetchData = async () => {
       try {
@@ -49,17 +49,17 @@ const Result3 = () => {
   const handleMeasureButtonClick = () => {
     // 측정하기
     navigate("/draping");
-  }; 
+  };
 
   return (
-    <div className="result-container">
+    <div className="result3-container">
       {loading ? (
         <p>Loading...</p>
       ) : (
         <div>
-          <h2 id="check-result">진단 결과 확인하기</h2>
-          <div className="flex-container">
-            <div className="result-section">
+          <h2 id="result3-check-result">퍼스널 컬러별 대표 연예인</h2>
+          <div className="result3-flex-container">
+            <div className="result3-section">
               {/* personal_color 정보를 그 다음에 표시합니다. */}
               <div>
                 <PersonalColorDiagnosis
@@ -75,8 +75,13 @@ const Result3 = () => {
                   type="celebrities"
                 />
               </div>
-              <div className="button-container">
-                <button id="etc-button" onClick={handleMeasureButtonClick}>나와 어울리는 베스트 컬러 확인하기</button>
+              <div className="result3-button-container">
+                <button
+                  id="result3-etc-button"
+                  onClick={handleMeasureButtonClick}
+                >
+                  나와 어울리는 베스트 컬러 확인하기
+                </button>
               </div>
             </div>
           </div>

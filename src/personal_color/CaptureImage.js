@@ -20,12 +20,10 @@ const CaptureImage = () => {
     <div className="capture-image-container">
       <h2>촬영된 이미지</h2>
       {capturedImage && <img src={capturedImage} alt="Captured" />}
-
-      <div className="button-container">
+      <div className="button-container-captureimage">
         <button className="retake-button" onClick={handleRetakeClick}>
           다시 촬영하기
         </button>
-
         <button className="result-button" onClick={handleResultClick}>
           분석 보기
         </button>
