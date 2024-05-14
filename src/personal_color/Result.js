@@ -9,36 +9,54 @@ const ImageComponent = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const imageUrls = [
-      "http://127.0.0.1:8000/media/cluster_images/cluster_1.png",
-      "http://127.0.0.1:8000/media/cluster_images/cluster_2.png",
-      "http://127.0.0.1:8000/media/cluster_images/cluster_3.png",
-      "http://127.0.0.1:8000/media/face_analysis.png",
-    ];
-
-    const getImageData = async () => {
+    const fetchAnalysisData = async () => {
       try {
-        const responses = await Promise.all(imageUrls.map(url => fetch(url)));
-        const blobs = await Promise.all(responses.map(response => {
-          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-          return response.blob();
-        }));
-        const imageSrcs = await Promise.all(blobs.map(blob => new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(blob);
-        })));
-        setImageSrcList(imageSrcs);
+        // analysis 데이터를 가져옴
+        const responseAnalysisData = await fetch("http://3.36.217.107/analysis/");
+        if (!responseAnalysisData.ok) {
+          throw new Error(`HTTP error! Status: ${responseAnalysisData.status}`);
+        }
+
+        const data = await responseAnalysisData.json();
+        // 가장 최근 데이터를 선택
+        const latestData = data[data.length - 1];
+        const analysisId = latestData.id;
+
+        // Django 서버에 있는 이미지들의 URL 배열
+        const imageUrls = [
+          "http://3.36.217.107/media/cluster_images/cluster_1.png",
+          "http://3.36.217.107/media/cluster_images/cluster_2.png",
+          "http://3.36.217.107/media/cluster_images/cluster_3.png",
+          `http://3.36.217.107/media/face_analysis_${analysisId}.png`, // 최신 ID로 URL 설정
+        ];
+
+        // 각 이미지 가져오기
+        for (const url of imageUrls) {
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+              // Base64로 변환된 이미지 데이터를 배열에 추가
+              setImageSrcList((prevList) => [...prevList, reader.result]);
+            };
+
+            reader.onerror = (error) => {
+              console.error("이미지를 읽는 중 오류가 발생했습니다:", error);
+            };
+
+            reader.readAsDataURL(blob);
+          } catch (error) {
+            console.error("이미지를 가져오는 중 오류가 발생했습니다:", error);
+          }
+        }
       } catch (error) {
-        setError('Failed to load images');
-        console.error("Error loading images:", error);
-      } finally {
-        setIsLoading(false);
+        console.error("데이터를 가져오는 중 오류가 발생했습니다:", error);
       }
     };
 
-    getImageData();
+    fetchAnalysisData();
   }, []);
 
   const handleMeasureButtonClick = () => {

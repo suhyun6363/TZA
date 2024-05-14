@@ -12,7 +12,7 @@ const Result3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const analysisUrl = "http://127.0.0.1:8000/analysis";
+    const analysisUrl = "http://3.36.217.107/analysis/";
 
     const fetchData = async () => {
       try {

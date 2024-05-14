@@ -13,8 +13,7 @@ const BestImageComponent = () => {
       try {
         const bestImageUrls = [];
         for (let i = 1; i <= 5; i++) {
-          // 내가 이부분을 로컬호스트로바꿧는데됐어 근데 윈도우에서 상관없으련지 모르겠어 한번 해봐바다들
-          const imageUrl = `http://localhost:8000/media/best_draping/best_${i}.png`;
+          const imageUrl = `http://3.36.217.107/media/best_draping/best_${i}.png`;
           bestImageUrls.push(imageUrl);
         }
 
@@ -50,7 +49,7 @@ const BestImageComponent = () => {
       try {
         const secondImageUrls = [];
         for (let i = 1; i <= 5; i++) {
-          const imageUrl = `http://localhost:8000/media/second_draping/second_${i}.png`;
+          const imageUrl = `http://3.36.217.107/media/second_draping/second_${i}.png`;
           secondImageUrls.push(imageUrl);
         }
 
@@ -126,9 +125,9 @@ const BestImageComponent = () => {
             </div>
           ))}
         </div>
-        <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
+        {/* <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
           처음으로 돌아가기
-        </button>
+        </button> */}
       </div>
     </div>
   );

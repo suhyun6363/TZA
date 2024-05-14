@@ -39,9 +39,9 @@ const Result2 = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    const imageUrl = "http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png";
-    const analysisUrl = "http://127.0.0.1:8000/analysis";
-
+    const imageUrl =
+      "http://3.36.217.107/media/cluster_images/total_weighted_mean_color.png";
+    const analysisUrl = "http://3.36.217.107/analysis/";
     const fetchData = async () => {
       try {
         const responseImage = await fetch(imageUrl);

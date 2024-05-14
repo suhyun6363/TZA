@@ -60,7 +60,6 @@
 .result3-flex-container > div {
   margin-right: 20px; /* 오른쪽에 20px 마진 추가 */
 }
-
 .result3-flex-container > div:last-child {
   margin-right: 0; /* 마지막 요소는 마진을 0으로 설정 */
 }

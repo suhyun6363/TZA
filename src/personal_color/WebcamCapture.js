@@ -50,7 +50,7 @@ const WebcamCapture = ({ onCapture }) => {
 
           // 이미지를 서버로 전송
           const uploadResponse = await axios.post(
-            "http://127.0.0.1:8000/api/upload/",
+            "http://3.36.217.107/api/upload/",
             formData,
             {
               headers: {
