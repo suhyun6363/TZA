@@ -102,7 +102,7 @@ const WebcamCapture = ({ onCapture }) => {
 export default WebcamCapture;
 
 
-// 파일 선택해서 이미지 업로드하는 용
+// //파일 선택해서 이미지 업로드하는 용
 // import React, { useRef, useState } from "react";
 // import axios from "axios";
 // import { useNavigate } from "react-router-dom";
@@ -129,7 +129,7 @@ export default WebcamCapture;
 
 //         // 이미지를 서버로 전송
 //         const uploadResponse = await axios.post(
-//           "http://127.0.0.1:8000/api/upload/",
+//           "http://3.36.217.107/api/upload/",
 //           formData,
 //           {
 //             headers: {

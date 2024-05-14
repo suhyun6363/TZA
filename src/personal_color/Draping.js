@@ -14,6 +14,7 @@ const BestImageComponent = () => {
         const bestImageUrls = [];
         for (let i = 1; i <= 5; i++) {
           const imageUrl = `http://3.36.217.107/media/best_draping/best_${i}.png`;
+          // const imageUrl = `http://localhost:8000/media/best_draping/best_${i}.png`;
           bestImageUrls.push(imageUrl);
         }
 
@@ -49,6 +50,7 @@ const BestImageComponent = () => {
       try {
         const secondImageUrls = [];
         for (let i = 1; i <= 5; i++) {
+          // const imageUrl = `http://localhost:8000/media/second_draping/second_${i}.png`;
           const imageUrl = `http://3.36.217.107/media/second_draping/second_${i}.png`;
           secondImageUrls.push(imageUrl);
         }
@@ -91,6 +93,10 @@ const BestImageComponent = () => {
     navigate("/");
   };
 
+  const goBack = () => {
+    navigate(-1); // Navigates back to the previous page
+  };
+  
   return (
     <div className="draping-outer-container">
       <div className="draping-inner-container">
@@ -125,9 +131,14 @@ const BestImageComponent = () => {
             </div>
           ))}
         </div>
-        {/* <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
-          처음으로 돌아가기
-        </button> */}
+        <div className="draping-button-container">
+        <button id="draping-back-button" onClick={goBack}>
+          뒤로 가기
+        </button>
+        <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
+          종료
+        </button>
+      </div>
       </div>
     </div>
   );

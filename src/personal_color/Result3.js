@@ -13,6 +13,7 @@ const Result3 = () => {
 
   useEffect(() => {
     const analysisUrl = "http://3.36.217.107/analysis/";
+    // const analysisUrl = "http://localhost:8000/analysis/";
 
     const fetchData = async () => {
       try {
@@ -43,12 +44,20 @@ const Result3 = () => {
     fetchData();
   }, []);
 
+  const displayColor = (color) => {
+    return color.startsWith('N-') ? color.substring(2) : color;
+  };
+
   // 두 정보를 합쳐서 하나의 문자열로 만듭니다.
   // const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
 
   const handleMeasureButtonClick = () => {
     // 측정하기
     navigate("/draping");
+  };
+
+  const goBack = () => {
+    navigate(-1); // Navigates back to the previous page
   };
 
   return (
@@ -62,18 +71,21 @@ const Result3 = () => {
           <div className="result3-flex-container">
             <div>
               <PersonalColorDiagnosis
-                personalColor={analysisData.personal_color}
+                personalColor={displayColor(analysisData.personal_color)}
                 type="celebrities"
               />
             </div>
             <div>
               <PersonalColorDiagnosis
-                personalColor={analysisData.second_color}
+                personalColor={displayColor(analysisData.second_color)}
                 type="celebrities"
               />
             </div>
           </div>
           <div className="result3-button-container">
+          <button id="result3-back-button" onClick={goBack}>
+          뒤로 가기
+            </button>
             <button
               id="result3-etc-button"
               onClick={handleMeasureButtonClick}

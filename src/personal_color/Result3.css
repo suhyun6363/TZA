@@ -57,6 +57,27 @@
   margin-bottom: 100px;
 }
 
+#result3-back-button {
+  font-family: "Laundry";
+  background-color: #ff4081;
+  font-size: 20px;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 80px;
+}
+
+#result3-etc-button {
+  font-family: "Laundry";
+  background-color: #ff4081;
+  font-size: 20px;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
+}
+
 .result3-flex-container > div {
   margin-right: 20px; /* 오른쪽에 20px 마진 추가 */
 }
