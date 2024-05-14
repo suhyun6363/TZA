@@ -40,6 +40,10 @@ def process_uploaded_image(uploaded_images):
             max_num_faces=1,
             refine_landmarks=True,
             min_detection_confidence=0.5) as face_mesh:
+
+        # Analysis 모델에 데이터 저장
+        analysis_instance = Analysis.objects.create()
+
         # for idx, file in enumerate(IMAGE_FILES):
         for idx, uploaded_image in enumerate(IMAGE_FILES):
             # image = cv2.imread(file)
@@ -148,7 +152,7 @@ def process_uploaded_image(uploaded_images):
             os.makedirs(output_directory, exist_ok=True)
 
             # 이미지 파일명 설정
-            output_filepath = os.path.join(output_directory, f'face_analysis.png')
+            output_filepath = os.path.join(output_directory, f'face_analysis_{analysis_instance.id}.png')
 
             # face_only 이미지 저장
             cv2.imwrite(output_filepath, face_only)
@@ -370,8 +374,6 @@ def process_uploaded_image(uploaded_images):
     #output_directory = os.path.join(BASE_DIR, "media", "cluster_images")
     os.makedirs(output_directory, exist_ok=True)
 
-    # Analysis 모델에 데이터 저장
-    analysis_instance = Analysis.objects.create()
 
     # 클러스터 이미지 및 Total Weighted Mean Color 이미지 저장
     cluster_images = []  # 클러스터 이미지 파일 경로를 저장할 리스트
@@ -408,7 +410,7 @@ def process_uploaded_image(uploaded_images):
     # Total Weighted Mean Color, face_analysis 이미지 저장
     # 위와 마찬가지로 파일의 상대 경로를 저장합니다.
     analysis_instance.total_weighted_mean_color_image = 'cluster_images/total_weighted_mean_color.png'
-    analysis_instance.face_analysis_image = '/face_analysis.png'
+    analysis_instance.face_analysis_image = '/face_analysis_{analysis_instance.id}.png'
     analysis_instance.save()
 
     # Total Weighted Mean Color 이미지 저장
