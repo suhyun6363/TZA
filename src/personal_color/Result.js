@@ -1,11 +1,10 @@
+// Result.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Result.css";
 
 const ImageComponent = () => {
   const [imageSrcList, setImageSrcList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,30 +58,30 @@ const ImageComponent = () => {
     fetchAnalysisData();
   }, []);
 
+  console.log(imageSrcList);
+
   const handleMeasureButtonClick = () => {
+    // 측정하기
     navigate("/result2");
   };
 
   return (
-    <div className="main-container">
-      <h2 id="face-mesh">피부 색상 인식 완료</h2>
-      {error && <p>{error}</p>}
-      {isLoading ? (
-        <p>Loading images...</p>
-      ) : (
-        <div className="outer-container">
-          <div className="inner-container">
-            <div className="grid-container-cluster">
-              {imageSrcList.map((src, index) => (
-                <img key={index} src={src} alt={`Cluster Image ${index + 1}`} className="grid-item" />
-              ))}
-            </div>
-            <button id="etc-button" onClick={handleMeasureButtonClick}>
-              퍼스널컬러 진단 받기
-            </button>
-          </div>
+    <div className="outer-container">
+      <div className="inner-container">
+        <div className="grid-container-cluster">
+          {imageSrcList.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt={`Cluster Image ${index + 1}`}
+              className="grid-item"
+            />
+          ))}
         </div>
-      )}
+        <button id="etc-button" onClick={handleMeasureButtonClick}>
+          퍼스널컬러 진단 받기
+        </button>
+      </div>
     </div>
   );
 };
