@@ -34,12 +34,6 @@ def process_uploaded_image(uploaded_images):
     uploaded_images = UploadedImage.objects.order_by('-id').first()
     IMAGE_FILES = [uploaded_images]
 
-    # Analysis 모델에 데이터 저장
-    analysis_instance = Analysis.objects.create()
-
-    # Analysis 모델 id값 추가
-    analysis_id = analysis_instance.id
-
     # facemesh
     with mp.solutions.face_mesh.FaceMesh(
             static_image_mode=True,
@@ -146,7 +140,7 @@ def process_uploaded_image(uploaded_images):
                 cv2.fillConvexPoly(face_only, right_nostril_points, color=(0, 0, 0))
 
             #cv2.imshow('Face Only', face_only)
-            cv2.waitKey(0)
+            # cv2.waitKey(0)
             cv2.destroyAllWindows()
 
             # 이미지 저장 경로 설정
@@ -154,7 +148,7 @@ def process_uploaded_image(uploaded_images):
             os.makedirs(output_directory, exist_ok=True)
 
             # 이미지 파일명 설정
-            output_filepath = os.path.join(output_directory, f'face_analysis_{analysis_id}.png')
+            output_filepath = os.path.join(output_directory, f'face_analysis.png')
 
             # face_only 이미지 저장
             cv2.imwrite(output_filepath, face_only)
@@ -376,6 +370,9 @@ def process_uploaded_image(uploaded_images):
     #output_directory = os.path.join(BASE_DIR, "media", "cluster_images")
     os.makedirs(output_directory, exist_ok=True)
 
+    # Analysis 모델에 데이터 저장
+    analysis_instance = Analysis.objects.create()
+
     # 클러스터 이미지 및 Total Weighted Mean Color 이미지 저장
     cluster_images = []  # 클러스터 이미지 파일 경로를 저장할 리스트
 
@@ -411,7 +408,7 @@ def process_uploaded_image(uploaded_images):
     # Total Weighted Mean Color, face_analysis 이미지 저장
     # 위와 마찬가지로 파일의 상대 경로를 저장합니다.
     analysis_instance.total_weighted_mean_color_image = 'cluster_images/total_weighted_mean_color.png'
-    analysis_instance.face_analysis_image = f'/face_analysis_{analysis_id}.png'
+    analysis_instance.face_analysis_image = '/face_analysis.png'
     analysis_instance.save()
 
     # Total Weighted Mean Color 이미지 저장
@@ -438,22 +435,41 @@ def process_uploaded_image(uploaded_images):
     v_value = average_hsv.hsv_v * 100 + 15  # v 값
 
     # 평균값에 따라 첫 번째 타입 분류
-    if v_value > 65.20 and b_value > 18.50 and s_value > 33:
-        result = "Spring warm bright"
-    elif v_value > 65.20 and b_value > 18.50 and s_value <= 33:
-        result = "Spring warm light"
-    elif v_value > 65.20 and b_value <= 18.50 and s_value <= 33:
-        result = "Summer cool light"
-    elif v_value <= 65.20 and b_value <= 18.50 and s_value <= 33:
-        result = "Summer cool mute"
-    elif v_value <= 65.20 and b_value > 18.50 and s_value <= 33:
-        result = "Autumn warm mute"
-    elif v_value <= 65.20 and b_value > 18.50 and s_value > 33:
-        result = "Autumn warm deep"
-    elif v_value <= 65.20 and b_value <= 18.50 and s_value > 33:
-        result = "Winter cool deep"
-    elif v_value > 65.20 and b_value <= 18.50 and s_value > 33:
-        result = "Winter cool bright"
+
+    if 17.0 <= b_value < 20.0:
+        if v_value > 65.20 and b_value-18.50 > 0 and s_value > 33:
+            result = "N-Spring warm bright"
+        elif v_value > 65.20 and b_value-18.50 > 0 and s_value <= 33:
+            result = "N-Spring warm light"
+        elif v_value > 65.20 and b_value-18.50 < 0 and s_value <= 33:
+            result = "N-Summer cool light"
+        elif v_value <= 65.20 and b_value-18.50 < 0 and s_value <= 33:
+            result = "N-Spring warm mute"
+        elif v_value <= 65.20 and b_value-18.50 > 0 and s_value <= 33:
+            result = "N-Autumn warm mute"
+        elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value > 33:
+            result = "N-Autumn warm deep"
+        elif v_value <= 65.20 and b_value-18.50 < 0 and s_value > 33:
+            result = "N-Winter cool deep"
+        elif v_value > 65.20 and b_value-18.50 < 0 and s_value > 33:
+            result = "N-Winter cool bright"
+    else:
+        if v_value > 65.20 and b_value >= 20 and s_value > 33:
+            result = "Spring warm bright"
+        elif v_value > 65.20 and b_value >= 20 and s_value <= 33:
+            result = "Spring warm light"
+        elif v_value > 65.20 and b_value < 17 and s_value <= 33:
+            result = "Summer cool light"
+        elif v_value <= 65.20 and b_value < 17 and s_value <= 33:
+            result = "Summer cool mute"
+        elif v_value <= 65.20 and b_value >= 20 and s_value <= 33:
+            result = "Autumn warm mute"
+        elif v_value <= 65.20 and b_value >= 20 and s_value > 33:
+            result = "Autumn warm deep"
+        elif v_value <= 65.20 and b_value < 17 and s_value > 33:
+            result = "Winter cool deep"
+        elif v_value > 65.20 and b_value < 17 and s_value > 33:
+            result = "Winter cool bright"
 
     print(f'v_value: {v_value}')
     print(f'b_value: {b_value}')
@@ -491,24 +507,42 @@ def process_uploaded_image(uploaded_images):
         new_b_value = b_value
         new_s_value = s_value - normalized_diff_s * 100 * 2
 
-    # Applying the logic to new values
-    if new_v_value > 65.20 and new_b_value > 18.50 and new_s_value > 33:
-        second_result = "Spring warm bright"
-    elif new_v_value > 65.20 and new_b_value > 18.50 and new_s_value <= 33:
-        second_result = "Spring warm light"
-    elif new_v_value > 65.20 and new_b_value <= 18.50 and new_s_value <= 33:
-        second_result = "Summer cool light"
-    elif new_v_value <= 65.20 and new_b_value <= 18.50 and new_s_value <= 33:
-        second_result = "Summer cool mute"
-    elif new_v_value <= 65.20 and new_b_value > 18.50 and new_s_value <= 33:
-        second_result = "Autumn warm mute"
-    elif new_v_value <= 65.20 and new_b_value > 18.50 and new_s_value > 33:
-        second_result = "Autumn warm deep"
-    elif new_v_value <= 65.20 and new_b_value <= 18.50 and new_s_value > 33:
-        second_result = "Winter cool deep"
-    elif new_v_value > 65.20 and new_b_value <= 18.50 and new_s_value > 33:
-        second_result = "Winter cool bright"
+    if 17.0 <= new_b_value < 20.0:
+        if result == "N-Spring warm bright":
+            second_result = "N-Winter cool bright"
+        elif result == "N-Winter cool bright":
+            second_result = "N-Spring warm bright"
+        elif result == "N-Spring warm light":
+            second_result = "N-Summer cool light"
+        elif result == "N-Summer cool light":
+            second_result = "N-Spring warm light"
+        elif result == "N-Autumn warm mute":
+            second_result = "N-Summer cool mute"
+        elif result == "N-Summer cool mute":
+            second_result = "N-Autumn warm mute"
+        elif result == "N-Winter cool deep":
+            second_result = "N-Autumn warm deep"
+        elif result == "N-Autumn warm deep":
+            second_result = "N-Winter cool deep"
 
+    else:
+
+        if new_v_value > 65.20 and new_b_value >= 20 and new_s_value > 33:
+            second_result = "Spring warm bright"
+        elif new_v_value > 65.20 and new_b_value >= 20 and new_s_value <= 33:
+            second_result = "Spring warm light"
+        elif new_v_value > 65.20 and new_b_value < 17 and new_s_value <= 33:
+            second_result = "Summer cool light"
+        elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value <= 33:
+            second_result = "Summer cool mute"
+        elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value <= 33:
+            second_result = "Autumn warm mute"
+        elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value > 33:
+            second_result = "Autumn warm deep"
+        elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value > 33:
+            second_result = "Winter cool deep"
+        elif new_v_value > 65.20 and new_b_value < 17 and new_s_value > 33:
+            second_result = "Winter cool bright"
 
     # print(f'v_normalized: {v_normalized}')
     # print(f'b_normalized: {b_normalized}')
@@ -518,7 +552,6 @@ def process_uploaded_image(uploaded_images):
     # print(f'new_b_value: {new_b_value}')
     # print(f'new_s_value: {new_s_value}')
 
-
     print(f'========================')
 
     # personal_color 및 second_color 값 모델에 저장
@@ -526,9 +559,8 @@ def process_uploaded_image(uploaded_images):
     analysis_instance.second_color = second_result
     analysis_instance.save()
 
+
+
     # Print the results
     print(result)
     print(second_result)
-
-
-
