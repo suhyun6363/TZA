@@ -1,4 +1,12 @@
 /* CaptureImage.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
 
 .capture-image-container {
   display: flex;
@@ -8,10 +16,11 @@
 
 .capture-image-container h2 {
   color: #e91e63;
+  font-size: 45px;
   margin-top: 20px;
   text-align: center;
   margin-bottom: 20px;
-  font-family: "Apple";
+  font-family: "LaundryBold";
 }
 
 .capture-image-container img {
@@ -43,7 +52,7 @@
 
 .result-button {
   background-color: #ff4081;
-  font-family: "Apple";
+  font-family: "Laundry";
   padding-left: 40px;
   padding-right: 40px;
   margin-left: 150px; /* 버튼 간격 조절 */

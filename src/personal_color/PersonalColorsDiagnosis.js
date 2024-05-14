@@ -21,18 +21,17 @@ const PersonalColorDiagnosis = ({ personalColor, type }) => {
     <div>
       {type === "celebrities" && members ? ( // 연예인 정보를 표시할 때
         <>
-        <p>{`${personalColor}`}에 해당하는 연예인: {members.join(", ")}</p>
+        {/* <p>{`${personalColor}`}에 해당하는 연예인: {members.join(", ")}</p> */}
         <img
           src={`image/${personalColor.replace(/\s+/g, '_').toLowerCase()}_c.png`}
           alt={`${personalColor} 대표 연예인 이미지`}
-          style={{ width: "60%", height: "200px" }}
-        />
+          style={{ width: "100%", height: "370px", borderRadius: "5%" }}        />
       </>
       ) : type === "chart" ? ( // 컬러 차트 이미지를 표시할 때
         <img
           src={`image/${personalColor.replace(/\s+/g, '_').toLowerCase()}.png`}
           alt={`${personalColor} 차트`}
-          style={{ width: "100%", height: "200px" }}
+          style={{ width: "100%", height: "390px" }}
         />
       ) : (
         <p>정보를 찾을 수 없습니다.</p>

@@ -1,76 +1,199 @@
+/* 폰트 설정 */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
+
+/* 전반적인 페이지 및 컨테이너 스타일 */
 .result2-page {
-  width: 100%;
   display: flex;
   flex-direction: column;
+  width: 100%;
   padding: 0;
+  /* position: relative; */
 }
 .result2-container {
-  margin-top: px;
-  height: calc(
-    100% - 150px
-  ); /* 화면 전체 높이에서 상단 마진을 뺀 나머지 공간을 차지 */
-  flex-grow: 1;
-  align-items: flex-start;
-}
-
-#result2-check-result {
-  color: #e91e63;
-  text-align: center;
-  font-family: "Apple";
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.image-and-qr {
   display: flex;
-  align-items: center;
+  flex-direction: row; /* 요소들을 가로로 배열 */
+  justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배분 */
+  width: 100%;
+  height: calc(100% - 150px);
+}
+
+/*핑크멘트부분*/
+.header-section {
+  position: absolute; /* 절대 위치 설정 */
+  top: 8%; 
+  left: 25%; /* 페이지 중앙으로 이동 */
+  transform: translateX(-50%); /* 정확한 중앙 정렬 */
+  width: auto; /* 너비 자동 조절 */
+  padding: 1px 20px; /* 패딩 설정 */
+  background-color: #ffccdd; /* 배경색 설정 */
+  border-radius: 40px; /* 모서리 둥글게 */
+  z-index: 20; /* 다른 요소들 위에 표시 */
+}
+
+.header-section h1 {
+  font-family: 'LaundryBold'; /* Apple 글꼴 사용 */
+  color: #333; /* 글자 색상은 진한 회색 */
+  font-size: 25px; /* 폰트 크기 */
+}
+
+/* 이미지 및 QR 코드 섹션 */
+.image-and-qr {
+  flex: 1; /* 이미지 섹션과 컬러 섹션의 크기 비율을 조절 */
+  display: flex;
   justify-content: center;
-}
+  align-items: center;
 
+}
 .result2-image-section {
-  flex-direction: column;
-}
-
-.result2-image-section p {
-  margin: 10px 0 0 15px;
-  font-family: "Apple";
-}
-
-.skin-image {
-  width: 140px;
-  height: 140px;
+  display: flex; /* Flexbox 레이아웃 활성화 */
+  justify-content: space-between; /* 자식 요소들을 컨테이너 양쪽 끝으로 배치 */
+  align-items: center; /* 세로 중심으로 자식 요소들을 정렬 */
+  background-color: #FEF3F1;
+  padding: 20px;
   border-radius: 8px;
+  margin-bottom: 380px;
+  margin-top: 3px; 
+  margin-left: 175px;
+  width: 380px;
 }
 
-.qr-section {
-  margin-left: 40px;
+.result2-image-section p{
+  font-size: 24px;
+  color: #282C34;
+  margin-right: 18px;
+  position: relative; /* 상대 위치 설정 */
+  top: 10px; /* 적절한 위치 조정 */
 }
 
+.result2-image-section p1{
+  font-size: 10px;
+  color: #282C34;
+  margin-right: 1px;
+}
+ 
+.skin-image {
+  width: 81px;
+  height: 81px;
+  border-radius: 8px;
+  position: relative; /* 상대 위치 설정 */
+  margin-top: 20px;
+  top: 0; /* 기본 위치 */
+  right: 0; 
+}
+
+.personal-color-graph {
+  background-color: #FEF3F1; 
+  flex: 1;  /* flex 속성을 주어 컨테이너 내에서 공간을 적절하게 차지하도록 함 */
+  padding: 20px; /* 적절한 패딩을 주어 내용물과 경계간의 공간을 확보 */
+  border-radius: 8px; /* 경계를 둥글게 처리 */
+  height : 310px;
+  width: 380px;
+  position: absolute; /* 절대 위치 설정 */
+  top: 35%; 
+  margin-left: 108px;
+  left: 4.5%; /* 페이지 중앙으로 이동 */
+}
+
+
+/* 컬러 정보 섹션 */
 .result2-section {
-  text-align: center;
-}
-
-.result2-section b {
-  margin-top: 10px;
-  font-family: "Apple";
-}
-
-.qr-code {
-  margin-top: 50px;
+  flex: 2; /* 컬러 섹션을 좀 더 넓게 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 120px;
 }
 
 .color-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
 }
 
+.best-color-section b {
+  font-size: 15px;
+  color: #ebe9e9;
+  margin-bottom: 1px;
+}
+
+.second-color-section b {
+  font-size: 15px;
+  color: #fbfbfb;
+  margin-bottom: 1px;
+}
+
+.best-color-section p, .second-color-section p {
+  font-size: 12px; /* 글씨 크기를 15px로 설정 */
+  color: #575454; /* 글씨 색상 설정, 필요에 따라 조정 */
+  margin-bottom: 12px; /* 제목 아래 여백 제거 */
+  margin-top: 5px; /* 위쪽 여백 제거 */
+  text-align: right; /* 텍스트 오른쪽 정렬 */
+}
+
+.best-color-section, .second-color-section {
+  margin-top: 3px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fbf7f6;
+  width: 300px; /* 가로 크기 설정 */
+  height: 485px; /* 높이 설정 */
+}
+
+.best-color-title {
+  background-color: #f791b3; /* 원하는 배경색 */
+  padding: 8px 20px; /* 적절한 패딩 */
+  border-radius: 40px; /* 모서리 둥글게 */
+  display: inline-block; /* 더 나은 배경 크기 조절을 위해 */
+  margin: 5px 0; /* 위 아래 여백 */
+}
+
+.second-color-title {
+  background-color: #BCE6EB; /* 원하는 배경색 */
+  padding: 8px 20px; /* 적절한 패딩 */
+  border-radius: 40px; /* 모서리 둥글게 */
+  display: inline-block; /* 더 나은 배경 크기 조절을 위해 */
+  margin: 5px 0; /* 위 아래 여백 */
+}
+
+.color-info > div {
+  margin-right: 30px; /* 오른쪽 마진 추가 */
+}
+
+.color-info > div:last-child {
+  margin-right: 0; /* 마지막 항목 오른쪽 마진 제거 */
+}
+/* 버튼 컨테이너 */
 .result2-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
   margin-bottom: 50px;
 }
-
-.result2-section .color-info img {
-  max-width: 500px; /* 차트 이미지의 최대 너비를 조절합니다. */
-  max-height: 120px; /* 차트 이미지의 최대 높이를 조절합니다. */
-}
-
 #result2-etc-button {
-  font-family: "Apple";
+  font-family: "Laundry";
+  background-color: #ff4081;
+  font-size: 20px;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
 }

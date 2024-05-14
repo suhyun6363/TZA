@@ -1,8 +1,33 @@
 import React, { useState, useEffect } from "react";
-import PersonalColorDiagnosis from "./PersonalColorsDiagnosis";
 import { useNavigate } from "react-router-dom";
-import QRCode from "qrcode.react";
+import PersonalColorDiagnosis from "./PersonalColorsDiagnosis";
 import "./Result2.css";
+
+const colorToTitleMap = {
+  "Spring warm bright": "러블리의 인간화",
+  "Spring warm light": "봄날의 아이콘",
+  "Summer cool light": "싱그럽운 청량감의 대표",
+  "Summer cool mute": "청초함의 끝판왕",
+  "Autumn warm deep": "독보적인 분위기",
+  "Autumn warm mute": "가을 햇살의 주인공",
+  "Winter cool bright": "쿨하지만 화려한",
+  "Winter cool deep": "도시적이고 세련된"
+};
+
+const imageMap = {
+  "Spring warm bright": "Spring_warm_bright_g.png",
+  "Spring warm light": "Spring_warm_light_g.png",
+  "Summer cool light": "Summer_cool_light_g.png",
+  "Summer cool mute": "Summer_cool_mute_g.png",
+  "Autumn warm deep": "Autumn_warm_deep_g.png",
+  "Autumn warm mute": "Autumn_warm_mute_g.png",
+  "Winter cool bright": "Winter_cool_bright_g.png",
+  "Winter cool deep": "Winter_cool_depp_g.png"
+};
+
+const getImageSrc = (personalColor) => {
+  return `image/${imageMap[personalColor] || 'default_image.png'}`;
+};
 
 const Result2 = () => {
   const [imageSrc, setImageSrc] = useState("");
@@ -12,17 +37,17 @@ const Result2 = () => {
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  
   useEffect(() => {
-    const imageUrl =
-      "http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png";
+    const imageUrl = "http://127.0.0.1:8000/media/cluster_images/total_weighted_mean_color.png";
     const analysisUrl = "http://127.0.0.1:8000/analysis";
 
     const fetchData = async () => {
       try {
-        // 이미지 가져오기
         const responseImage = await fetch(imageUrl);
-        if (!responseImage.ok) {
+        const responseAnalysis = await fetch(analysisUrl);
+
+        if (!responseImage.ok || !responseAnalysis.ok) {
           throw new Error(`HTTP error! Status: ${responseImage.status}`);
         }
 
@@ -35,94 +60,69 @@ const Result2 = () => {
 
         readerImage.readAsDataURL(blobImage);
 
-        // 분석 데이터 가져오기
-        const responseAnalysis = await fetch(analysisUrl);
-        if (!responseAnalysis.ok) {
-          throw new Error(`HTTP error! Status: ${responseAnalysis.status}`);
-        }
-
         const data = await responseAnalysis.json();
-        console.log("Analysis Data:", data);
-
-        // 가장 최근 데이터를 선택
-        const latestData = data[data.length - 1];
-
         setAnalysisData({
-          personal_color: latestData.personal_color,
-          second_color: latestData.second_color,
+          personal_color: data[data.length - 1].personal_color,
+          second_color: data[data.length - 1].second_color,
         });
-
-        setLoading(false); // 로딩 완료
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false); // 로딩 완료 (오류 발생)
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // 두 정보를 합쳐서 하나의 문자열로 만듭니다.
-  const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
-
   const handleMeasureButtonClick = () => {
-    // 연예인 이미지 페이지로
     navigate("/result3");
   };
 
+  const headerTitle = colorToTitleMap[analysisData.personal_color] || "퍼스널 컬러 진단 결과";
+
   return (
     <div className="result2-page">
-      <div className="result2-container">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div>
-            <h2 id="result2-check-result">퍼스널 컬러 진단 결과</h2>
-            <div className="result2-flex-container">
-              <div className="image-and-qr">
-                <div className="result2-image-section">
-                  <p>추출 이미지</p>
-                  <img
-                    src={imageSrc}
-                    alt="Total Weighted Mean Color"
-                    className="skin-image"
-                  />
+      <div className="header-section">
+        <h1>{headerTitle}</h1>
+      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="result2-container">
+          <div className="image-and-qr">
+            <div className="result2-image-section">
+              <p>당신은 <br/> {analysisData.personal_color}</p>
+              <img src={imageSrc} alt="Total Weighted Mean Color" className="skin-image" />
+            </div>
+          </div>
+          <div className="personal-color-graph">
+            <img src={getImageSrc(analysisData.personal_color)} alt={`${analysisData.personal_color}`} style={{ width: "100%", height: "auto" }} />
+          </div>
+          <div className="result2-section">
+            <div className="color-info">
+              <div className="best-color-section">
+                <div className="best-color-title">
+                  <b>Best : {analysisData.personal_color}</b>
                 </div>
-                <div className="qr-section">
-                  {/* QR 코드를 표시합니다. */}
-                  <QRCode value={combinedInfo} className="qr-code" />
-                </div>
+                <p>가장 잘 어울리는 색상 추천</p>
+                <PersonalColorDiagnosis personalColor={analysisData.personal_color} type="chart" />
               </div>
-              <div className="result2-section">
-                {/* personal_color 정보를 그 다음에 표시합니다. */}
-                <div className="color-info">
-                  <div>
-                    <b>Personal Color: {analysisData.personal_color}</b>
-                    <PersonalColorDiagnosis
-                      personalColor={analysisData.personal_color}
-                      type="chart" // PersonalColorDiagnosis에게 컬러 차트 이미지를 표시하도록 타입을 전달
-                    />
-                  </div>
-                  <div>
-                    <b>Second Color: {analysisData.second_color}</b>
-                    <PersonalColorDiagnosis
-                      personalColor={analysisData.second_color}
-                      type="chart" // PersonalColorDiagnosis에게 컬러 차트 이미지를 표시하도록 타입을 전달
-                    />
-                  </div>
+              <div className="second-color-section">
+                <div className="second-color-title">
+                  <b>Second : {analysisData.second_color}</b>
                 </div>
-              </div>
-              <div className="result2-button-container">
-                <button
-                  id="result2-etc-button"
-                  onClick={handleMeasureButtonClick}
-                >
-                  컬러 대표 연예인 확인하기
-                </button>
+                <p>두번째로 잘 어울리는 색상</p>
+                <PersonalColorDiagnosis personalColor={analysisData.second_color} type="chart" />
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
+      <div className="result2-button-container">
+        <button id="result2-etc-button" onClick={handleMeasureButtonClick}>
+          컬러 대표 연예인 확인하기
+        </button>
       </div>
     </div>
   );

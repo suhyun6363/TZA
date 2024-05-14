@@ -44,7 +44,7 @@ const Result3 = () => {
   }, []);
 
   // 두 정보를 합쳐서 하나의 문자열로 만듭니다.
-  const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
+  // const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
 
   const handleMeasureButtonClick = () => {
     // 측정하기
@@ -58,37 +58,33 @@ const Result3 = () => {
       ) : (
         <div>
           <h2 id="result3-check-result">퍼스널 컬러별 대표 연예인</h2>
+          {/* <p>{combinedInfo}</p> Displaying the combined info */}
           <div className="result3-flex-container">
-            <div className="result3-section">
-              {/* personal_color 정보를 그 다음에 표시합니다. */}
-              <div>
-                <PersonalColorDiagnosis
-                  personalColor={analysisData.personal_color}
-                  type="celebrities"
-                />
-              </div>
-
-              {/* second_color 정보를 그 다음에 표시합니다. */}
-              <div>
-                <PersonalColorDiagnosis
-                  personalColor={analysisData.second_color}
-                  type="celebrities"
-                />
-              </div>
-              <div className="result3-button-container">
-                <button
-                  id="result3-etc-button"
-                  onClick={handleMeasureButtonClick}
-                >
-                  나와 어울리는 베스트 컬러 확인하기
-                </button>
-              </div>
+            <div>
+              <PersonalColorDiagnosis
+                personalColor={analysisData.personal_color}
+                type="celebrities"
+              />
             </div>
+            <div>
+              <PersonalColorDiagnosis
+                personalColor={analysisData.second_color}
+                type="celebrities"
+              />
+            </div>
+          </div>
+          <div className="result3-button-container">
+            <button
+              id="result3-etc-button"
+              onClick={handleMeasureButtonClick}
+            >
+              나와 어울리는 베스트 컬러 확인하기
+            </button>
           </div>
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default Result3;

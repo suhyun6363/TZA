@@ -1,4 +1,17 @@
 /* WebcamCapture.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
 
 #video-container {
   position: relative;
@@ -37,7 +50,7 @@ button {
   font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: "Apple";
+  font-family: "Laundry";
 }
 
 button:hover {
@@ -53,7 +66,7 @@ button:hover {
   transform: translateX(-50%);
   font-size: 18px;
   color: #fff;
-  font-family: "Apple";
+  font-family: "Laundry";
 }
 
 /* 안경 경고 문구 */
@@ -65,5 +78,5 @@ button:hover {
   font-size: 16px;
   color: #ff4081;
   font-weight: bold;
-  font-family: "Apple";
+  font-family: "Laundry";
 }

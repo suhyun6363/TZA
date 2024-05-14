@@ -1,14 +1,14 @@
-// Result.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Result.css";
 
 const ImageComponent = () => {
   const [imageSrcList, setImageSrcList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Django 서버에 있는 이미지들의 URL 배열
     const imageUrls = [
       "http://127.0.0.1:8000/media/cluster_images/cluster_1.png",
       "http://127.0.0.1:8000/media/cluster_images/cluster_2.png",
@@ -16,57 +16,55 @@ const ImageComponent = () => {
       "http://127.0.0.1:8000/media/face_analysis.png",
     ];
 
-    // 각 이미지 가져오기
     const getImageData = async () => {
-      for (const url of imageUrls) {
-        try {
-          const response = await fetch(url);
-          const blob = await response.blob();
+      try {
+        const responses = await Promise.all(imageUrls.map(url => fetch(url)));
+        const blobs = await Promise.all(responses.map(response => {
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          return response.blob();
+        }));
+        const imageSrcs = await Promise.all(blobs.map(blob => new Promise((resolve, reject) => {
           const reader = new FileReader();
-
-          reader.onloadend = () => {
-            // Base64로 변환된 이미지 데이터를 배열에 추가
-            setImageSrcList((prevList) => [...prevList, reader.result]);
-          };
-
-          reader.onerror = (error) => {
-            console.error("이미지를 읽는 중 오류가 발생했습니다:", error);
-          };
-
+          reader.onloadend = () => resolve(reader.result);
+          reader.onerror = reject;
           reader.readAsDataURL(blob);
-        } catch (error) {
-          console.error("이미지를 가져오는 중 오류가 발생했습니다:", error);
-        }
+        })));
+        setImageSrcList(imageSrcs);
+      } catch (error) {
+        setError('Failed to load images');
+        console.error("Error loading images:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     getImageData();
   }, []);
 
-  console.log(imageSrcList);
-
   const handleMeasureButtonClick = () => {
-    // 측정하기
     navigate("/result2");
   };
 
   return (
-    <div className="outer-container">
-      <div className="inner-container">
-        <div className="grid-container-cluster">
-          {imageSrcList.map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              alt={`Cluster Image ${index + 1}`}
-              className="grid-item"
-            />
-          ))}
+    <div className="main-container">
+      <h2 id="face-mesh">피부 색상 인식 완료</h2>
+      {error && <p>{error}</p>}
+      {isLoading ? (
+        <p>Loading images...</p>
+      ) : (
+        <div className="outer-container">
+          <div className="inner-container">
+            <div className="grid-container-cluster">
+              {imageSrcList.map((src, index) => (
+                <img key={index} src={src} alt={`Cluster Image ${index + 1}`} className="grid-item" />
+              ))}
+            </div>
+            <button id="etc-button" onClick={handleMeasureButtonClick}>
+              퍼스널컬러 진단 받기
+            </button>
+          </div>
         </div>
-        <button id="etc-button" onClick={handleMeasureButtonClick}>
-          퍼스널컬러 진단 받기
-        </button>
-      </div>
+      )}
     </div>
   );
 };

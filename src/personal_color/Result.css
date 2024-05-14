@@ -1,5 +1,34 @@
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#face-mesh {
+  margin-top: 0px;  /* 상단 여백 추가 */
+  margin-bottom: 50px;
+  text-align: center; /* 텍스트 중앙 정렬 */
+  color: #e91e63;
+  font-size: 40px;
+}
+
 .inner-container {
-  margin-top: 20px;
+  margin-top: 0px;
+  margin-right: 30px;
 }
 
 .grid-container-cluster {
@@ -8,6 +37,7 @@
   width: 25%;
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 }
 
 .grid-item {
@@ -18,9 +48,9 @@
   border-radius: 8px;
 }
 
-#etc-button {
+.outer-container #etc-button {
   position: absolute;
-  bottom: 200px;
+  margin-bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #ff4081;
@@ -31,5 +61,5 @@
   font-size: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: "Apple";
+  font-family: "Laundry";
 }

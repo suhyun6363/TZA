@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "LaundryBold";
+    src: url("./font/LaudryGothicBold.woff");
+}
+
+body {
+    font-family: "LaundryBold";
+}
+
+h1 {
+    font-size: 55px; /* 원하는 크기로 조정하세요 */
+}

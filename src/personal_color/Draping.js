@@ -95,7 +95,7 @@ const BestImageComponent = () => {
   return (
     <div className="draping-outer-container">
       <div className="draping-inner-container">
-        <h2 id="draping-best-color">Best Color</h2>
+        <h2 id="draping-best-color">베스트 컬러 드레이핑</h2>
         <div className="draping-grid-container">
           {/* Best Color 이미지 출력 */}
           {bestImageSrcList.map((src, index) => (
@@ -109,7 +109,7 @@ const BestImageComponent = () => {
             </div>
           ))}
         </div>
-        <h2 id="draping-second-color">Second Color</h2>
+        <h2 id="draping-second-color">세컨드 컬러</h2>
         <div className="draping-grid-container">
           {/* Second Color 이미지 출력 */}
           {secondImageSrcList.map((src, index) => (
