@@ -98,10 +98,6 @@ const Result2 = () => {
     navigate("/result3");
   };
 
-  const goBack = () => {
-    navigate(-1); // Navigates back to the previous page
-  };
-
   const displayColor = (color) => {
     return color.startsWith('N-') ? color.substring(2) : color;
   };
@@ -116,44 +112,41 @@ const Result2 = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="result2-content">
+        <div className="result2-container">
           <div className="image-and-qr">
             <div className="result2-image-section">
-              {analysisData.personal_color.startsWith('N-') ? (
+            {analysisData.personal_color.startsWith('N-') ? (
                 <p>당신은<br/>웜쿨 가리지 않는 뉴트럴톤</p>
               ) : (
                 <p>당신은<br/>{analysisData.personal_color}</p>
               )}
               <img src={imageSrc} alt="Total Weighted Mean Color" className="skin-image" />
-              <div className="personal-color-graph">
-                <img src={getImageSrc(analysisData.personal_color)} alt={`${analysisData.personal_color}`} style={{ width: "auto", height: "auto" }} />
-              </div>
             </div>
           </div>
-          <div className="color-info_1">
-            <div className="best-color-section">
-              <div className="best-color-title">
-                <b>Best : {displayColor(analysisData.personal_color)}</b>
-              </div>
-              <p>가장 잘 어울리는 색상 추천</p>
-              <PersonalColorDiagnosis personalColor={displayColor(analysisData.personal_color)} type="chart" />
-            </div>
+          <div className="personal-color-graph">
+            <img src={getImageSrc(analysisData.personal_color)} alt={`${analysisData.personal_color}`} style={{ width: "100%", height: "auto" }} />
           </div>
-          <div className="color-info_2">
-            <div className="second-color-section">
-              <div className="second-color-title">
+          <div className="result2-section">
+            <div className="color-info">
+              <div className="best-color-section">
+                <div className="best-color-title">
+                  <b>Best : {displayColor(analysisData.personal_color)}</b>
+                </div>
+                <p>가장 잘 어울리는 색상 추천</p>
+                <PersonalColorDiagnosis personalColor={displayColor(analysisData.personal_color)} type="chart" />
+              </div>
+              <div className="second-color-section">
+                <div className="second-color-title">
                 <b>Second : {displayColor(analysisData.second_color)}</b>
+                </div>
+                <p>두번째로 잘 어울리는 색상</p>
+                <PersonalColorDiagnosis personalColor={displayColor(analysisData.second_color)} type="chart" />
               </div>
-              <p>두번째로 잘 어울리는 색상</p>
-              <PersonalColorDiagnosis personalColor={displayColor(analysisData.second_color)} type="chart" />
             </div>
           </div>
         </div>
       )}
       <div className="result2-button-container">
-        <button id="result2-back-button" onClick={goBack}>
-          뒤로 가기
-        </button>
         <button id="result2-etc-button" onClick={handleMeasureButtonClick}>
           컬러 대표 연예인 확인하기
         </button>
