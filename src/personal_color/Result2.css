@@ -16,8 +16,16 @@
 .result2-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 80%;
+  width: 100%;
+  padding: 0;
+  /* position: relative; */
+}
+.result2-container {
+  display: flex;
+  flex-direction: row; /* 요소들을 가로로 배열 */
+  justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배분 */
+  width: 100%;
+  height: calc(100% - 150px);
 }
 
 /*핑크멘트부분*/
@@ -31,13 +39,6 @@
   background-color: #ffccdd; /* 배경색 설정 */
   border-radius: 40px; /* 모서리 둥글게 */
   z-index: 20; /* 다른 요소들 위에 표시 */
-}
-
-.result2-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .header-section h1 {
@@ -54,7 +55,6 @@
   align-items: center;
 
 }
-
 .result2-image-section {
   display: flex; /* Flexbox 레이아웃 활성화 */
   justify-content: space-between; /* 자식 요소들을 컨테이너 양쪽 끝으로 배치 */
@@ -80,6 +80,16 @@
   font-size: 10px;
   color: #282C34;
   margin-right: 1px;
+}
+ 
+.skin-image {
+  width: 81px;
+  height: 81px;
+  border-radius: 8px;
+  position: relative; /* 상대 위치 설정 */
+  margin-top: 20px;
+  top: 0; /* 기본 위치 */
+  right: 0; 
 }
 .skin-image {
   width: 81px;
@@ -124,10 +134,6 @@
   height: auto;
 }
 
-/* .color-info_1, .color-info_2 {
-  width: 30%; /* 두 섹션을 나란히 배치하기 위해 각 섹션의 너비를 50% 미만으로 설정 */
-
-
 .best-color-section b {
   font-size: 15px;
   color: #ebe9e9;
@@ -138,6 +144,14 @@
   font-size: 15px;
   color: #fbfbfb;
   margin-bottom: 1px;
+}
+
+.best-color-section p, .second-color-section p {
+  font-size: 12px; /* 글씨 크기를 15px로 설정 */
+  color: #575454; /* 글씨 색상 설정, 필요에 따라 조정 */
+  margin-bottom: 12px; /* 제목 아래 여백 제거 */
+  margin-top: 5px; /* 위쪽 여백 제거 */
+  text-align: right; /* 텍스트 오른쪽 정렬 */
 }
 
 .best-color-section, .second-color-section {
@@ -176,14 +190,13 @@
 .color-info > div:last-child {
   margin-right: 0; /* 마지막 항목 오른쪽 마진 제거 */
 }
-
+/* 버튼 컨테이너 */
 .result2-button-container {
-  margin-top: 20px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  width: 80%;
+  justify-content: center;
+  margin-bottom: 50px;
 }
-
 #result2-back-button {
   font-family: "Laundry";
   background-color: #ff4081;
@@ -194,7 +207,6 @@
   cursor: pointer;
   margin-bottom: 80px;
 }
-
 #result2-etc-button {
   font-family: "Laundry";
   background-color: #ff4081;
