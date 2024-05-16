@@ -19,7 +19,7 @@
 #draping-best-color {
   color: #e91e63;
   text-align: center;
-  margin: 0 0 10px 0;
+  margin: 30px 0 10px 0;
 }
 #draping-second-color {
   color: #e91e63;
@@ -32,9 +32,6 @@
   justify-content: center;
   align-items: flex-start;
   margin-bottom: 50px;
-}
-
-.draping-inner-container {
 }
 
 .draping-grid-container {
@@ -60,21 +57,24 @@
 }
 
 .draping-button-container {
-  width: 100%;
   display: flex;
-  justify-content: center;
-  margin-bottom: 50px;
+  justify-content: center; /* 버튼들을 중앙에 배치 */
+  align-items: center;
+  margin-top: 3%;
 }
+
 #draping-back-button {
   font-family: "Laundry";
   background-color: #ff4081;
   font-size: 20px;
   color: white;
-  padding: 15px 25px;
+  padding: 13.5px 25px;
   border: none;
   cursor: pointer;
-  margin-bottom: 80px;
+  margin-right: 20px; /* 오른쪽 버튼과의 간격을 설정 */
+  border-radius: 6px;
 }
+
 #draping-etc-button {
   font-family: "Laundry";
   background-color: #ff4081;
@@ -83,4 +83,6 @@
   padding: 15px 25px;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
 }
+

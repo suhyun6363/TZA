@@ -13,11 +13,9 @@ const Result3 = () => {
 
   useEffect(() => {
     const analysisUrl = "http://3.36.217.107/analysis/";
-    // const analysisUrl = "http://localhost:8000/analysis/";
 
     const fetchData = async () => {
       try {
-        // 분석 데이터 가져오기
         const responseAnalysis = await fetch(analysisUrl);
         if (!responseAnalysis.ok) {
           throw new Error(`HTTP error! Status: ${responseAnalysis.status}`);
@@ -26,18 +24,16 @@ const Result3 = () => {
         const data = await responseAnalysis.json();
         console.log("Analysis Data:", data);
 
-        // 가장 최근 데이터를 선택
         const latestData = data[data.length - 1];
-
         setAnalysisData({
           personal_color: latestData.personal_color,
           second_color: latestData.second_color,
         });
 
-        setLoading(false); // 로딩 완료
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false); // 로딩 완료 (오류 발생)
+        setLoading(false);
       }
     };
 
@@ -48,54 +44,48 @@ const Result3 = () => {
     return color.startsWith('N-') ? color.substring(2) : color;
   };
 
-  // 두 정보를 합쳐서 하나의 문자열로 만듭니다.
-  // const combinedInfo = `${analysisData.personal_color}-${analysisData.second_color}`;
-
   const handleMeasureButtonClick = () => {
-    // 측정하기
     navigate("/draping");
   };
 
   const goBack = () => {
-    navigate(-1); // Navigates back to the previous page
+    navigate(-1);
   };
 
   return (
-    <div className="result3-container">
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <h2 id="result3-check-result">퍼스널 컬러별 대표 연예인</h2>
-          {/* <p>{combinedInfo}</p> Displaying the combined info */}
-          <div className="result3-flex-container">
-            <div>
-              <PersonalColorDiagnosis
-                personalColor={displayColor(analysisData.personal_color)}
-                type="celebrities"
-              />
-            </div>
-            <div>
-              <PersonalColorDiagnosis
-                personalColor={displayColor(analysisData.second_color)}
-                type="celebrities"
-              />
+    <>
+      <div className="result3-container">
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <div>
+            <h2 id="result3-check-result">퍼스널 컬러별 대표 연예인</h2>
+            <div className="result3-flex-container">
+              <div>
+                <PersonalColorDiagnosis
+                  personalColor={displayColor(analysisData.personal_color)}
+                  type="celebrities"
+                />
+              </div>
+              <div>
+                <PersonalColorDiagnosis
+                  personalColor={displayColor(analysisData.second_color)}
+                  type="celebrities"
+                />
+              </div>
             </div>
           </div>
-          <div className="result3-button-container">
-          <button id="result3-back-button" onClick={goBack}>
-          뒤로 가기
-            </button>
-            <button
-              id="result3-etc-button"
-              onClick={handleMeasureButtonClick}
-            >
-              나와 어울리는 베스트 컬러 확인하기
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <div className="result3-button-container">
+        <button id="result3-back-button" onClick={goBack}>
+          ⏎
+        </button>
+        <button id="result3-etc-button" onClick={handleMeasureButtonClick}>
+          나와 어울리는 베스트 컬러 확인하기
+        </button>
+      </div>
+    </>
   );  
 };
 

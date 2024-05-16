@@ -29,7 +29,7 @@ const ColorMeasurement = () => {
           <p>안경, 모자 등 얼굴을 가리는 것들을 제거해주세요</p>
           <p>얼굴 주변의 머리카락들을 정리해주세요</p>
           <p1>추후 비식별화된 진단 정보가 연구용으로 사용될 수 있습니다. </p1>
-          <button onClick={handleMeasureButtonClick}>측정하기</button>
+          <button className="start-button" onClick={handleMeasureButtonClick}>측정하기</button>
         </div>
       ) : (
         <p id="click-msg">화면을 클릭하세요</p>

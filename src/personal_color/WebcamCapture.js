@@ -89,7 +89,7 @@ const WebcamCapture = ({ onCapture }) => {
         </div>
       </div>
       {/* 촬영 버튼 */}
-      <button onClick={handleCaptureClick}>촬영하기</button>
+      <button className="webcam-capture-button" onClick={handleCaptureClick}>촬영하기</button>
 
       {/* 카운트다운 표시 */}
       {showCountdown && (

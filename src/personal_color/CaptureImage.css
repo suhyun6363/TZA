@@ -39,21 +39,27 @@
 
 .retake-button,
 .result-button {
-  margin-top: 10px;
-  margin-bottom: 20px; /* 버튼 사이의 여백 */
+  bottom: 50px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 20px;
+  font-family: "Laundry";
+  margin-top: 10%;
 }
 
 .retake-button {
-  margin-left: -130px;
-  background-color: #ff4081;
+  /* margin-left: -130px; */
   padding-left: 30px;
   padding-right: 30px;
 }
 
 .result-button {
-  background-color: #ff4081;
-  font-family: "Laundry";
   padding-left: 40px;
   padding-right: 40px;
-  margin-left: 150px; /* 버튼 간격 조절 */
+  margin-left: 140px;
 }

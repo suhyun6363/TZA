@@ -133,10 +133,10 @@ const BestImageComponent = () => {
         </div>
         <div className="draping-button-container">
         <button id="draping-back-button" onClick={goBack}>
-          뒤로 가기
+        ⏎
         </button>
         <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
-          종료
+          처음으로 돌아가기
         </button>
       </div>
       </div>

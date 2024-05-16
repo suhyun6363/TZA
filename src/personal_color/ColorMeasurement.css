@@ -42,21 +42,20 @@
   margin-bottom: 40px;
 }
 
-.measurement-screen button {
+.start-button {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: #ff4081;
-  bottom: 100px;
   color: #fff;
   border: none;
   padding: 15px 30px;
   border-radius: 6px;
   font-size: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: "Laundry";
-}
-
-.measurement-screen button:hover {
-  background-color: #ff4081;
 }
 
 #click-msg {

@@ -53,8 +53,10 @@
 }
 
 .result3-button-container {
-  margin-top: 50px;
-  margin-bottom: 100px;
+  display: flex;
+  justify-content: center; /* 버튼들을 중앙에 배치 */
+  align-items: center;
+  margin-top: 5%;
 }
 
 #result3-back-button {
@@ -62,10 +64,11 @@
   background-color: #ff4081;
   font-size: 20px;
   color: white;
-  padding: 15px 25px;
+  padding: 13.5px 25px;
   border: none;
   cursor: pointer;
-  margin-bottom: 80px;
+  margin-right: 20px; /* 오른쪽 버튼과의 간격을 설정 */
+  border-radius: 6px;
 }
 
 #result3-etc-button {
@@ -76,7 +79,9 @@
   padding: 15px 25px;
   border: none;
   cursor: pointer;
+  border-radius: 6px;
 }
+
 
 .result3-flex-container > div {
   margin-right: 20px; /* 오른쪽에 20px 마진 추가 */

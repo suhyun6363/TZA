@@ -31,7 +31,7 @@ const PersonalColorDiagnosis = ({ personalColor, type }) => {
         <img
           src={`image/${personalColor.replace(/\s+/g, '_').toLowerCase()}.png`}
           alt={`${personalColor} 차트`}
-          style={{ width: "100%", height: "390px" }}
+          style={{ width: "100%", height: "340px" }}
         />
       ) : (
         <p>정보를 찾을 수 없습니다.</p>

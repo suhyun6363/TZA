@@ -37,7 +37,8 @@
 }
 
 /* 촬영버튼 스타일 */
-button {
+.webcam-capture-button {
+
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -53,7 +54,7 @@ button {
   font-family: "Laundry";
 }
 
-button:hover {
+.webcam-capture-button:hover {
   background-color: #ff4081;
   color: #fff;
 }

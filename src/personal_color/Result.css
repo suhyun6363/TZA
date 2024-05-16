@@ -50,7 +50,8 @@
 
 .outer-container #etc-button {
   position: absolute;
-  margin-bottom: 80px;
+  /* margin-bottom: 50px; */
+  margin-top: 5%;
   left: 50%;
   transform: translateX(-50%);
   background-color: #ff4081;
