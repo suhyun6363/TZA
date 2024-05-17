@@ -12,14 +12,9 @@
   src: url("./font/AppleSDGothicNeoUL.ttf");
 }
 
-@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
-
 /* 전반적인 페이지 및 컨테이너 스타일 */
 .result2-page {
-  display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 0;
   /* position: relative; */
   margin-top: 1%;
 }
@@ -27,16 +22,13 @@
   display: flex;
   flex-direction: row; /* 요소들을 가로로 배열 */
   justify-content: space-between; /* 요소들 사이에 공간을 균등하게 배분 */
-  width: 100%;
   height: calc(100% - 150px);
 }
 
 /*핑크멘트부분*/
 .header-section {
-  position: absolute; /* 절대 위치 설정 */
-  top: 6%; 
-  left: 18%; /* 페이지 중앙으로 이동 */
-  transform: translateX(-50%); /* 정확한 중앙 정렬 */
+  position: relative;
+  top: -5%;
   width: auto; /* 너비 자동 조절 */
   padding: 1px 20px; /* 패딩 설정 */
   background-color: #ffccdd; /* 배경색 설정 */
@@ -45,46 +37,44 @@
 }
 
 .header-section h1 {
-  font-family: 'LaundryBold'; /* Apple 글꼴 사용 */
+  font-family: "LaundryBold"; /* Apple 글꼴 사용 */
   color: #333; /* 글자 색상은 진한 회색 */
   font-size: 24px; /* 폰트 크기 */
+  text-align: center; /* 글자 중앙 정렬 */
+}
+.result2-first-section {
 }
 
 /* 이미지 및 QR 코드 섹션 */
 .image-and-qr {
-  flex: 1; /* 이미지 섹션과 컬러 섹션의 크기 비율을 조절 */
   display: flex;
-  justify-content: center;
-  align-items: center;
-
 }
 .result2-image-section {
   display: flex; /* Flexbox 레이아웃 활성화 */
   justify-content: space-between; /* 자식 요소들을 컨테이너 양쪽 끝으로 배치 */
   align-items: center; /* 세로 중심으로 자식 요소들을 정렬 */
-  background-color: #FEF3F1;
-  padding: 15px;
+  background-color: #fef3f1;
+  padding: 25px 15px 20px 15px;
   border-radius: 8px;
-  margin-bottom: 390px;
-  margin-top: 12%; 
-  margin-left: 1%;
-  width: 310px;
+  margin-top: -50px;
+  width: 325px;
+  height: 80px;
 }
 
-.result2-image-section p{
+.result2-image-section p {
   font-size: 20px;
-  color: #282C34;
+  color: #282c34;
   margin-right: 15px;
   position: relative; /* 상대 위치 설정 */
   top: 10px; /* 적절한 위치 조정 */
 }
 
-.result2-image-section p1{
+.result2-image-section p1 {
   font-size: 10px;
-  color: #282C34;
+  color: #282c34;
   margin-right: 1px;
 }
- 
+
 .skin-image {
   width: 80px;
   height: 80px;
@@ -92,22 +82,21 @@
   position: relative; /* 상대 위치 설정 */
   margin-top: 20px;
   top: 0; /* 기본 위치 */
-  right: 0; 
+  right: 0;
 }
 
 .personal-color-graph {
   display: flex;
   flex-direction: column; /* 자식 요소를 세로로 쌓음 */
   align-items: center; /* 세로 중심에서 자식 요소들을 중앙 정렬 */
-  background-color: #FEF3F1;
+  background-color: #fef3f1;
   flex: 1;
-  padding: 0 5px; /* 상하 패딩 0, 좌우 패딩 20px */
   border-radius: 8px;
-  height: 325px;
-  width: 325px;
+  width: 355px;
+  height: 348px;
   position: absolute;
-  top: 29.5%;
-  margin-left: 0.5%;
+  margin-top: 10px;
+  z-index: 20; /* 다른 요소들 위에 표시 */
 }
 
 .personal-color-graph img {
@@ -119,11 +108,11 @@
 .color-descriptions {
   width: 100%; /* 설명란 너비를 부모 컨테이너의 너비에 맞춤 */
   margin-top: -12%;
-  white-space: pre-wrap;  /* 줄바꿈과 공백을 그대로 표시 */
+  white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 표시 */
 }
 
 .color-descriptions p {
-  font-family: 'Laundry';
+  font-family: "Laundry";
   color: #333;
   font-size: 15px;
   text-align: center; /* 텍스트 중앙 정렬 */
@@ -131,23 +120,15 @@
 
 /* 팔레트 컬러 정보 섹션 */
 .result2-section {
-  flex: 2; /* 컬러 섹션을 좀 더 넓게 설정 */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 120px;
   margin-bottom: 1%;
   margin-top: 1%;
+  padding-right: 5%;
 }
 
 .color-info {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
   height: auto;
+  margin-left: 0;
 }
 
 .best-color-section b {
@@ -162,7 +143,8 @@
   margin-bottom: 1px;
 }
 
-.best-color-section p, .second-color-section p {
+.best-color-section p,
+.second-color-section p {
   font-size: 12px; /* 글씨 크기를 15px로 설정 */
   color: #575454; /* 글씨 색상 설정, 필요에 따라 조정 */
   margin-bottom: 25px; /* 제목 아래 여백 제거 */
@@ -170,7 +152,8 @@
   text-align: right; /* 텍스트 오른쪽 정렬 */
 }
 
-.best-color-section, .second-color-section {
+.best-color-section,
+.second-color-section {
   margin-top: 5px;
   display: flex;
   flex-direction: column;
@@ -192,7 +175,7 @@
 }
 
 .second-color-title {
-  background-color: #BCE6EB; /* 원하는 배경색 */
+  background-color: #bce6eb; /* 원하는 배경색 */
   padding: 5px 20px; /* 적절한 패딩 */
   border-radius: 40px; /* 모서리 둥글게 */
   display: inline-block; /* 더 나은 배경 크기 조절을 위해 */
@@ -200,12 +183,11 @@
 }
 
 .color-info > div {
-  margin-right: 1px; /* 오른쪽 마진 추가 */
-  margin-left: 22px;
+  margin-left: 3%;
 }
 
 .color-info > div:last-child {
-  margin-right: 0; /* 마지막 항목 오른쪽 마진 제거 */
+  margin-right: px; /* 마지막 항목 오른쪽 마진 제거 */
 }
 /* 버튼 컨테이너 */
 .result2-button-container {
@@ -235,5 +217,4 @@
   border: none;
   cursor: pointer;
   border-radius: 6px;
-}
 }

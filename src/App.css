@@ -29,11 +29,7 @@
 }
 
 /* 아이패드 가로 방향일 때 적용 */
-@media only screen 
-  and (min-device-width : 768px) 
-  and (max-device-width : 1024px) 
-  and (orientation : landscape) 
-  and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
   .App-header {
     min-height: 50vh; /* 높이를 상황에 맞게 조정 */
     padding: 20px; /* 패딩 추가 */
