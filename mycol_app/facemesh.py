@@ -433,8 +433,8 @@ def process_uploaded_image(uploaded_images):
     L_value = average_lab.lab_l  # L 값
     a_value = average_lab.lab_a  # a 값
     b_value = average_lab.lab_b + 3  # b 값
-    s_value = average_hsv.hsv_s * 100 - 10  # s 값
-    v_value = average_hsv.hsv_v * 100 + 15  # v 값
+    s_value = average_hsv.hsv_s * 100 - 18  # s 값
+    v_value = average_hsv.hsv_v * 100 + 10  # v 값
 
     # 평균값에 따라 첫 번째 타입 분류
 
