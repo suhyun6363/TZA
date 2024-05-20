@@ -34,6 +34,7 @@
   background-color: #ffccdd; /* 배경색 설정 */
   border-radius: 40px; /* 모서리 둥글게 */
   z-index: 20; /* 다른 요소들 위에 표시 */
+  display: inline-block;
 }
 
 .header-section h1 {
@@ -42,7 +43,9 @@
   font-size: 24px; /* 폰트 크기 */
   text-align: center; /* 글자 중앙 정렬 */
 }
+
 .result2-first-section {
+  text-align: center;
 }
 
 /* 이미지 및 QR 코드 섹션 */
@@ -107,7 +110,7 @@
 
 .color-descriptions {
   width: 100%; /* 설명란 너비를 부모 컨테이너의 너비에 맞춤 */
-  margin-top: -12%;
+  margin-top: -8%;
   white-space: pre-wrap; /* 줄바꿈과 공백을 그대로 표시 */
 }
 
