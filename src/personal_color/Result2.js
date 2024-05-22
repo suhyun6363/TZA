@@ -76,9 +76,9 @@ const Result2 = () => {
   useEffect(() => {
     const imageUrl =
       "http://3.36.217.107/media/cluster_images/total_weighted_mean_color.png";
-    // "http://localhost:8000/media/cluster_images/total_weighted_mean_color.png";
+    //"http://localhost:8000/media/cluster_images/total_weighted_mean_color.png";
     const analysisUrl = "http://3.36.217.107/analysis/";
-    // const analysisUrl = "http://localhost:8000/analysis/";
+    //const analysisUrl = "http://localhost:8000/analysis/";
 
     const fetchData = async () => {
       try {

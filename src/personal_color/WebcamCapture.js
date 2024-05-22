@@ -32,43 +32,11 @@ const WebcamCapture = ({ onCapture }) => {
     setTimeout(async () => {
       clearInterval(countdownTimer); // 카운트다운 타이머 중지
       setShowCountdown(false); // countdown-indicator를 숨기기 위해 state 업데이트
+      const imageSrc = webcamRef.current.getScreenshot();
 
-      // 촬영 후 /loading으로 이동
-      navigate("/loading");
-
-      if (webcamRef.current) {
-        const imageSrc = webcamRef.current.getScreenshot();
-
-        // 이미지 데이터 URL을 Blob으로 변환
-        const response = await fetch(imageSrc);
-        const blobImage = await response.blob();
-
-        try {
-          // FormData에 이미지 추가
-          const formData = new FormData();
-          formData.append("image", blobImage, "captured_image.jpg");
-
-          // 이미지를 서버로 전송
-          const uploadResponse = await axios.post(
-            "http://3.36.217.107/api/upload/",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-
-          console.log("이미지 업로드 성공:", uploadResponse.data);
-
-          navigate("/image", {
-            state: { capturedImage: imageSrc },
-          });
-        } catch (error) {
-          // 전송 실패한 경우 오류 처리
-          console.error("이미지 업로드 실패:", error);
-        }
-      }
+      navigate("/image", {
+        state: { capturedImage: imageSrc },
+      });
     }, 3000); // 3초 후에 실행
   };
 
@@ -89,7 +57,9 @@ const WebcamCapture = ({ onCapture }) => {
         </div>
       </div>
       {/* 촬영 버튼 */}
-      <button className="webcam-capture-button" onClick={handleCaptureClick}>촬영하기</button>
+      <button className="webcam-capture-button" onClick={handleCaptureClick}>
+        촬영하기
+      </button>
 
       {/* 카운트다운 표시 */}
       {showCountdown && (
@@ -100,7 +70,6 @@ const WebcamCapture = ({ onCapture }) => {
 };
 
 export default WebcamCapture;
-
 
 // //파일 선택해서 이미지 업로드하는 용
 // import React, { useRef, useState } from "react";
@@ -115,7 +84,6 @@ export default WebcamCapture;
 //   const handleImageUpload = async () => {
 //     const fileInput = fileInputRef.current;
 //     const file = fileInput.files[0];
-    
 
 //     if (file) {
 //       try {
@@ -129,7 +97,7 @@ export default WebcamCapture;
 
 //         // 이미지를 서버로 전송
 //         const uploadResponse = await axios.post(
-//           "http://3.36.217.107/api/upload/",
+//           "http://localhost:8000/api/upload/",
 //           formData,
 //           {
 //             headers: {
@@ -158,6 +126,5 @@ export default WebcamCapture;
 //     </div>
 //   );
 // };
-
 
 // export default WebcamCapture;

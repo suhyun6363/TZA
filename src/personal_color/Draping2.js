@@ -11,7 +11,9 @@ const SecondImageComponent = () => {
       try {
         const imageUrls = [];
         for (let i = 1; i <= 5; i++) {
+          // const imageUrl = `http://localhost:8000/media/second_draping/second_${i}.png`;
           const imageUrl = `http://3.36.217.107/media/second_draping/second_${i}.png`;
+
           imageUrls.push(imageUrl);
         }
 

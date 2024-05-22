@@ -12,6 +12,7 @@ const Result3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // const analysisUrl = "http://localhost:8000/analysis/";
     const analysisUrl = "http://3.36.217.107/analysis/";
 
     const fetchData = async () => {
@@ -41,7 +42,7 @@ const Result3 = () => {
   }, []);
 
   const displayColor = (color) => {
-    return color.startsWith('N-') ? color.substring(2) : color;
+    return color.startsWith("N-") ? color.substring(2) : color;
   };
 
   const handleMeasureButtonClick = () => {
@@ -86,7 +87,7 @@ const Result3 = () => {
         </button>
       </div>
     </>
-  );  
+  );
 };
 
 export default Result3;
