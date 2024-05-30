@@ -1,68 +1,350 @@
 package kr.ac.duksung.mycol;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecommendFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.HashSet;
+import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import android.graphics.Color;
+
+
 public class RecommendFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView recyclerView;
+    private ProductAdapter adapter;
+    private List<Product> productList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public RecommendFragment() {
-        // Required empty public constructor
-    }
+    private static final String TAG = "RecommendFragment";
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecommendFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecommendFragment newInstance(String param1, String param2) {
-        RecommendFragment fragment = new RecommendFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recommend, container, false);
+
+        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        Button nextbutton = view.findViewById(R.id.nextbutton);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        productList = new ArrayList<>();
+        adapter = new ProductAdapter(productList, getContext());
+        recyclerView.setAdapter(adapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+
+        tabLayout.addTab(tabLayout.newTab().setText("촉촉립").setContentDescription("촉촉립"));
+        tabLayout.addTab(tabLayout.newTab().setText("뽀송립").setContentDescription("뽀송립"));
+        tabLayout.addTab(tabLayout.newTab().setText("아이").setContentDescription("아이"));
+        tabLayout.addTab(tabLayout.newTab().setText("촉촉블러셔").setContentDescription("촉촉블러셔"));
+        tabLayout.addTab(tabLayout.newTab().setText("뽀송블러셔").setContentDescription("뽀송블러셔"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+
+                switch (position) {
+                    case 0:
+                        fetchProductsFromFirestoreMoist(db, "립메이크업");
+                        break;
+                    case 1:
+                        fetchProductsFromFirestoreSmooth(db, "립메이크업");
+                        break;
+                    case 2:
+                        fetchProductsFromFirestore(db, "아이메이크업");
+                        break;
+                    case 3:
+                        fetchProductsFromFirestoreMoistBase(db, "베이스메이크업");
+                        break;
+                    case 4:
+                        fetchProductsFromFirestoreSmoothBase(db, "베이스메이크업");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        // 기본 탭 설정 및 기본 데이터 로드
+        tabLayout.getTabAt(0).select();
+        fetchProductsFromFirestoreMoist(db, "립메이크업");
+
+        nextbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TotalRecommendFragment로 이동하는 코드
+                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                // TotalRecommendFragment 생성
+                TotalRecommendFragment totalRecommendFragment = new TotalRecommendFragment();
+                // 해당 Fragment의 레이아웃 파일로부터 인스턴스를 생성하여 전달
+                fragmentTransaction.replace(R.id.menu_frame_layout, totalRecommendFragment);
+                fragmentTransaction.addToBackStack(null); // 이전 fragment로 돌아갈 수 있도록 back stack에 추가
+                fragmentTransaction.commit();
+            }
+        });
+
+
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_recommend, container, false);
-        ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_recommend,
-                container, false);
 
-        return rootView;
+    //립제품촉촉버전
+    private void fetchProductsFromFirestoreMoist(FirebaseFirestore db, String category) {
+        db.collection("new_data")
+                .whereEqualTo("category_list2", category)
+                .whereGreaterThanOrEqualTo("average_rate", 4.8)
+                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("moisturizing", 1)
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productList.clear();
+                            HashSet<String> productNames = new HashSet<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String imageUrl = document.getString("img");
+                                String productName = document.getString("name");
+
+                                String optionName = document.getString("option_name");
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // 중복 체크
+                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl);
+                                    productList.add(product);
+                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
+                                    count++; // 상품 개수 증가
+                                }
+                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                    break;
+                            }
+                            adapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
+
+
+
+    //립제품뽀송버전
+
+    private void fetchProductsFromFirestoreSmooth(FirebaseFirestore db, String category) {
+        db.collection("new_data")
+                .whereEqualTo("category_list2", category)
+                .whereGreaterThanOrEqualTo("average_rate", 4.8)
+                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("moisturizing", 0)
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productList.clear();
+                            HashSet<String> productNames = new HashSet<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String imageUrl = document.getString("img");
+                                String productName = document.getString("name");
+                                String optionName = document.getString("option_name");
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // 중복 체크
+                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl);
+                                    productList.add(product);
+                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
+                                    count++; // 상품 개수 증가
+                                }
+                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                    break;
+                            }
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
+                        } else {
+                            Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+
+
+
+
+    // 아이메컵
+    private void fetchProductsFromFirestore(FirebaseFirestore db, String category) {
+        db.collection("new_data")
+                .whereEqualTo("category_list2", category)
+                .whereGreaterThanOrEqualTo("average_rate", 4.7)
+                .whereEqualTo("result", "Summer cool light")
+                .whereIn("moisturizing", new ArrayList<Integer>() {{
+                    add(0);
+                    add(1);
+                }})
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productList.clear();
+                            HashSet<String> productNames = new HashSet<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String imageUrl = document.getString("img");
+                                String productName = document.getString("name");
+                                String optionName = document.getString("option_name");
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // 중복 체크
+                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl);
+                                    productList.add(product);
+                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
+                                    count++; // 상품 개수 증가
+                                }
+                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                    break;
+                            }
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
+                        } else {
+                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    //블러셔촉촉버전
+    private void fetchProductsFromFirestoreMoistBase(FirebaseFirestore db, String category) {
+        db.collection("new_data")
+                .whereEqualTo("category_list2", category)
+                .whereGreaterThanOrEqualTo("average_rate", 4.5)
+                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("moisturizing", 1)
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productList.clear();
+                            HashSet<String> productNames = new HashSet<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String imageUrl = document.getString("img");
+                                String productName = document.getString("name");
+                                String optionName = document.getString("option_name");
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // 중복 체크
+                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl);
+                                    productList.add(product);
+                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
+                                    count++; // 상품 개수 증가
+                                }
+                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                    break;
+                            }
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
+                        } else {
+                            Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    //블러셔뽀송버전
+
+    private void fetchProductsFromFirestoreSmoothBase(FirebaseFirestore db, String category) {
+        db.collection("new_data")
+                .whereEqualTo("category_list2", category)
+                .whereGreaterThanOrEqualTo("average_rate", 4.5)
+                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("moisturizing", 0)
+
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            productList.clear();
+                            HashSet<String> productNames = new HashSet<>();
+                            int count = 0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String imageUrl = document.getString("img");
+                                String productName = document.getString("name");
+                                String optionName = document.getString("option_name");
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // 중복 체크
+                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl);
+                                    productList.add(product);
+                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
+                                    count++; // 상품 개수 증가
+                                }
+                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                    break;
+                            }
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
+                        } else {
+                            Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+
 }
