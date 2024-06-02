@@ -1,3 +1,4 @@
+// HomeFragment.java
 package kr.ac.duksung.mycol;
 
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class HomeFragment extends Fragment {
     private ViewPager viewPager;
     private ImagePagerAdapter imagePagerAdapter;
     private LinearLayout indicatorLayout; // 인디케이터를 위한 레이아웃 추가
+    private SharedViewModel sharedViewModel;
 
     @Nullable
     @Override
@@ -38,6 +41,8 @@ public class HomeFragment extends Fragment {
         scanQRResult = rootView.findViewById(R.id.scanQRResult);
         viewPager = rootView.findViewById(R.id.viewPager);
         indicatorLayout = rootView.findViewById(R.id.indicatorLayout);
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         // 이미지 어댑터 초기화
         imagePagerAdapter = new ImagePagerAdapter(getChildFragmentManager());
@@ -100,6 +105,8 @@ public class HomeFragment extends Fragment {
         // 이미지 업데이트
         updateImageView(scanResult);
 
+        // ViewModel에 결과 설정
+        sharedViewModel.setScannedResult(scanResult);
     }
 
     @Override

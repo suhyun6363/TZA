@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Summer Cool Light 추천템"
+        android:text="Title"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import android.widget.Toast;
+import com.google.android.material.tabs.TabLayout;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,12 +34,20 @@ import android.widget.Button;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.graphics.Color;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 
 public class RecommendFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ProductAdapter adapter;
     private List<Product> productList;
+    private SharedViewModel sharedViewModel;
+    private TextView scanResultTextView;
+    private TabLayout tabLayout;
+
+
 
     private static final String TAG = "RecommendFragment";
 
@@ -47,7 +57,20 @@ public class RecommendFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recommend, container, false);
 
-        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+        scanResultTextView = view.findViewById(R.id.titleTextView);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        sharedViewModel.getScannedResult().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.d(TAG, "Scan result text: " + s);
+                scanResultTextView.setText(s);
+                // 스캔 결과가 변경되면 탭에 맞는 데이터를 다시 불러옴
+                loadProductsBasedOnTab();
+            }
+        });
+
+        tabLayout = view.findViewById(R.id.tabLayout);
         recyclerView = view.findViewById(R.id.recyclerView);
         Button nextbutton = view.findViewById(R.id.nextbutton);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -55,49 +78,7 @@ public class RecommendFragment extends Fragment {
         adapter = new ProductAdapter(productList, getContext());
         recyclerView.setAdapter(adapter);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        tabLayout.addTab(tabLayout.newTab().setText("촉촉립").setContentDescription("촉촉립"));
-        tabLayout.addTab(tabLayout.newTab().setText("뽀송립").setContentDescription("뽀송립"));
-        tabLayout.addTab(tabLayout.newTab().setText("아이").setContentDescription("아이"));
-        tabLayout.addTab(tabLayout.newTab().setText("촉촉블러셔").setContentDescription("촉촉블러셔"));
-        tabLayout.addTab(tabLayout.newTab().setText("뽀송블러셔").setContentDescription("뽀송블러셔"));
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-
-                switch (position) {
-                    case 0:
-                        fetchProductsFromFirestoreMoist(db, "립메이크업");
-                        break;
-                    case 1:
-                        fetchProductsFromFirestoreSmooth(db, "립메이크업");
-                        break;
-                    case 2:
-                        fetchProductsFromFirestore(db, "아이메이크업");
-                        break;
-                    case 3:
-                        fetchProductsFromFirestoreMoistBase(db, "베이스메이크업");
-                        break;
-                    case 4:
-                        fetchProductsFromFirestoreSmoothBase(db, "베이스메이크업");
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
-
-        // 기본 탭 설정 및 기본 데이터 로드
-        tabLayout.getTabAt(0).select();
-        fetchProductsFromFirestoreMoist(db, "립메이크업");
+        setupTabs(); // 탭 초기화
 
         nextbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,14 +95,77 @@ public class RecommendFragment extends Fragment {
             }
         });
 
+
         return view;
     }
 
-    private void fetchProductsFromFirestoreMoist(FirebaseFirestore db, String category) {
+    // 탭 초기화
+    private void setupTabs() {
+        tabLayout.addTab(tabLayout.newTab().setText("촉촉립").setContentDescription("촉촉립"));
+        tabLayout.addTab(tabLayout.newTab().setText("뽀송립").setContentDescription("뽀송립"));
+        tabLayout.addTab(tabLayout.newTab().setText("아이").setContentDescription("아이"));
+        tabLayout.addTab(tabLayout.newTab().setText("촉촉블러셔").setContentDescription("촉촉블러셔"));
+        tabLayout.addTab(tabLayout.newTab().setText("뽀송블러셔").setContentDescription("뽀송블러셔"));
+
+        // 탭 선택 리스너 등록
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                loadProductsBasedOnTab();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+        // 기본 탭 설정 및 기본 데이터 로드
+        tabLayout.getTabAt(0).select();
+    }
+
+    // 선택된 탭에 따라 상품을 불러오는 메서드
+    private void loadProductsBasedOnTab() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String result = scanResultTextView.getText().toString();
+        int position = tabLayout.getSelectedTabPosition();
+
+        switch (position) {
+            case 0:
+                fetchProductsFromFirestoreMoist(db, "립메이크업", result);
+                break;
+            case 1:
+                fetchProductsFromFirestoreSmooth(db, "립메이크업", result);
+                break;
+            case 2:
+                fetchProductsFromFirestore(db, "아이메이크업", result);
+                break;
+            case 3:
+                fetchProductsFromFirestoreMoistBase(db, "베이스메이크업", result);
+                break;
+            case 4:
+                fetchProductsFromFirestoreSmoothBase(db, "베이스메이크업", result);
+                break;
+        }
+    }
+
+
+    // TotalRecommendFragment로 이동하는 메서드
+    private void navigateToTotalRecommendFragment() {
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        TotalRecommendFragment totalRecommendFragment = new TotalRecommendFragment();
+        fragmentTransaction.replace(R.id.menu_frame_layout, totalRecommendFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void fetchProductsFromFirestoreMoist(FirebaseFirestore db, String category, String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.8)
-                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 1)
                 .limit(10)
                 .get()
@@ -157,11 +201,11 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    private void fetchProductsFromFirestoreSmooth(FirebaseFirestore db, String category) {
+    private void fetchProductsFromFirestoreSmooth(FirebaseFirestore db, String category,  String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.8)
-                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 0)
                 .limit(10)
                 .get()
@@ -198,11 +242,11 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    private void fetchProductsFromFirestore(FirebaseFirestore db, String category) {
+    private void fetchProductsFromFirestore(FirebaseFirestore db, String category,  String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.7)
-                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("result", result)
                 .whereIn("moisturizing", new ArrayList<Integer>() {{
                     add(0);
                     add(1);
@@ -243,11 +287,11 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    private void fetchProductsFromFirestoreMoistBase(FirebaseFirestore db, String category) {
+    private void fetchProductsFromFirestoreMoistBase(FirebaseFirestore db, String category,  String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.5)
-                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 1)
                 .limit(10)
                 .get()
@@ -284,11 +328,11 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    private void fetchProductsFromFirestoreSmoothBase(FirebaseFirestore db, String category) {
+    private void fetchProductsFromFirestoreSmoothBase(FirebaseFirestore db, String category,  String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.5)
-                .whereEqualTo("result", "Summer cool light")
+                .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 0)
                 .limit(10)
                 .get()
