@@ -15,7 +15,7 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_palette" />
+        android:src="@drawable/ic_tza" />
 
     <EditText
         android:id="@+id/editTextSignupEmail"
