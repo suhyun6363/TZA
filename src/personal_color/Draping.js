@@ -90,7 +90,7 @@ const BestImageComponent = () => {
   }, []);
 
   const handleMeasureButtonClick = () => {
-    navigate("/");
+    navigate("/qrcode");
   };
 
   const goBack = () => {
@@ -136,7 +136,7 @@ const BestImageComponent = () => {
             ⏎
           </button>
           <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
-            처음으로 돌아가기
+            QR 발급받기
           </button>
         </div>
       </div>
