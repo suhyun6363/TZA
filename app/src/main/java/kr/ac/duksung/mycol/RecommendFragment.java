@@ -33,13 +33,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.graphics.Color;
 
-
 public class RecommendFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ProductAdapter adapter;
     private List<Product> productList;
-
 
     private static final String TAG = "RecommendFragment";
 
@@ -59,8 +57,6 @@ public class RecommendFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
-
         tabLayout.addTab(tabLayout.newTab().setText("촉촉립").setContentDescription("촉촉립"));
         tabLayout.addTab(tabLayout.newTab().setText("뽀송립").setContentDescription("뽀송립"));
         tabLayout.addTab(tabLayout.newTab().setText("아이").setContentDescription("아이"));
@@ -72,7 +68,6 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-
 
                 switch (position) {
                     case 0:
@@ -94,9 +89,7 @@ public class RecommendFragment extends Fragment {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
@@ -121,13 +114,9 @@ public class RecommendFragment extends Fragment {
             }
         });
 
-
-
         return view;
     }
 
-
-    //립제품촉촉버전
     private void fetchProductsFromFirestoreMoist(FirebaseFirestore db, String category) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
@@ -146,13 +135,13 @@ public class RecommendFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
-
                                 String optionName = document.getString("option_name");
+                                String number = document.getString("number");
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
@@ -161,17 +150,12 @@ public class RecommendFragment extends Fragment {
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            adapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
-
-
-
-    //립제품뽀송버전
 
     private void fetchProductsFromFirestoreSmooth(FirebaseFirestore db, String category) {
         db.collection("new_data")
@@ -192,11 +176,12 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                String number = document.getString("number");
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
@@ -213,11 +198,6 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-
-
-
-
-    // 아이메컵
     private void fetchProductsFromFirestore(FirebaseFirestore db, String category) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
@@ -240,11 +220,12 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                String number = document.getString("number");
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
@@ -262,7 +243,6 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    //블러셔촉촉버전
     private void fetchProductsFromFirestoreMoistBase(FirebaseFirestore db, String category) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
@@ -282,11 +262,12 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                String number = document.getString("number");
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
@@ -303,15 +284,12 @@ public class RecommendFragment extends Fragment {
                 });
     }
 
-    //블러셔뽀송버전
-
     private void fetchProductsFromFirestoreSmoothBase(FirebaseFirestore db, String category) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
                 .whereGreaterThanOrEqualTo("average_rate", 4.5)
                 .whereEqualTo("result", "Summer cool light")
                 .whereEqualTo("moisturizing", 0)
-
                 .limit(10)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -325,11 +303,12 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                String number = document.getString("number");
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
@@ -345,6 +324,4 @@ public class RecommendFragment extends Fragment {
                     }
                 });
     }
-
-
 }

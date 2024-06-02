@@ -1,17 +1,20 @@
 package kr.ac.duksung.mycol;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-import android.content.Context;
-import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> productList;
@@ -44,6 +47,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         Glide.with(context)
                 .load(product.getImageUrl())
                 .into(holder.productImage);
+
+        // 클릭 이벤트 설정
+        holder.itemView.setOnClickListener(v -> {
+            String url = "https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=" + product.getNumber();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(intent);
+        });
     }
 
     @Override

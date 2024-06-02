@@ -136,20 +136,20 @@ public class TotalRecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+                                String number = document.getString("number"); // number 필드 가져오기
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Number: " + number);
 
-                                // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
-                                if (count >= 10) // 이미 10개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 10)
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
+                            recyclerView.scrollToPosition(0);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();

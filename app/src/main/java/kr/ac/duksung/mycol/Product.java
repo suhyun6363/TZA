@@ -4,17 +4,14 @@ public class Product {
     private String name;
     private String optionName;
     private String imageUrl;
+    private String number;
 
-    public Product() {
-        // 파이어스토어에서 객체를 생성할 때 기본 생성자가 필요합니다.
-    }
-
-    public Product(String name, String optionName, String imageUrl) {
+    public Product(String name, String optionName, String imageUrl, String number) {
         this.name = name;
         this.optionName = optionName;
         this.imageUrl = imageUrl;
+        this.number = number;
     }
-
     // 이미지 URL을 받는 생성자 추가
     public Product(String imageUrl) {
         this.imageUrl = imageUrl;
@@ -55,5 +52,9 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getNumber() {
+        return number;
     }
 }
