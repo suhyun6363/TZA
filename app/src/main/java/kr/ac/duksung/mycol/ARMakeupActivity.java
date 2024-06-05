@@ -35,7 +35,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-// CameraActivity 클래스는 카메라를 초기화하고, 얼굴 랜드마커를 설정하는 역할을 합니다.
 public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarkerHelper.LandmarkerListener {
 
     private static final String TAG = "Face Landmarker";
@@ -44,7 +43,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
     private ActivityArmakeupBinding binding;
     private FaceLandmarkerHelper faceLandmarkerHelper;
     private MainViewModel viewModel;
-    // private FaceBlendshapesResultAdapter faceBlendshapesResultAdapter;
     private Preview preview;
     private ImageAnalysis imageAnalyzer;
     private Camera camera;
@@ -52,27 +50,21 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
     private int cameraFacing = CameraSelector.LENS_FACING_FRONT;
     private ExecutorService backgroundExecutor;
 
-    // onCreate는 액티비티가 생성될 때 호출되며, 초기 설정 및 뷰 바인딩을 처리합니다.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityArmakeupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // ViewModelProvider를 통해 뷰모델을 초기화합니다.
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
-        // 백그라운드 작업을 처리할 ExecutorService를 초기화합니다.
         backgroundExecutor = Executors.newSingleThreadExecutor();
 
-        // 카메라 권한이 있는지 확인하고, 없다면 요청합니다.
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             binding.viewFinder.post(() -> setUpCamera());
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
 
-        // 백그라운드에서 FaceLandmarkerHelper를 초기화합니다.
         backgroundExecutor.execute(() -> {
             faceLandmarkerHelper = new FaceLandmarkerHelper(
                     viewModel.getCurrentMinFaceDetectionConfidence(),
@@ -87,26 +79,26 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         });
     }
 
-    // UI 업데이트 메서드. 현재 설정 값을 UI에 반영합니다.
-    private void updateControlsUi() {
-
-        // 백그라운드에서 FaceLandmarkerHelper를 초기화합니다.
-        backgroundExecutor.execute(() -> {
-            faceLandmarkerHelper.clearFaceLandmarker();
-            faceLandmarkerHelper.setupFaceLandmarker();
-        });
-
-        // 화면 오버레이를 초기화합니다.
-        binding.overlay.clear();
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                binding.viewFinder.post(() -> setUpCamera());
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    // 카메라를 설정하는 메서드
     @SuppressLint("MissingPermission")
     private void setUpCamera() {
+        Log.d(TAG, "Setting up camera...");
         ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {
             try {
                 cameraProvider = cameraProviderFuture.get();
+                Log.d(TAG, "Camera provider obtained.");
                 bindCameraUseCases();
             } catch (Exception e) {
                 Log.e(TAG, "Camera initialization failed", e);
@@ -114,9 +106,9 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         }, ContextCompat.getMainExecutor(this));
     }
 
-    // 카메라의 유스 케이스를 바인딩하는 메서드
     @SuppressLint("UnsafeOptInUsageError")
     private void bindCameraUseCases() {
+        Log.d(TAG, "Binding camera use cases...");
         if (cameraProvider == null) {
             throw new IllegalStateException("Camera initialization failed.");
         }
@@ -141,13 +133,13 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
 
         try {
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer);
+            Log.d(TAG, "Camera use cases bound.");
             preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
         } catch (Exception e) {
             Log.e(TAG, "Use case binding failed", e);
         }
     }
 
-    // 얼굴을 감지하는 메서드
     private void detectFace(ImageProxy imageProxy) {
         faceLandmarkerHelper.detectLiveStream(
                 imageProxy,
@@ -155,7 +147,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         );
     }
 
-    // 구성 변경이 발생했을 때 호출되는 메서드
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -164,7 +155,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         }
     }
 
-    // 얼굴 감지 결과를 처리하는 메서드
     @Override
     public void onResults(@NonNull FaceLandmarkerHelper.ResultBundle resultBundle) {
         runOnUiThread(() -> {
@@ -181,7 +171,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         });
     }
 
-    // 얼굴 감지 결과가 없을 때 호출되는 메서드
     @Override
     public void onEmpty() {
         binding.overlay.clear();
@@ -191,7 +180,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         });
     }
 
-    // 얼굴 감지 오류가 발생했을 때 호출되는 메서드
     @Override
     public void onError(String error, int errorCode) {
         runOnUiThread(() -> {
@@ -205,7 +193,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         });
     }
 
-    // 액티비티가 재개될 때 호출되는 메서드
     @Override
     protected void onResume() {
         super.onResume();
@@ -217,7 +204,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         });
     }
 
-    // 액티비티가 일시 정지될 때 호출되는 메서드
     @Override
     protected void onPause() {
         super.onPause();
@@ -232,7 +218,6 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         }
     }
 
-    // 액티비티가 종료될 때 호출되는 메서드
     @Override
     protected void onDestroy() {
         super.onDestroy();
