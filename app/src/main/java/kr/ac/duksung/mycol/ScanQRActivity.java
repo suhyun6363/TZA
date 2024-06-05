@@ -74,7 +74,7 @@ public class ScanQRActivity extends AppCompatActivity {
     private void handleScanResult(String scanResult) {
         Log.d(TAG, "진단 결과를 DiagnosticActivity로 전달.");
         Intent intent = new Intent(this, DiagnosticActivity.class);
-        intent.putExtra("진단 결과", scanResult);
+        intent.putExtra("scan_result", scanResult);
         startActivity(intent);
         finish();
     }
