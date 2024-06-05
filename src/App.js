@@ -12,6 +12,8 @@ import Result2 from "./personal_color/Result2";
 import Result3 from "./personal_color/Result3";
 import Draping from "./personal_color/Draping";
 import Draping2 from "./personal_color/Draping2";
+import QR from "./personal_color/qr"; // QR 컴포넌트 임포트
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/result3" element={<Result3 />} />
           <Route path="/draping" element={<Draping />} />
           <Route path="/draping2" element={<Draping2 />} />
+          <Route path="/qrcode" element={<QR/>}/>
         </Routes>
       </header>
     </div>

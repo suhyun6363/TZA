@@ -12,7 +12,7 @@ const Result3 = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const analysisUrl = "http://localhost:8000/analysis/";
+    //const analysisUrl = "http://localhost:8000/analysis/";
     const analysisUrl = "http://3.36.217.107/analysis/";
 
     const fetchData = async () => {
@@ -83,7 +83,7 @@ const Result3 = () => {
           ⏎
         </button>
         <button id="result3-etc-button" onClick={handleMeasureButtonClick}>
-          나와 어울리는 베스트 컬러 확인하기
+          가상 드레이핑 확인하기
         </button>
       </div>
     </>

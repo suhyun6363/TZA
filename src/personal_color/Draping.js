@@ -14,7 +14,7 @@ const BestImageComponent = () => {
         const bestImageUrls = [];
         for (let i = 1; i <= 5; i++) {
           const imageUrl = `http://3.36.217.107/media/best_draping/best_${i}.png`;
-          // const imageUrl = `http://localhost:8000/media/best_draping/best_${i}.png`;
+          //const imageUrl = `http://localhost:8000/media/best_draping/best_${i}.png`;
           bestImageUrls.push(imageUrl);
         }
 
@@ -90,7 +90,7 @@ const BestImageComponent = () => {
   }, []);
 
   const handleMeasureButtonClick = () => {
-    navigate("/");
+    navigate("/qrcode");
   };
 
   const goBack = () => {
@@ -100,7 +100,7 @@ const BestImageComponent = () => {
   return (
     <div className="draping-outer-container">
       <div className="draping-inner-container">
-        <h2 id="draping-best-color">베스트 컬러 드레이핑</h2>
+        <h2 id="draping-best-color">Best Color Draping</h2>
         <div className="draping-grid-container">
           {/* Best Color 이미지 출력 */}
           {bestImageSrcList.map((src, index) => (
@@ -114,7 +114,7 @@ const BestImageComponent = () => {
             </div>
           ))}
         </div>
-        <h2 id="draping-second-color">세컨드 컬러</h2>
+        <h2 id="draping-second-color">Worst Color Draping</h2>
         <div className="draping-grid-container">
           {/* Second Color 이미지 출력 */}
           {secondImageSrcList.map((src, index) => (
@@ -136,7 +136,7 @@ const BestImageComponent = () => {
             ⏎
           </button>
           <button id="draping-etc-button" onClick={handleMeasureButtonClick}>
-            처음으로 돌아가기
+            QR 발급받기
           </button>
         </div>
       </div>

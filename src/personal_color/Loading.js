@@ -1,12 +1,13 @@
 import React from 'react';
-import "./Loading.css";
+import './Loading.css';
 
 const Loading = () => {
- 
     return (
-        <div>
-            <h1>퍼스널 컬러 분석 중</h1>
-            <img src="/Spinnerhshshs.gif" alt="Spinner" width="100%" />
+        <div className="scan">
+            <div className="face">
+                <div className="dots"></div>
+            </div>
+            <h3>컬러 분석 중</h3>
         </div>
     );
 }

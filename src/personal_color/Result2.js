@@ -45,7 +45,7 @@ const colorDescriptions = {
   "Spring warm light":
     "밝고 산뜻한 봄의 이미지가 느껴지는 톤이네요!\n 흰빛이 섞인 따뜻한 파스텔 계열이 가장 잘 어울려요.\n 명도와 채도가 낮은 색은 피해주세요!",
   "Spring warm bright":
-    "귀엽고 러블리한 이미지가 느껴지는 톤이네요!\n과일처럼 생기있고 상큼한 이미지에 맞게 고채도의 따뜻한 밝은 색이 잘 어울려요.\n차갑고 어두운 색은 피해주세요!",
+    "귀엽고 발랄한 이미지가 느껴지는 톤이네요!\n과일처럼 생기있고 상큼한 이미지에 맞게 고채도의 따뜻한 밝은 색이 잘 어울려요.\n차갑고 어두운 색은 피해주세요!",
   "Summer cool light":
     "이온음료 광고가 떠오르는 여름의 청초함이 느껴지는 톤이네요!\n은은하고 부드러운 파스텔 톤이 가장 잘 어울려요.\n린넨과 쉬폰 소재의 옷을 입으면 이미지를 더 살릴 수 있어요!",
   "Summer cool mute":
@@ -169,10 +169,9 @@ const Result2 = () => {
                 {analysisData.personal_color.startsWith("N-") ? (
                   <p>
                     당신은 웜톤과 쿨톤, 두 가지를 모두 잘 소화할 수 있는
-                    <br /> 특별한 뉴트럴 톤을 가지고 계시네요.
-                    <br /> 소화할 수 있는 컬러가 풍부한 타입이네요. <br />
-                    뉴트럴 톤이지만, 당신에게 조금 더 어울리는 컬러를 오른쪽에서
-                    알려드릴게요!
+                    <br /> 뉴트럴 톤이시네요.
+                    <br /> 온도보다는, 명도와 채도가 중요한 타입이에요. <br />
+                    뉴트럴 톤 중에서도 잘 어울리는 컬러를 추천해드릴게요!
                   </p>
                 ) : (
                   <p>{colorDescriptions[analysisData.personal_color]}</p>
@@ -187,7 +186,7 @@ const Result2 = () => {
                 <div className="best-color-title">
                   <b>Best : {displayColor(analysisData.personal_color)}</b>
                 </div>
-                <p>가장 잘 어울리는 색상 추천</p>
+                <p>best color chips</p>
                 <PersonalColorDiagnosis
                   personalColor={displayColor(analysisData.personal_color)}
                   type="chart"
@@ -195,9 +194,9 @@ const Result2 = () => {
               </div>
               <div className="second-color-section">
                 <div className="second-color-title">
-                  <b>Second : {displayColor(analysisData.second_color)}</b>
+                  <b>Worst : {displayColor(analysisData.second_color)}</b>
                 </div>
-                <p>두번째로 잘 어울리는 색상</p>
+                <p>worst color chips</p>
                 <PersonalColorDiagnosis
                   personalColor={displayColor(analysisData.second_color)}
                   type="chart"
