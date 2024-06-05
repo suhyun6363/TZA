@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="mp_color_primary">#007F8B</color>
+    <color name="pink">#FF4081</color>
 </resources>

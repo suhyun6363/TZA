@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecommendFragment">
+    tools:context=".TotalRecommendFragment">
 
     <!-- 제목 텍스트뷰 추가 -->
     <TextView
@@ -12,12 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Title"
+        android:text="퍼스널 컬러 별 메이크업 랭킹"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tabLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextView"
@@ -25,29 +25,26 @@
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@android:color/darker_gray"
         app:tabMode="scrollable"
-        android:contentDescription="추천 제품 탭"/>
+        android:contentDescription="퍼컬" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout1"
+        app:tabIndicatorColor="@android:color/white"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@android:color/darker_gray"
+        android:contentDescription="제품" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="550dp"
-        android:layout_below="@id/tabLayout"
+        android:layout_below="@id/tabLayout2"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="91dp"
         tools:listitem="@layout/item_product" />
-
-
-    <android.widget.Button
-        android:id="@+id/nextbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:background="#ff4081"
-        android:textColor="@color/white"/>
-
 
 
 </RelativeLayout>

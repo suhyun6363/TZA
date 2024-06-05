@@ -1,15 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/scanQRResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="퍼스널 진단 결과 : ?"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/scanQRButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR 코드 스캔"
-        android:layout_gravity="center_horizontal"/>
+        android:text="QR 코드 스캔하기"
+        android:layout_below="@id/scanQRResult"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_round"
+        android:layout_centerHorizontal="true"/>
 
-</LinearLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/scanQRButton"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/indicatorLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp">
+
+        <View
+            android:id="@+id/selectedIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/selected_circle_shape"
+            android:layout_marginEnd="5dp" />
+
+        <View
+            android:id="@+id/unselectedIndicator"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/unselected_circle_shape"
+            android:layout_marginEnd="5dp" />
+
+    </LinearLayout>
+</RelativeLayout>

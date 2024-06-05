@@ -11,11 +11,11 @@
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="273dp"
+        android:layout_height="142dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_palette" />
+        android:src="@drawable/ic_tza" />
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
         android:hint="이메일"
-        android:inputType="text" />
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/editTextPw"
@@ -40,21 +40,21 @@
 <!--        android:hint="로그인 정보 기억하기" />-->
 
     <android.widget.Button
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="#ff4081"
+        android:background="@drawable/button_round"
         android:onClick="onLoginButtonClick"
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <android.widget.Button
-        android:layout_width="200dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="#ff4081"
+        android:background="@drawable/button_round"
         android:onClick="onSignupButtonClick"
         android:text="회원가입"
         android:textColor="@color/white"
