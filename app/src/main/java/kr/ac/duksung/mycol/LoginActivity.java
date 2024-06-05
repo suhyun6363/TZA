@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,8 +27,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Firebase 초기화
-        FirebaseApp.initializeApp(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
         login_email = findViewById(R.id.editTextEmail);
@@ -54,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 // 로그인 실패
-//                                Toast.makeText(LoginActivity.this, "로그인 실패: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 Toast.makeText(LoginActivity.this, "이메일이나 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -70,3 +66,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+

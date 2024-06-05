@@ -7,8 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -20,33 +18,34 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String SELECTED_ITEM_KEY = "selected_item_key";
     private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private HomeFragment fragmentHome = new HomeFragment();
     private RecommendFragment fragmentRecommend = new RecommendFragment();
+    private MakeupFragment fragmentMakeup = new MakeupFragment();
     private MypageFragment fragmentMypage = new MypageFragment();
-    private BottomNavigationView bottomNavigationView;
-    private int selectedItemId = R.id.menu_home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.menu_buttom_navigation);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.menu_frame_layout, fragmentHome).commitAllowingStateLoss();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.menu_buttom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+
 
         // onCreate에서 인텐트 확인하여 스캔 결과 처리
         handleIntent(getIntent());
+
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            selectedItemId = menuItem.getItemId();
 
             switch (menuItem.getItemId()) {
                 case R.id.menu_home:
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.menu_frame_layout, fragmentMypage).commitAllowingStateLoss();
                     break;
             }
-            // transaction.commitAllowingStateLoss();
             return true;
         }
     }
