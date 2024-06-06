@@ -1,0 +1,2 @@
+ninja: Entering directory `C:\CookAndroid\Project\TZA3\opencv\.cxx\Debug\1t3c3t6r\x86_64'
+ninja: no work to do.

@@ -1,6 +1,7 @@
 package kr.ac.duksung.mycol;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class MypageFragment extends Fragment {
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_mypage, container, false);
+
+        // SharedPreferences 초기화
+        sharedPreferences = getActivity().getSharedPreferences("loginPrefs", getActivity().MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         // 로그아웃 버튼 클릭 이벤트 처리
         Button logoutButton = rootView.findViewById(R.id.logoutButton);
@@ -29,6 +37,10 @@ public class MypageFragment extends Fragment {
                 // FirebaseAuth를 사용하여 로그아웃
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(getActivity(), "로그아웃", Toast.LENGTH_SHORT).show();
+
+                // 자동 로그인 정보 삭제
+                editor.clear();
+                editor.apply();
 
                 // 로그인 화면으로 이동
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -42,3 +54,4 @@ public class MypageFragment extends Fragment {
         return rootView;
     }
 }
+
