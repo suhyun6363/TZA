@@ -41,15 +41,15 @@ public class ImagePagerAdapter extends FragmentStatePagerAdapter {
     // restoreState() 메서드를 오버라이드하여 복원된 Fragment의 상태를 관리합니다.
     @Override
     public void restoreState(@Nullable Parcelable state, ClassLoader loader) {
-        try {
-            // 예외 처리를 하지 않고 상태 복원을 시도합니다.
-            super.restoreState(state, loader);
-        } catch (IllegalStateException e) {
-            // 예외 발생 시 로그를 출력합니다.
-            Log.e("ImagePagerAdapter", "Error restoring state: " + e.getMessage());
-        } catch (NullPointerException e) {
-            // 예외 발생 시 로그를 출력합니다.
-            Log.e("ImagePagerAdapter", "Null pointer exception during state restore: " + e.getMessage());
-        }
-    }
+//        try {
+//            // 예외 처리를 하지 않고 상태 복원을 시도합니다.
+//            super.restoreState(state, loader);
+//        } catch (IllegalStateException e) {
+//            // 예외 발생 시 로그를 출력합니다.
+//            Log.e("ImagePagerAdapter", "Error restoring state: " + e.getMessage());
+//        } catch (NullPointerException e) {
+//            // 예외 발생 시 로그를 출력합니다.
+//            Log.e("ImagePagerAdapter", "Null pointer exception during state restore: " + e.getMessage());
+//        }
+       }
 }

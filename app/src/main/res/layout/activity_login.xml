@@ -33,11 +33,11 @@
         android:hint="비밀번호"
         android:inputType="textPassword" />
 
-<!--    <CheckBox-->
-<!--        android:id="@+id/checkBoxAuto"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="로그인 정보 기억하기" />-->
+    <CheckBox
+        android:id="@+id/checkBoxAuto"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="로그인 정보 기억하기" />
 
     <android.widget.Button
         android:layout_width="120dp"
