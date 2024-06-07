@@ -34,16 +34,15 @@ def process_uploaded_image(uploaded_images):
     uploaded_images = UploadedImage.objects.order_by('-id').first()
     IMAGE_FILES = [uploaded_images]
 
+    # Analysis 모델에 데이터 저장
+    analysis_instance = Analysis.objects.create()
+
     # facemesh
     with mp.solutions.face_mesh.FaceMesh(
             static_image_mode=True,
             max_num_faces=1,
             refine_landmarks=True,
             min_detection_confidence=0.5) as face_mesh:
-
-        # Analysis 모델에 데이터 저장
-        analysis_instance = Analysis.objects.create()
-
         # for idx, file in enumerate(IMAGE_FILES):
         for idx, uploaded_image in enumerate(IMAGE_FILES):
             # image = cv2.imread(file)
@@ -375,6 +374,7 @@ def process_uploaded_image(uploaded_images):
     os.makedirs(output_directory, exist_ok=True)
 
 
+
     # 클러스터 이미지 및 Total Weighted Mean Color 이미지 저장
     cluster_images = []  # 클러스터 이미지 파일 경로를 저장할 리스트
 
@@ -434,20 +434,23 @@ def process_uploaded_image(uploaded_images):
     a_value = average_lab.lab_a  # a 값
     b_value = average_lab.lab_b + 3  # b 값
     s_value = average_hsv.hsv_s * 100 - 18  # s 값
-    v_value = average_hsv.hsv_v * 100  # v 값
+    v_value = average_hsv.hsv_v * 100   # v 값
+
+    result = None
+    second_result = None
 
     # 평균값에 따라 첫 번째 타입 분류
 
     if 17.0 <= b_value < 20.0:
-        if v_value > 65.20 and b_value-18.50 > 0 and s_value > 33:
+        if v_value > 65.20 and b_value-18.50 >= 0 and s_value > 33:
             result = "N-Spring warm bright"
-        elif v_value > 65.20 and b_value-18.50 > 0 and s_value <= 33:
+        elif v_value > 65.20 and b_value-18.50 >= 0 and s_value <= 33:
             result = "N-Spring warm light"
         elif v_value > 65.20 and b_value-18.50 < 0 and s_value <= 33:
             result = "N-Summer cool light"
         elif v_value <= 65.20 and b_value-18.50 < 0 and s_value <= 33:
-            result = "N-Spring warm mute"
-        elif v_value <= 65.20 and b_value-18.50 > 0 and s_value <= 33:
+            result = "N-Summer cool mute"
+        elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value <= 33:
             result = "N-Autumn warm mute"
         elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value > 33:
             result = "N-Autumn warm deep"
@@ -477,86 +480,130 @@ def process_uploaded_image(uploaded_images):
     print(f'b_value: {b_value}')
     print(f's_value: {s_value}')
 
+
     analysis_instance.v = v_value
     analysis_instance.b = b_value
     analysis_instance.s = s_value
     analysis_instance.save()
 
-    # Normalize values to the range [0, 1]
-    b_normalized = (b_value + 128) / 255.0  # Assuming b range is -128 to 127
-    v_normalized = v_value / 100.0
-    s_normalized = s_value / 100.0
 
-    # Calculate differences
-    normalized_diff_v = (v_normalized - 0.652)
-    normalized_diff_b = (b_normalized - 0.185)
-    normalized_diff_s = (s_normalized - 0.33)
+    # 세컨드 > 워스트로 변경
+    # second_result = 워스트임!!
 
-    # Determine the smallest absolute difference among normalized_diff_v, normalized_diff_b, and normalized_diff_s
-    min_diff = min(abs(normalized_diff_v), abs(normalized_diff_b), abs(normalized_diff_s))
+    if result == "N-Spring warm bright":
+        second_result = "N-Summer cool mute"
+    elif result == "N-Winter cool bright":
+         second_result = "N-Autumn warm mute"
+    elif result == "N-Spring warm light":
+         second_result = "N-Winter cool deep"
+    elif result == "N-Summer cool light":
+         second_result = "N-Autumn warm deep"
+    elif result == "N-Autumn warm mute":
+         second_result = "N-Winter cool bright"
+    elif result == "N-Summer cool mute":
+        second_result = "N-Spring warm bright"
+    elif result == "N-Winter cool deep":
+         second_result = "N-Spring warm light"
+    elif result == "N-Autumn warm deep":
+        second_result = "N-Summer cool light"
+    # 워스트 계산
+    if result == "Spring warm light":
+        second_result = "Winter cool deep"
+    if result == "Spring warm bright":
+        second_result = "Summer cool mute"
+    if result == "Summer cool light":
+        second_result = "Autumn warm deep"
+    if result == "Summer cool mute":
+        second_result = "Spring warm bright"
+    if result == "Autumn warm mute":
+        second_result = "Winter cool bright"
+    if result == "Autumn warm deep":
+        second_result = "Summer cool light"
+    if result == "Winter cool bright":
+        second_result = "Autumn warm mute"
+    if result == "Winter cool deep":
+        second_result = "Spring warm light"
 
-    # Calculate second_vbs based on the normalized differences
-    if min_diff == abs(normalized_diff_v):
-        new_v_value = v_value - normalized_diff_v * 100 * 2
-        new_b_value = b_value
-        new_s_value = s_value
-    elif min_diff == abs(normalized_diff_b):
-        new_v_value = v_value
-        new_b_value = b_value - normalized_diff_b * 255 * 2
-        new_s_value = s_value
-    else:
-        new_v_value = v_value
-        new_b_value = b_value
-        new_s_value = s_value - normalized_diff_s * 100 * 2
 
-    if 17.0 <= new_b_value < 20.0:
-        if result == "N-Spring warm bright":
-            second_result = "N-Winter cool bright"
-        elif result == "N-Winter cool bright":
-            second_result = "N-Spring warm bright"
-        elif result == "N-Spring warm light":
-            second_result = "N-Summer cool light"
-        elif result == "N-Summer cool light":
-            second_result = "N-Spring warm light"
-        elif result == "N-Autumn warm mute":
-            second_result = "N-Summer cool mute"
-        elif result == "N-Summer cool mute":
-            second_result = "N-Autumn warm mute"
-        elif result == "N-Winter cool deep":
-            second_result = "N-Autumn warm deep"
-        elif result == "N-Autumn warm deep":
-            second_result = "N-Winter cool deep"
 
-    else:
 
-        if new_v_value > 65.20 and new_b_value >= 20 and new_s_value > 33:
-            second_result = "Spring warm bright"
-        elif new_v_value > 65.20 and new_b_value >= 20 and new_s_value <= 33:
-            second_result = "Spring warm light"
-        elif new_v_value > 65.20 and new_b_value < 17 and new_s_value <= 33:
-            second_result = "Summer cool light"
-        elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value <= 33:
-            second_result = "Summer cool mute"
-        elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value <= 33:
-            second_result = "Autumn warm mute"
-        elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value > 33:
-            second_result = "Autumn warm deep"
-        elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value > 33:
-            second_result = "Winter cool deep"
-        elif new_v_value > 65.20 and new_b_value < 17 and new_s_value > 33:
-            second_result = "Winter cool bright"
+    # 기존 세컨드 구하는 코드
 
-    # print(f'v_normalized: {v_normalized}')
-    # print(f'b_normalized: {b_normalized}')
-    # print(f's_normalized: {s_normalized}')
-    # # Printing the new values
-    # print(f'new_v_value: {new_v_value}')
-    # print(f'new_b_value: {new_b_value}')
-    # print(f'new_s_value: {new_s_value}')
+    # # Normalize values to the range [0, 1]
+    # b_normalized = (b_value + 128) / 255.0  # Assuming b range is -128 to 127
+    # v_normalized = v_value / 100.0
+    # s_normalized = s_value / 100.0
+    #
+    # # Calculate differences
+    # normalized_diff_v = (v_normalized - 0.652)
+    # normalized_diff_b = (b_normalized - 0.185)
+    # normalized_diff_s = (s_normalized - 0.33)
+    #
+    # # Determine the smallest absolute difference among normalized_diff_v, normalized_diff_b, and normalized_diff_s
+    # min_diff = min(abs(normalized_diff_v), abs(normalized_diff_b), abs(normalized_diff_s))
+    #
+    # # Calculate second_vbs based on the normalized differences
+    # if min_diff == abs(normalized_diff_v):
+    #     new_v_value = v_value - normalized_diff_v * 100 * 2
+    #     new_b_value = b_value
+    #     new_s_value = s_value
+    # elif min_diff == abs(normalized_diff_b):
+    #     new_v_value = v_value
+    #     new_b_value = b_value - normalized_diff_b * 255 * 2
+    #     new_s_value = s_value
+    # else:
+    #     new_v_value = v_value
+    #     new_b_value = b_value
+    #     new_s_value = s_value - normalized_diff_s * 100 * 2
+    #
+    # if 17.0 <= new_b_value < 20.0:
+    #     if result == "N-Spring warm bright":
+    #         second_result = "N-Winter cool bright"
+    #     elif result == "N-Winter cool bright":
+    #         second_result = "N-Spring warm bright"
+    #     elif result == "N-Spring warm light":
+    #         second_result = "N-Summer cool light"
+    #     elif result == "N-Summer cool light":
+    #         second_result = "N-Spring warm light"
+    #     elif result == "N-Autumn warm mute":
+    #         second_result = "N-Summer cool mute"
+    #     elif result == "N-Summer cool mute":
+    #         second_result = "N-Autumn warm mute"
+    #     elif result == "N-Winter cool deep":
+    #         second_result = "N-Autumn warm deep"
+    #     elif result == "N-Autumn warm deep":
+    #         second_result = "N-Winter cool deep"
+    #
+    # else:
+    #
+    #     if new_v_value > 65.20 and new_b_value >= 20 and new_s_value > 33:
+    #         second_result = "Spring warm bright"
+    #     elif new_v_value > 65.20 and new_b_value >= 20 and new_s_value <= 33:
+    #         second_result = "Spring warm light"
+    #     elif new_v_value > 65.20 and new_b_value < 17 and new_s_value <= 33:
+    #         second_result = "Summer cool light"
+    #     elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value <= 33:
+    #         second_result = "Summer cool mute"
+    #     elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value <= 33:
+    #         second_result = "Autumn warm mute"
+    #     elif new_v_value <= 65.20 and new_b_value >= 20 and new_s_value > 33:
+    #         second_result = "Autumn warm deep"
+    #     elif new_v_value <= 65.20 and new_b_value < 17 and new_s_value > 33:
+    #         second_result = "Winter cool deep"
+    #     elif new_v_value > 65.20 and new_b_value < 17 and new_s_value > 33:
+    #         second_result = "Winter cool bright"
+    #
+    # # print(f'v_normalized: {v_normalized}')
+    # # print(f'b_normalized: {b_normalized}')
+    # # print(f's_normalized: {s_normalized}')
+    # # # Printing the new values
+    # # print(f'new_v_value: {new_v_value}')
+    # # print(f'new_b_value: {new_b_value}')
+    # # print(f'new_s_value: {new_s_value}')
 
     print(f'========================')
 
-    # personal_color 및 second_color 값 모델에 저장
+    # personal_color 및 second_color(worst color) 값 모델에 저장
     analysis_instance.personal_color = result
     analysis_instance.second_color = second_result
     analysis_instance.save()
