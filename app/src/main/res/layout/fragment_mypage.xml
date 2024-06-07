@@ -5,22 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".MypageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="마이페이지~"
-        android:textColor="@android:color/black"
-        android:textSize="50sp"/>
-
     <!-- 로그아웃 버튼 -->
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_gravity="center"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/button_round"
         android:text="로그아웃" />
 
 </FrameLayout>
