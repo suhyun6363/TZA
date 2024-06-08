@@ -43,7 +43,6 @@
         android:layout_height="550dp"
         android:layout_below="@id/tabLayout2"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="91dp"
         tools:listitem="@layout/item_product" />
 
 

@@ -180,15 +180,23 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
                                 String number = document.getString("number");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && optionRgb != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
                                 if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
@@ -198,6 +206,9 @@ public class RecommendFragment extends Fragment {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
+
                 });
     }
 
@@ -220,25 +231,34 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
                                 String number = document.getString("number");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && optionRgb != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
                                 if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
                         } else {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
                 });
     }
 
@@ -264,26 +284,33 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
                                 String number = document.getString("number");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && optionRgb != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
                                 if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
     }
 
@@ -306,25 +333,34 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
                                 String number = document.getString("number");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && optionRgb != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
                                 if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
                         } else {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
                 });
     }
 
@@ -347,25 +383,35 @@ public class RecommendFragment extends Fragment {
                                 String imageUrl = document.getString("img");
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
                                 String number = document.getString("number");
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName);
+
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 // 중복 체크
-                                if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                if (imageUrl != null && productName != null && optionName != null && number != null && optionRgb != null && !productNames.contains(productName)) {
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
-                                    productNames.add(productName); // 중복을 막기 위해 상품명 추가
-                                    count++; // 상품 개수 증가
+                                    productNames.add(productName);
+                                    count++;
                                 }
                                 if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
-                            recyclerView.scrollToPosition(0); // 스크롤을 상단으로 이동
                         } else {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
-                    }
+
+
+                }
+
                 });
     }
 }

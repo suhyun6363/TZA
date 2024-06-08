@@ -5,13 +5,16 @@ public class Product {
     private String optionName;
     private String imageUrl;
     private String number;
+    private String optionRgb;
 
-    public Product(String name, String optionName, String imageUrl, String number) {
+    public Product(String name, String optionName, String imageUrl, String number, String optionRgb) {
         this.name = name;
         this.optionName = optionName;
         this.imageUrl = imageUrl;
         this.number = number;
+        this.optionRgb = optionRgb; // 필드 초기화
     }
+
     // 이미지 URL을 받는 생성자 추가
     public Product(String imageUrl) {
         this.imageUrl = imageUrl;
@@ -56,5 +59,13 @@ public class Product {
 
     public String getNumber() {
         return number;
+    }
+
+    public String getOptionRgb() {
+        return optionRgb;
+    }
+
+    public void setOptionRgb(String optionRgb) {
+        this.optionRgb = optionRgb;
     }
 }

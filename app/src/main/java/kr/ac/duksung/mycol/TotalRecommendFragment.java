@@ -137,10 +137,18 @@ public class TotalRecommendFragment extends Fragment {
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
                                 String number = document.getString("number"); // number 필드 가져오기
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Number: " + number);
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
+                                // optionRgbList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbList != null) {
+                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
+
 
                                 if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
                                     productNames.add(productName);
                                     count++;
