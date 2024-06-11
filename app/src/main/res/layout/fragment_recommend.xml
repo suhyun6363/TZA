@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Title"
+        android:text="Personal Color"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
@@ -39,14 +39,14 @@
 
     <android.widget.Button
         android:id="@+id/nextbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="132dp"
         android:layout_height="wrap_content"
-        android:text="Next"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:background="#ff4081"
-        android:textColor="@color/white"/>
+        android:text="Total Ranking"
+        android:textColor="@color/white" />
 
 
 
