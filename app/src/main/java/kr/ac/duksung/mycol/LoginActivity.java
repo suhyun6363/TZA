@@ -3,9 +3,11 @@ package kr.ac.duksung.mycol;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // 로그인 성공
                                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                                Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                                showToast("로그인 성공");
 
                                 // 체크박스 상태에 따라 이메일과 비밀번호 저장
                                 if (checkBoxAuto.isChecked()) {
@@ -80,12 +82,12 @@ public class LoginActivity extends AppCompatActivity {
                                 finish();
                             } else {
                                 // 로그인 실패
-                                Toast.makeText(LoginActivity.this, "이메일이나 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                                showToast("이메일이나 비밀번호를 다시 확인해주세요.");
                             }
                         }
                     });
         } else {
-            Toast.makeText(LoginActivity.this, "이메일과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
+            showToast("이메일과 비밀번호를 입력하세요.");
         }
     }
 
@@ -108,17 +110,33 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     // 자동 로그인 성공
-                                    Toast.makeText(LoginActivity.this, "자동 로그인 성공", Toast.LENGTH_SHORT).show();
+                                    showToast("자동 로그인 성공");
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
                                     // 자동 로그인 실패
-                                    Toast.makeText(LoginActivity.this, "자동 로그인 실패. 이메일과 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
+                                    showToast("자동 로그인 실패. 이메일과 비밀번호를 확인해주세요.");
                                 }
                             }
                         });
             }
         }
+    }
+
+    private void showToast(String message) {
+        // 커스텀 토스트 레이아웃 인플레이트
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
+
+        // 메시지를 설정
+        TextView textView = layout.findViewById(R.id.toast_text);
+        textView.setText(message);
+
+        // 토스트 생성 및 표시
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

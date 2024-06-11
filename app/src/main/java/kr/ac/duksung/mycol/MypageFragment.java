@@ -1,5 +1,6 @@
 package kr.ac.duksung.mycol;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -64,7 +65,7 @@ public class MypageFragment extends Fragment implements View.OnClickListener {
             public void onClick(View v) {
                 // FirebaseAuth를 사용하여 로그아웃
                 FirebaseAuth.getInstance().signOut();
-                Toast.makeText(getActivity(), "로그아웃", Toast.LENGTH_SHORT).show();
+                showToast("로그아웃");
 
                 // 자동 로그인 정보 삭제
                 editor.clear();
@@ -89,7 +90,6 @@ public class MypageFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         });
-
 
         return rootView;
     }
@@ -120,5 +120,21 @@ public class MypageFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    private void showToast(String message) {
+        // 커스텀 토스트 레이아웃 인플레이트
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) getView().findViewById(R.id.custom_toast_container));
+
+        // 메시지를 설정
+        TextView textView = layout.findViewById(R.id.toast_text);
+        textView.setText(message);
+
+        // 토스트 생성 및 표시
+        Toast toast = new Toast(getActivity().getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

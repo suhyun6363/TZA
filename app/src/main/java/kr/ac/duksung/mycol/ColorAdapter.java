@@ -1,21 +1,21 @@
 package kr.ac.duksung.mycol;
 
-// ColorAdapter.java
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
 public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHolder> {
 
     private List<ColorItem> colorList;
-    private String selectedCategory; // "블러셔" 또는 "립" 등의 타입
+    private String selectedCategory;
     private ColorOptionFragment fragment;
 
     public ColorAdapter(List<ColorItem> colorList, String selectedCategory, ColorOptionFragment fragment) {
@@ -45,12 +45,16 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // 색상이 선택되었음을 ColorOptionFragment에 알림
+                // 색상이 선택되었음을 ColorOptionFragment에 알림
                 fragment.onColorSelected(color, selectedCategory);
+
+                // productName과 optionName을 Toast 메시지로 출력
+                Context context = v.getContext();
+                String message = colorItem.getProductName() +"\n" + colorItem.getOptionName();
+                showToast(context, message);
             }
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -79,4 +83,19 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
         return Color.rgb(red, green, blue);
     }
 
+    private void showToast(Context context, String message) {
+        // 커스텀 토스트 레이아웃 인플레이트
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        // 메시지를 설정
+        TextView textView = layout.findViewById(R.id.toast_text);
+        textView.setText(message);
+
+        // 토스트 생성 및 표시
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
 }

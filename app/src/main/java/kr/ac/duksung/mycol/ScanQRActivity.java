@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ScanQRActivity extends AppCompatActivity {
@@ -43,7 +45,7 @@ public class ScanQRActivity extends AppCompatActivity {
             startCustomScanActivity();
         } else {
             Log.d(TAG, "카메라 권한이 거부되었습니다. QR 스캔을 진행할 수 없습니다.");
-            Toast.makeText(this, "QR 코드 스캔을 위해 카메라 권한이 필요합니다.", Toast.LENGTH_LONG).show();
+            showToast("QR 코드 스캔을 위해 카메라 권한이 필요합니다.");
             finish();
         }
     }
@@ -64,5 +66,21 @@ public class ScanQRActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    private void showToast(String message) {
+        // 커스텀 토스트 레이아웃 인플레이트
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
+
+        // 메시지를 설정
+        TextView textView = layout.findViewById(R.id.toast_text);
+        textView.setText(message);
+
+        // 토스트 생성 및 표시
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 }
