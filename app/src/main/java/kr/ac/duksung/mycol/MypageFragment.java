@@ -2,11 +2,13 @@ package kr.ac.duksung.mycol;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +78,18 @@ public class MypageFragment extends Fragment implements View.OnClickListener {
                 getActivity().finish();
             }
         });
+
+        // 인스타그램 로고 클릭 이벤트 처리
+        ImageView instagramLogo = rootView.findViewById(R.id.instagramLogo);
+        instagramLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 인스타그램 페이지로 이동
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.instagram.com/lanosrep_official"));
+                startActivity(intent);
+            }
+        });
+
 
         return rootView;
     }

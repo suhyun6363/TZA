@@ -111,6 +111,14 @@
             android:textSize="16sp"
             android:textColor="@color/black"
             android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/instagramLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/instagram_logo"
+            android:contentDescription="인스타그램 로고"/>
     </LinearLayout>
 
 </FrameLayout>
