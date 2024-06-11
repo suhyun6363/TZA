@@ -136,6 +136,7 @@ public class RecommendFragment extends Fragment {
                     TextView tabTextView = customView.findViewById(R.id.tabTextView);
                     tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 여기에서 텍스트 색상을 블랙으로 변경
                 }
+                recyclerView.scrollToPosition(0);
 
                 loadProductsBasedOnTab();
             }
@@ -233,7 +234,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName);
                                     count++;
                                 }
-                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 5) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -284,7 +285,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName);
                                     count++;
                                 }
-                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 5) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -337,7 +338,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName);
                                     count++;
                                 }
-                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 5) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -386,7 +387,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName);
                                     count++;
                                 }
-                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 5) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -436,7 +437,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName);
                                     count++;
                                 }
-                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 5) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
