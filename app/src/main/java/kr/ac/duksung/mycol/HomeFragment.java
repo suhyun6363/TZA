@@ -132,11 +132,17 @@ public class HomeFragment extends Fragment {
 
         scannedResult = scanResult;
 
+        // 스캔 결과를 설정하는 부분
         if (scanQRResult != null) {
-            scanQRResult.setText(scannedResult);
+            if (scannedResult.startsWith("N-")) {
+                scanQRResult.setText("Neutral Tone");
+            } else {
+                scanQRResult.setText(scannedResult);
+            }
         } else {
             Log.e("HomeFragment", "scanQRResult TextView is null.");
         }
+
 
         // 이미지 업데이트
         updateImageView(scanResult);

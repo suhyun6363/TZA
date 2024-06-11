@@ -64,7 +64,12 @@ public class RecommendFragment extends Fragment {
             @Override
             public void onChanged(String s) {
                 Log.d(TAG, "Scan result text: " + s);
-                scanResultTextView.setText(s);
+                if (s.startsWith("N-")) {
+                    s = s.substring(2);
+                    scanResultTextView.setText("Neutral Tone");
+                } else {
+                    scanResultTextView.setText(s);
+                }
                 // 스캔 결과가 변경되면 탭에 맞는 데이터를 다시 불러옴
                 loadProductsBasedOnTab();
             }
@@ -129,6 +134,10 @@ public class RecommendFragment extends Fragment {
     private void loadProductsBasedOnTab() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String result = scanResultTextView.getText().toString();
+        // "Neutral Tone"일 경우 "N-"을 제외한 원래 결과 사용
+        if ("Neutral Tone".equals(result)) {
+            result = sharedViewModel.getScannedResult().getValue().substring(2);
+        }
         int position = tabLayout.getSelectedTabPosition();
 
         switch (position) {

@@ -65,7 +65,9 @@ public class TotalRecommendFragment extends Fragment {
         // TabLayout2 설정
         tabLayout2.addTab(tabLayout2.newTab().setText("립").setContentDescription("립"));
         tabLayout2.addTab(tabLayout2.newTab().setText("아이").setContentDescription("아이"));
-        tabLayout2.addTab(tabLayout2.newTab().setText("베이스").setContentDescription("베이스"));
+        //tabLayout2.addTab(tabLayout2.newTab().setText("베이스").setContentDescription("베이스"));
+        tabLayout2.addTab(tabLayout2.newTab().setText("블러셔").setContentDescription("블러셔"));
+
 
         // TabLayout1 탭 선택 리스너 설정
         tabLayout1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -88,7 +90,9 @@ public class TotalRecommendFragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 String categoryText = tab.getText().toString();
                 if (categoryText.equals("전체")) {
-                    selectedCategory = "전체"; // 전체 선택 시 전체로 설정
+                    selectedCategory = "전체";
+                } else if (categoryText.equals("블러셔")) {
+                    selectedCategory = "베이스메이크업"; // "블러셔" 선택 시 "베이스"로 설정
                 } else {
                     selectedCategory = categoryText + "메이크업"; // 카테고리 설정
                 }
@@ -138,14 +142,23 @@ public class TotalRecommendFragment extends Fragment {
                                 String optionName = document.getString("option_name");
                                 String number = document.getString("number"); // number 필드 가져오기
                                 List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
-                                // optionRgbList를 문자열로 변환
-                                String optionRgb = null;
+
+                                // optionRgbList를 List<Integer>로 변환
+                                List<Integer> optionRgbIntList = null;
                                 if (optionRgbList != null) {
-                                    optionRgb = optionRgbList.toString(); // 배열을 문자열로 변환
+                                    optionRgbIntList = new ArrayList<>();
+                                    for (Double rgbValue : optionRgbList) {
+                                        optionRgbIntList.add(rgbValue.intValue());
+                                    }
+                                }
+
+                                // optionRgbIntList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbIntList != null) {
+                                    optionRgb = optionRgbIntList.toString(); // 배열을 문자열로 변환
                                 }
 
                                 Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
-
 
                                 if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
                                     Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
@@ -163,6 +176,7 @@ public class TotalRecommendFragment extends Fragment {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
     }
 }
