@@ -3,11 +3,13 @@ package kr.ac.duksung.mycol;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import com.google.mediapipe.tasks.vision.core.RunningMode;
 import com.google.mediapipe.tasks.vision.facelandmarker.FaceLandmarkerResult;
 import org.opencv.android.OpenCVLoader;
@@ -17,6 +19,9 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
+import org.opencv.core.Core;
+import org.opencv.core.Point;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,11 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import android.graphics.Rect;
-
-import com.google.mediapipe.tasks.components.containers.NormalizedLandmark;
-import org.opencv.core.Core;
-import org.opencv.core.Point;
 
 public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -37,7 +37,7 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
     private float scaleFactor = 1f;
     private int imageWidth = 1;
     private int imageHeight = 1;
-    private Bitmap lipMaskBitmap;
+    private Bitmap imageBitmap;
     private static final String TAG = "Face Landmarker Overlay";
     private DrawThread drawThread;
 
@@ -69,21 +69,23 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        drawThread.setRunning(false);
-        while (retry) {
-            try {
-                drawThread.join();
-                retry = false;
-            } catch (InterruptedException e) {
-                // Try again shutting down the thread
+        if (drawThread != null) {
+            drawThread.setRunning(false); // 그리기를 중지합니다.
+            boolean retry = true;
+            while (retry) {
+                try {
+                    drawThread.join();
+                    retry = false;
+                } catch (InterruptedException e) {
+                    // Try again shutting down the thread
+                }
             }
         }
     }
 
     public void clear() {
         results = null;
-        lipMaskBitmap = null;
+        imageBitmap = null;
         invalidate();
     }
 
@@ -104,9 +106,14 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
                     13, 312, 311, 310, 415, 308, 324, 318, 402, 317,
                     14, 87, 178, 88, 95, 78, 191, 80, 81, 82
             );
+
+            List<Integer> leftCheekIndex = Arrays.asList(230, 120, 100, 36, 50, 117, 229);
+            List<Integer> rightCheekIndex = Arrays.asList(450, 349, 329, 371, 266, 280, 346, 449);
             Log.d(TAG, "Drawing " + landmarks.size() + " faces.");
             List<Point> upperLipPoints = new ArrayList<>();
             List<Point> lowerLipPoints = new ArrayList<>();
+            List<Point> leftCheekPoints = new ArrayList<>();
+            List<Point> rightCheekPoints = new ArrayList<>();
 
             for (Integer upperIndex : upperLipIndex) {
                 NormalizedLandmark normalizedLandmark = landmarks.get(0).get(upperIndex);
@@ -116,129 +123,147 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
                 NormalizedLandmark normalizedLandmark = landmarks.get(0).get(lowerIndex);
                 lowerLipPoints.add(new Point(normalizedLandmark.x() * imageWidth, normalizedLandmark.y() * imageHeight));
             }
+            for (Integer leftIndex : leftCheekIndex) {
+                NormalizedLandmark normalizedLandmark = landmarks.get(0).get(leftIndex);
+                leftCheekPoints.add(new Point(normalizedLandmark.x() * imageWidth, normalizedLandmark.y() * imageHeight));
+            }
+            for (Integer rightIndex : rightCheekIndex) {
+                NormalizedLandmark normalizedLandmark = landmarks.get(0).get(rightIndex);
+                rightCheekPoints.add(new Point(normalizedLandmark.x() * imageWidth, normalizedLandmark.y() * imageHeight));
+            }
 
-            createLipMask(upperLipPoints, lowerLipPoints);
+            createImage(upperLipPoints, lowerLipPoints, leftCheekPoints, rightCheekPoints);
 
-            if (lipMaskBitmap != null) {
+            if (imageBitmap != null) {
                 Log.d(TAG, "Drawing lip mask bitmap.");
-                canvas.drawBitmap(lipMaskBitmap, null, new Rect(0, 0, getWidth(), getHeight()), null);
+                canvas.drawBitmap(imageBitmap, null, new Rect(0, 0, getWidth(), getHeight()), null);
             } else {
                 Log.d(TAG, "Lip mask bitmap is null.");
             }
         }
     }
 
-    private void createLipMask(List<Point> upperLipPoints, List<Point> lowerLipPoints) {
+    private void createImage(List<Point> upperLipPoints, List<Point> lowerLipPoints, List<Point> leftCheekPoints, List<Point> rightCheekPoints) {
         if (upperLipPoints.isEmpty() || lowerLipPoints.isEmpty()) {
             Log.d(TAG, "Lip points are empty.");
             return;
         }
+        if (leftCheekPoints.isEmpty() || rightCheekPoints.isEmpty()) {
+            Log.d(TAG, "Cheek points are empty.");
+            return;
+        }
 
-        Log.d(TAG, "Upper Lip points: " + upperLipPoints.toString());
-        Log.d(TAG, "Lower Lip points: " + lowerLipPoints.toString());
+        Log.d(TAG, "Left Cheek points: " + leftCheekPoints.toString());
+        Log.d(TAG, "Right Cheek points: " + rightCheekPoints.toString());
 
         Mat originalMat = new Mat();
         Utils.bitmapToMat(bitmap, originalMat);
 
         Mat upperLipMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
         Mat lowerLipMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
+        Mat leftCheekMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
+        Mat rightCheekMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
 
         MatOfPoint matOfUpperLipPoint = new MatOfPoint();
         MatOfPoint matOfLowerLipPoint = new MatOfPoint();
         matOfUpperLipPoint.fromList(upperLipPoints);
         matOfLowerLipPoint.fromList(lowerLipPoints);
-        Log.d(TAG, "Lip matOfUpperLipPoint: " + matOfUpperLipPoint.toString());
-        Log.d(TAG, "Lip matOfLowerLipPoint: " + matOfLowerLipPoint.toString());
+        Log.d(TAG, "Lip matOfLeftCheek: " + matOfUpperLipPoint.toString());
+        Log.d(TAG, "Lip matOfRightCheek: " + matOfLowerLipPoint.toString());
 
         Imgproc.fillConvexPoly(upperLipMask, matOfUpperLipPoint, new Scalar(255, 255, 255, 255));
         Imgproc.fillConvexPoly(lowerLipMask, matOfLowerLipPoint, new Scalar(255, 255, 255, 255));
+        makeCircleMask(leftCheekMask, leftCheekPoints);
+        makeCircleMask(rightCheekMask, rightCheekPoints);
 
-        // Use bitwise_and to combine mask and overlay
+        // 흰색 lipMask
         Mat lipMask = new Mat();
         Core.subtract(upperLipMask, lowerLipMask, lipMask);
 
-        // Create a copy of the mask and fill it with (139, 0, 0, 255)
-        Mat overlay = new Mat(lipMask.size(), lipMask.type());
-        overlay.setTo(new Scalar(139, 0, 0, 255), lipMask);
+        // 반전(주변 흰색, lipMask 검은색)
+        Mat invertedLipMask = new Mat();
+        Core.bitwise_not(lipMask, invertedLipMask);
 
+        // 입술만 뺀 image
+        Mat imageWithoutLip = new Mat();
+        Core.bitwise_and(originalMat, invertedLipMask, imageWithoutLip);
+
+        // 색 입힌 lipMask
+        Mat overlayLip = new Mat(lipMask.size(), lipMask.type());
+        overlayLip.setTo(new Scalar(139, 0, 0, 255), lipMask);
+
+        // 흰색 양 볼Mask
+        Mat cheekMask = new Mat();
+        Core.add(leftCheekMask, rightCheekMask, cheekMask);
+
+        // 내 입술Mask
         Mat myLipMask = new Mat();
         Core.bitwise_and(originalMat, lipMask, myLipMask);
 
-        // 알파 블렌딩
-        Mat blended = new Mat();
-        Core.addWeighted(myLipMask, 0.8, overlay, 0.2, 0.0, blended);
+        // 내 볼Mask
+        Mat myCheekMask = new Mat();
+        Core.bitwise_and(originalMat, cheekMask, myCheekMask);
+
+        // 색 입힌 볼Mask
+        Mat overlayCheek = new Mat(lipMask.size(), lipMask.type());
+        overlayCheek.setTo(new Scalar(88, 174, 169, 180), lipMask);
+
+        // 알파 블렌딩(립)
+        Mat blendedLip = new Mat();
+        Core.addWeighted(myLipMask, 0.8, overlayLip, 0.2, 0.0, blendedLip);
+
+        // 알파 블렌딩(볼)
+        Mat blendedCheek = new Mat();
+        Core.addWeighted(myCheekMask, 0.7, overlayCheek, 0.3, 0.0, blendedCheek);
+
+        Mat imageMat = new Mat();
+        Core.add(imageWithoutLip, blendedLip, imageMat);
 
         // 디버깅 로그 추가
-        Log.d(TAG, "Mask size: " + myLipMask.size() + ", Overlay size: " + overlay.size());
+        Log.d(TAG, "Mask size: " + myCheekMask.size() + ", Overlay size: " + overlayCheek.size());
 
         // Mat 객체를 Bitmap으로 변환
-        Bitmap bmp = Bitmap.createBitmap(blended.cols(), blended.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(blended, bmp);
-        lipMaskBitmap = bmp;
+        Bitmap bmp = Bitmap.createBitmap(imageMat.cols(), imageMat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(imageMat, bmp);
+        imageBitmap = bmp;
 
-        if (lipMaskBitmap != null) {
-            Log.d(TAG, "Lip mask bitmap created with size: " + lipMaskBitmap.getWidth() + "x" + lipMaskBitmap.getHeight());
-            // saveLipMaskBitmap(lipMaskBitmap); // 비트맵을 저장하는 메소드 호출
+        if (imageBitmap != null) {
+            Log.d(TAG, "Image bitmap created with size: " + imageBitmap.getWidth() + "x" + imageBitmap.getHeight());
         } else {
             Log.d(TAG, "Lip mask bitmap is null.");
         }
     }
 
-    private void saveResultBitmap(Bitmap bitmap) {
-        // 파일 저장 경로 설정
-        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "TZA");
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
-        }
+    // 원을 그리기 위한 헬퍼 함수
+    public static void makeCircleMask(Mat mask, List<Point> points) {
+        // 중심과 반지름 계산
+        Point center = calculateCenter(points);
+        int radius = calculateRadius(points, center);
 
-        String fileName = "result_" + System.currentTimeMillis() + ".png";
-        File file = new File(directory, fileName);
-
-        // 파일 출력 스트림을 사용하여 비트맵 저장
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // 비트맵을 PNG 형식으로 압축하여 저장
-            Log.d(TAG, "Bitmap saved to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to save bitmap", e);
-        }
+        // 원 그리기
+        Imgproc.circle(mask, center, radius, new Scalar(255), -1); // 흰색 원 (-1은 채우기를 의미)
     }
 
-    private void saveOverlayBitmap(Bitmap bitmap) {
-        // 파일 저장 경로 설정
-        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "TZA");
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
+    // 중심 계산 함수
+    public static Point calculateCenter(List<Point> points) {
+        double sumX = 0, sumY = 0;
+        for (Point point : points) {
+            sumX += point.x;
+            sumY += point.y;
         }
-
-        String fileName = "overlay_" + System.currentTimeMillis() + ".png";
-        File file = new File(directory, fileName);
-
-        // 파일 출력 스트림을 사용하여 비트맵 저장
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // 비트맵을 PNG 형식으로 압축하여 저장
-            Log.d(TAG, "Bitmap saved to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to save bitmap", e);
-        }
+        return new Point(sumX / points.size(), sumY / points.size());
     }
 
-    private void saveLipMaskBitmap(Bitmap bitmap) {
-        // 파일 저장 경로 설정
-        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "TZA");
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
+    // 반지름 계산 함수
+    public static int calculateRadius(List<Point> points, Point center) {
+        double maxDistance = 0;
+        for (Point point : points) {
+            double distance = Math.sqrt(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2));
+            if (distance > maxDistance) {
+                maxDistance = distance;
+            }
         }
-
-        String fileName = "lip_mask_" + System.currentTimeMillis() + ".png";
-        File file = new File(directory, fileName);
-
-        // 파일 출력 스트림을 사용하여 비트맵 저장
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // 비트맵을 PNG 형식으로 압축하여 저장
-            Log.d(TAG, "Bitmap saved to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to save bitmap", e);
-        }
+        return (int) Math.round(maxDistance);
     }
 
     public void setResults(FaceLandmarkerResult faceLandmarkerResults, Bitmap bitmap, int imageHeight, int imageWidth, RunningMode runningMode) {
@@ -255,21 +280,20 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
         Log.d(TAG, "FaceLandmarkerResult received with " + faceLandmarkerResults.faceLandmarks().size() + " faces.");
         Log.d(TAG, "Image dimensions: " + imageWidth + "x" + imageHeight + ", Scale factor: " + scaleFactor);
 
-        if (drawThread != null) {
-            drawThread.setRunning(true);
-        }
+        //invalidate(); // SurfaceView의 경우, onDraw()를 직접 호출하지 않으므로 이 호출은 제거
     }
 
     private class DrawThread extends Thread {
         private SurfaceHolder surfaceHolder;
-        private boolean running = false;
+        private boolean running;
 
-        public DrawThread(SurfaceHolder surfaceHolder) {
-            this.surfaceHolder = surfaceHolder;
+        public DrawThread(SurfaceHolder holder) {
+            surfaceHolder = holder;
+            running = false;
         }
 
-        public void setRunning(boolean running) {
-            this.running = running;
+        public void setRunning(boolean isRunning) {
+            running = isRunning;
         }
 
         @Override
@@ -278,8 +302,10 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
                 Canvas canvas = null;
                 try {
                     canvas = surfaceHolder.lockCanvas();
-                    synchronized (surfaceHolder) {
-                        if (canvas != null) {
+                    if (canvas != null) {
+                        synchronized (surfaceHolder) {
+                            // Clear the canvas
+                            canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
                             drawOverlay(canvas);
                         }
                     }
@@ -288,9 +314,19 @@ public class OverlaySurfaceView extends SurfaceView implements SurfaceHolder.Cal
                         surfaceHolder.unlockCanvasAndPost(canvas);
                     }
                 }
+
+                try {
+                    // Delay to limit frame rate (e.g., 30 FPS)
+                    Thread.sleep(33); // 30 FPS
+                } catch (InterruptedException e) {
+                    // Handle exception
+                }
             }
         }
     }
 }
+
+
+
 
 

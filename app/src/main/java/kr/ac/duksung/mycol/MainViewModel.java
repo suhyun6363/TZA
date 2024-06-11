@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
  */
 public class MainViewModel extends ViewModel {
 
-    private int _delegate = FaceLandmarkerHelper.DELEGATE_CPU;
+    private int _delegate = FaceLandmarkerHelper.DELEGATE_GPU;
     private float _minFaceDetectionConfidence = FaceLandmarkerHelper.DEFAULT_FACE_DETECTION_CONFIDENCE;
     private float _minFaceTrackingConfidence = FaceLandmarkerHelper.DEFAULT_FACE_TRACKING_CONFIDENCE;
     private float _minFacePresenceConfidence = FaceLandmarkerHelper.DEFAULT_FACE_PRESENCE_CONFIDENCE;
