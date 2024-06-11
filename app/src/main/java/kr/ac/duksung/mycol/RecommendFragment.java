@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Typeface;
 import java.util.HashSet;
 import android.content.Intent;
 import android.view.View;
@@ -46,8 +47,6 @@ public class RecommendFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private TextView scanResultTextView;
     private TabLayout tabLayout;
-
-
 
     private static final String TAG = "RecommendFragment";
 
@@ -95,35 +94,62 @@ public class RecommendFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
     // 탭 초기화
     private void setupTabs() {
-        tabLayout.addTab(tabLayout.newTab().setText("촉촉립").setContentDescription("촉촉립"));
-        tabLayout.addTab(tabLayout.newTab().setText("뽀송립").setContentDescription("뽀송립"));
-        tabLayout.addTab(tabLayout.newTab().setText("아이").setContentDescription("아이"));
-        tabLayout.addTab(tabLayout.newTab().setText("촉촉블러셔").setContentDescription("촉촉블러셔"));
-        tabLayout.addTab(tabLayout.newTab().setText("뽀송블러셔").setContentDescription("뽀송블러셔"));
+        String[] tabTitles = {"촉촉립", "뽀송립", "아이", "촉촉블러셔", "뽀송블러셔"};
+
+        for (String title : tabTitles) {
+            TabLayout.Tab tab = tabLayout.newTab();
+            View customTabView = LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
+            TextView tabTextView = customTabView.findViewById(R.id.tabTextView);
+            tabTextView.setText(title);
+            tab.setCustomView(customTabView);
+            tabLayout.addTab(tab);
+        }
+
+        // 기본 탭 설정 및 기본 데이터 로드
+        TabLayout.Tab initialTab = tabLayout.getTabAt(0);
+        if (initialTab != null) {
+            initialTab.select();
+            View customView = initialTab.getCustomView();
+            if (customView != null) {
+                TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 초기 선택된 탭의 텍스트 색상을 블랙으로 변경
+            }
+        }
 
         // 탭 선택 리스너 등록
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                // 선택된 탭의 텍스트 색상을 변경
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                    tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 여기에서 텍스트 색상을 블랙으로 변경
+                }
+
                 loadProductsBasedOnTab();
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // 선택되지 않은 탭의 텍스트 색상을 기본 색상으로 변경
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                    tabTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                }
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-
-        // 기본 탭 설정 및 기본 데이터 로드
-        tabLayout.getTabAt(0).select();
     }
+
 
     // 선택된 탭에 따라 상품을 불러오는 메서드
     private void loadProductsBasedOnTab() {
@@ -190,7 +216,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
                                 }
-                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -230,7 +256,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
                                 }
-                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -274,7 +300,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
                                 }
-                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -316,7 +342,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
                                 }
-                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();
@@ -357,7 +383,7 @@ public class RecommendFragment extends Fragment {
                                     productNames.add(productName); // 중복을 막기 위해 상품명 추가
                                     count++; // 상품 개수 증가
                                 }
-                                if (count >= 3) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
+                                if (count >= 4) // 이미 3개의 상품을 가져왔으면 더 이상 반복할 필요 없음
                                     break;
                             }
                             adapter.notifyDataSetChanged();

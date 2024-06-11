@@ -15,7 +15,8 @@
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="30dp"
             android:background="@drawable/button_round"
-            android:text="뒤로 가기" />
+            android:text="뒤로 가기"
+            android:fontFamily="@font/laundrybold"/>
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
     <TextView
@@ -23,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="qr코드를 인식해주세요"
+        android:fontFamily="@font/laundryregular"
         android:textColor="#FFFFFF"
         android:background="#80000000"
         android:padding="8dp"

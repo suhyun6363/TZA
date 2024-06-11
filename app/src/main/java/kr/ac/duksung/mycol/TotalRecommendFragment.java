@@ -3,6 +3,7 @@ package kr.ac.duksung.mycol;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,8 +42,10 @@ public class TotalRecommendFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // 프래그먼트의 레이아웃을 inflate합니다.
         View view = inflater.inflate(R.layout.fragment_total_recommend, container, false);
 
+        // RecyclerView, TabLayout 등의 뷰를 가져와서 초기화합니다.
         tabLayout1 = view.findViewById(R.id.tabLayout1);
         tabLayout2 = view.findViewById(R.id.tabLayout2);
         recyclerView = view.findViewById(R.id.recyclerView);
@@ -50,9 +54,10 @@ public class TotalRecommendFragment extends Fragment {
         adapter = new ProductAdapter(productList, getContext());
         recyclerView.setAdapter(adapter);
 
-        db = FirebaseFirestore.getInstance(); // FirebaseFirestore 객체 초기화
+        // Firestore 인스턴스를 초기화합니다.
+        db = FirebaseFirestore.getInstance();
 
-        // TabLayout1 설정
+        // TabLayout1에 탭들을 설정합니다.
         tabLayout1.addTab(tabLayout1.newTab().setText("Spring warm light").setContentDescription("Spring warm light"));
         tabLayout1.addTab(tabLayout1.newTab().setText("Spring warm bright").setContentDescription("Spring warm bright"));
         tabLayout1.addTab(tabLayout1.newTab().setText("Summer cool light").setContentDescription("Summer cool light"));
@@ -62,63 +67,129 @@ public class TotalRecommendFragment extends Fragment {
         tabLayout1.addTab(tabLayout1.newTab().setText("Winter cool bright").setContentDescription("Winter cool bright"));
         tabLayout1.addTab(tabLayout1.newTab().setText("Winter cool deep").setContentDescription("Winter cool deep"));
 
-        // TabLayout2 설정
+        // TabLayout2에 탭들을 설정합니다.
         tabLayout2.addTab(tabLayout2.newTab().setText("립").setContentDescription("립"));
         tabLayout2.addTab(tabLayout2.newTab().setText("아이").setContentDescription("아이"));
-        tabLayout2.addTab(tabLayout2.newTab().setText("베이스").setContentDescription("베이스"));
+        tabLayout2.addTab(tabLayout2.newTab().setText("블러셔").setContentDescription("블러셔"));
+        // TabLayout1의 각 탭에 사용할 사용자 정의 뷰를 설정합니다.
+        for (int i = 0; i < tabLayout1.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout1.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(createTabView(tab.getText().toString()));
+            }
+        }
 
-        // TabLayout1 탭 선택 리스너 설정
+        // TabLayout2의 각 탭에 사용할 사용자 정의 뷰를 설정합니다.
+        for (int i = 0; i < tabLayout2.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout2.getTabAt(i);
+            if (tab != null) {
+                tab.setCustomView(createTabView(tab.getText().toString()));
+            }
+        }
+
+        // 기본 탭 설정 및 기본 데이터 로드
+        TabLayout.Tab initialTab = tabLayout1.getTabAt(0);
+        if (initialTab != null) {
+            initialTab.select();
+            View customView = initialTab.getCustomView();
+            if (customView != null) {
+                TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 초기 선택된 탭의 텍스트 색상을 블랙으로 변경
+            }
+        }
+
+        // 기본 탭 설정 및 기본 데이터 로드
+        TabLayout.Tab initialTab2 = tabLayout2.getTabAt(0);
+        if (initialTab2 != null) {
+            initialTab2.select();
+            View customView = initialTab2.getCustomView();
+            if (customView != null) {
+                TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 초기 선택된 탭의 텍스트 색상을 블랙으로 변경
+            }
+        }
+
+
+
+        // TabLayout1 탭 선택 리스너를 설정합니다.
         tabLayout1.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectedResult = tab.getText().toString();
-                fetchProductsFromFirestore(); // 탭 선택 시 데이터 가져오기 호출
+                fetchProductsFromFirestore();
+
+                // 선택된 탭의 글씨 색을 검정색으로 변경합니다.
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black));
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // 이전에 선택되었던 탭의 글씨 색을 기본 색으로 변경합니다.
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
-        // TabLayout2 탭 선택 리스너 설정
+// TabLayout2 탭 선택 리스너를 설정합니다.
         tabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 String categoryText = tab.getText().toString();
                 if (categoryText.equals("전체")) {
-                    selectedCategory = "전체"; // 전체 선택 시 전체로 설정
+                    selectedCategory = "전체";
+                } else if (categoryText.equals("블러셔")) {
+                    selectedCategory = "베이스메이크업"; // "블러셔" 선택 시 "베이스"로 설정
                 } else {
                     selectedCategory = categoryText + "메이크업"; // 카테고리 설정
                 }
-                fetchProductsFromFirestore(); // 탭 선택 시 데이터 가져오기 호출
+                fetchProductsFromFirestore();
+
+                // 선택된 탭의 글씨 색을 검정색으로 변경합니다.
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black));
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // 이전에 선택되었던 탭의 글씨 색을 기본 색으로 변경합니다.
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
 
-        // 기본 탭 선택 및 데이터 로드
-        tabLayout1.getTabAt(0).select(); // "Spring warm light" 탭 선택
-        tabLayout2.getTabAt(0).select(); // "립" 탭 선택
-        fetchProductsFromFirestore(); // 기본값으로 데이터 로드
+        // 초기값으로 탭을 선택하고 데이터를 가져옵니다.
+        tabLayout1.getTabAt(0).select();
+        tabLayout2.getTabAt(0).select();
+        fetchProductsFromFirestore();
 
         return view;
     }
 
+    // 탭에 사용할 사용자 정의 뷰를 생성합니다.
+    private View createTabView(String title) {
+        View tabView = LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
+        TextView tabTextView = tabView.findViewById(R.id.tabTextView);
+        tabTextView.setText(title);
+        tabTextView.setTypeface(ResourcesCompat.getFont(getContext(), R.font.laundryregular));
+
+        return tabView;
+    }
+
+    // Firestore에서 제품 데이터를 가져와서 RecyclerView에 표시합니다.
     private void fetchProductsFromFirestore() {
-        // Firestore 쿼리 빌더 초기화
         com.google.firebase.firestore.Query query = db.collection("new_data")
                 .whereGreaterThanOrEqualTo("average_rate", 4.7)
                 .whereEqualTo("result", selectedResult)
                 .whereIn("moisturizing", Arrays.asList(0, 1))
                 .limit(10);
 
-        // 카테고리가 "전체"가 아닌 경우에만 category_list2 필터 추가
         if (!selectedCategory.equals("전체")) {
             query = query.whereEqualTo("category_list2", selectedCategory);
         }

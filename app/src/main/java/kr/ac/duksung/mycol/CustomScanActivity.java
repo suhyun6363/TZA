@@ -27,6 +27,9 @@ public class CustomScanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_scan);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.tzalogo);
+
         barcodeView = findViewById(R.id.zxing_barcode_scanner);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(Arrays.asList(BarcodeFormat.QR_CODE)));
         barcodeView.setStatusText("");

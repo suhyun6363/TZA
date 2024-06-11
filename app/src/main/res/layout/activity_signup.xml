@@ -23,6 +23,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:hint="이메일"
+        android:fontFamily="@font/laundryregular"
         android:inputType="textEmailAddress" />
 
 
@@ -32,6 +33,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:hint="비밀번호"
+        android:fontFamily="@font/laundryregular"
         android:inputType="textPassword" />
 
     <EditText
@@ -40,6 +42,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:hint="비밀번호 확인"
+        android:fontFamily="@font/laundryregular"
         android:inputType="textPassword" />
 
     <EditText
@@ -48,6 +51,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
         android:hint="닉네임"
+        android:fontFamily="@font/laundryregular"
         android:inputType="text" />
 
     <android.widget.Button
@@ -55,9 +59,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:onClick="onSignupClick"
-        android:background="#ff4081"
         android:text="회원가입"
+        android:fontFamily="@font/laundryregular"
         android:textColor="@color/white"
+        android:background="@drawable/button_round"
         android:textSize="16sp"
         android:textStyle="bold"
         />
@@ -67,8 +72,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:onClick="onCancelClick"
-        android:background="#ff4081"
         android:text="취소하기"
+        android:fontFamily="@font/laundryregular"
+        android:background="@drawable/button_round"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"

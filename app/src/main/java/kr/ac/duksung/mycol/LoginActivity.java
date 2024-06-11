@@ -28,6 +28,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.tzalogo);
+
         // Firebase 초기화
         FirebaseApp.initializeApp(this);
         firebaseAuth = FirebaseAuth.getInstance();

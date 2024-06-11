@@ -12,28 +12,35 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Title"
+        android:text="QR 인식 후 확인 가능해요"
+        android:fontFamily="@font/laundrybold"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextView"
-        app:tabIndicatorColor="@android:color/white"
-        app:tabSelectedTextColor="@android:color/white"
+        android:layout_marginBottom="10dp"
+        app:tabIndicatorColor="@color/pink"
+        app:tabSelectedTextColor="@android:color/black"
         app:tabTextColor="@android:color/darker_gray"
         app:tabMode="scrollable"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="3dp"
+        android:fontFamily="@font/laundrybold"
+        android:background="@drawable/rectangle_underline"
         android:contentDescription="추천 제품 탭"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="500dp"
         android:layout_below="@id/tabLayout"
+        android:layout_marginBottom="70dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="91dp"
         tools:listitem="@layout/item_product" />
 
 
@@ -41,11 +48,13 @@
         android:id="@+id/nextbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Next"
+        android:fontFamily="@font/laundrybold"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:background="#ff4081"
+        android:background="@drawable/button_round"
         android:textColor="@color/white"/>
 
 

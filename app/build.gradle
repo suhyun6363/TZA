@@ -10,12 +10,10 @@ android {
 
     defaultConfig {
         applicationId "kr.ac.duksung.mycol"
-        //minSdk 21
         minSdk 24 // zxing이랑 버전 맞추기위해서 올림
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -39,7 +37,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-auth:22.3.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -47,18 +45,17 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:32.8.0')
 
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation 'com.google.firebase:firebase-analytics'
-    // Firebase Authentication을 사용하는 경우 아래 종속성을 추가하세요.
-    implementation 'com.google.firebase:firebase-auth:22.3.1'
 
     // QR코드 스캐닝
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
     // csv파일읽기용
     implementation 'com.opencsv:opencsv:5.5.2'
+
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 }

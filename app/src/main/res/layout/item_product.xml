@@ -2,47 +2,76 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/rank"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1"
-        android:textSize="20sp"
-        android:textColor="#000"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="8dp"/>
-
-    <ImageView
-        android:id="@+id/productImage"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerCrop" />
-
+    <!-- Item layout starts here -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginStart="8dp">
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <TextView
-            android:id="@+id/productName"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Product Name"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            android:layout_marginStart="8dp">
 
-        <TextView
-            android:id="@+id/optionName"
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:fontFamily="@font/laundrybold"
+                android:text="1"
+                android:textColor="#FFFF"
+                android:textSize="16sp"
+                android:background="@android:color/darker_gray"
+                android:padding="4dp" />
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Option Name"
-            android:textSize="14sp"
-            android:textColor="#888"
-            android:layout_marginTop="2dp" />
+            android:orientation="vertical"
+            android:layout_marginStart="8dp">
+
+            <TextView
+                android:id="@+id/productName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:fontFamily="@font/laundrybold"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/optionName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Option Name"
+                android:fontFamily="@font/laundryregular"
+                android:textSize="14sp"
+                android:textColor="#888"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
     </LinearLayout>
+    <!-- Item layout ends here -->
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Repeat the above LinearLayout block for additional items -->
 
 </LinearLayout>
