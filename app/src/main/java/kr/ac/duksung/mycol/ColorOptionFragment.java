@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
+import android.widget.TextView;
+
 public class ColorOptionFragment extends BottomSheetDialogFragment {
 
     private RecyclerView colorRecyclerView;
@@ -95,27 +97,57 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
         tabLayout.addTab(tabLayout.newTab().setText("Winter cool bright"));
         tabLayout.addTab(tabLayout.newTab().setText("Winter cool deep"));
 
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            if (tab != null) {
+                View tabView = createTabView(tab.getText().toString()).getCustomView();
+                tab.setCustomView(tabView);
+            }
+        }
+
+        TabLayout.Tab initialTab = tabLayout.getTabAt(0);
+        if (initialTab != null) {
+            initialTab.select();
+            View customView = initialTab.getCustomView();
+            if (customView != null) {
+                TextView tabTextView = customView.findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black)); // 초기 선택된 탭의 텍스트 색상을 블랙으로 변경
+            }
+        }
         // TabLayout1 탭 선택 리스너 설정
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 selectedResult = tab.getText().toString();
                 fetchProductsFromFirestore(); // 탭 선택 시 데이터 가져오기 호출
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.black));
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+                TextView tabTextView = tab.getCustomView().findViewById(R.id.tabTextView);
+                tabTextView.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
+
 
         tabLayout.getTabAt(0).select(); // "Spring warm light" 탭 선택
         fetchProductsFromFirestore(); // 기본값으로 데이터 로드
 
         return view;
     }
-
+    private TabLayout.Tab createTabView(String text) {
+        TabLayout.Tab tab = tabLayout.newTab();
+        View tabView = LayoutInflater.from(getContext()).inflate(R.layout.custom_tab, null);
+        TextView tabTextView = tabView.findViewById(R.id.tabTextView);
+        tabTextView.setText(text);
+        tab.setCustomView(tabView);
+        return tab;
+    }
     private void fetchProductsFromFirestore() {
         // Firestore 쿼리 빌더 초기화
         com.google.firebase.firestore.Query query = db.collection("new_data")

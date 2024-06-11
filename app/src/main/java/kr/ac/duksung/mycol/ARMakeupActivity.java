@@ -87,6 +87,9 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         binding = ActivityArmakeupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.tzalogo);
+
         // OverlayView 초기화
         overlayView = findViewById(R.id.overlayView);
 
