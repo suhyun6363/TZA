@@ -209,14 +209,18 @@ public class TotalRecommendFragment extends Fragment {
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
                                 String number = document.getString("number"); // number 필드 가져오기
-                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
+                                List<Object> optionRgbList = (List<Object>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
 
                                 // optionRgbList를 List<Integer>로 변환
                                 List<Integer> optionRgbIntList = null;
                                 if (optionRgbList != null) {
                                     optionRgbIntList = new ArrayList<>();
-                                    for (Double rgbValue : optionRgbList) {
-                                        optionRgbIntList.add(rgbValue.intValue());
+                                    for (Object rgbValue : optionRgbList) {
+                                        if (rgbValue instanceof Long) {
+                                            optionRgbIntList.add(((Long) rgbValue).intValue());
+                                        } else if (rgbValue instanceof Double) {
+                                            optionRgbIntList.add(((Double) rgbValue).intValue());
+                                        }
                                     }
                                 }
 
@@ -248,4 +252,5 @@ public class TotalRecommendFragment extends Fragment {
 
                 });
     }
+
 }

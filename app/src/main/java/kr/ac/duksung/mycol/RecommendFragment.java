@@ -199,7 +199,7 @@ public class RecommendFragment extends Fragment {
     private void fetchProductsFromFirestoreMoist(FirebaseFirestore db, String category, String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
-                .whereGreaterThanOrEqualTo("average_rate", 4.8)
+                .whereGreaterThanOrEqualTo("average_rate", 4.7)
                 .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 1)
                 .limit(10)
@@ -250,7 +250,7 @@ public class RecommendFragment extends Fragment {
     private void fetchProductsFromFirestoreSmooth(FirebaseFirestore db, String category,  String result) {
         db.collection("new_data")
                 .whereEqualTo("category_list2", category)
-                .whereGreaterThanOrEqualTo("average_rate", 4.8)
+                .whereGreaterThanOrEqualTo("average_rate", 4.7)
                 .whereEqualTo("result", result)
                 .whereEqualTo("moisturizing", 0)
                 .limit(10)
