@@ -1,4 +1,3 @@
-// HomeFragment.java
 package kr.ac.duksung.mycol;
 
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +35,9 @@ public class HomeFragment extends Fragment {
     private String scannedResult;
     private ViewPager viewPager;
     private ImagePagerAdapter imagePagerAdapter;
-    private LinearLayout indicatorLayout; // 인디케이터를 위한 레이아웃 추가
     private SharedViewModel sharedViewModel;
+
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -40,9 +47,11 @@ public class HomeFragment extends Fragment {
         scanQRButton = rootView.findViewById(R.id.scanQRButton);
         scanQRResult = rootView.findViewById(R.id.scanQRResult);
         viewPager = rootView.findViewById(R.id.viewPager);
-        indicatorLayout = rootView.findViewById(R.id.indicatorLayout);
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
+
+        // Firebase Database 초기화
+        databaseReference = FirebaseDatabase.getInstance("https://mycol-6b49b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference();
 
         // 이미지 어댑터 초기화
         imagePagerAdapter = new ImagePagerAdapter(getChildFragmentManager());
@@ -64,10 +73,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // 스캔 결과가 있는 경우에도 textview와 이미지 업데이트
-        if (scannedResult != null) {
-            setScanResult(scannedResult);
-        }
+        // 사용자 personal_color 불러오기
+        loadPersonalColor();
 
         // ViewPager의 페이지 변경을 감지하고 선택된 페이지에 해당하는 인디케이터의 색상을 변경
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -79,7 +86,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 // 새로운 페이지가 선택될 때 호출됩니다.
-                updateIndicators(position);
+                //updateIndicators(position);
             }
 
             @Override
@@ -91,22 +98,60 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
+    private void loadPersonalColor() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+            DatabaseReference userRef = databaseReference.child("users").child(userId).child("personal_color");
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String personalColor = snapshot.getValue(String.class);
+                        if (personalColor != null) {
+                            scannedResult = personalColor;
+                            setScanResult(personalColor);
+                        }
+                    } else {
+                        Log.d("HomeFragment", "No personal_color found for user.");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.e("HomeFragment", "Failed to read personal_color from database.", error.toException());
+                }
+            });
+        } else {
+            Log.e("HomeFragment", "User is not authenticated.");
+        }
+    }
+
     public void setScanResult(String scanResult) {
         Log.d("HomeFragment", "Received scan result: " + scanResult);
 
         scannedResult = scanResult;
 
+        // 스캔 결과를 설정하는 부분
         if (scanQRResult != null) {
-            scanQRResult.setText(scannedResult);
+            if (scannedResult.startsWith("N-")) {
+                scanQRResult.setText("Neutral Tone");
+            } else {
+                scanQRResult.setText(scannedResult);
+            }
         } else {
             Log.e("HomeFragment", "scanQRResult TextView is null.");
         }
+
 
         // 이미지 업데이트
         updateImageView(scanResult);
 
         // ViewModel에 결과 설정
         sharedViewModel.setScannedResult(scanResult);
+
+        // Firebase Database에 저장
+        saveScanResultToDatabase(scanResult);
     }
 
     @Override
@@ -128,18 +173,15 @@ public class HomeFragment extends Fragment {
                 String resourceName = scanResult.replaceAll("\\s+", "_").toLowerCase();
                 List<Integer> imageResIds = new ArrayList<>();
                 int resId1;
-                int resId2;
                 if (resourceName.startsWith("n")) {
                     // resourceName이 "n"으로 시작하는 경우, "drawable/neutral" 이미지를 사용
                     resId1 = context.getResources().getIdentifier("neutral", "drawable", context.getPackageName());
-                    resId2 = context.getResources().getIdentifier("neutral2", "drawable", context.getPackageName());
                 } else {
                     resId1 = context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
-                    resId2 = context.getResources().getIdentifier(resourceName + "2", "drawable", context.getPackageName());
                 }
-                if (resId1 != 0 && resId2 != 0) {
+
+                if (resId1 != 0) {
                     imageResIds.add(resId1);
-                    imageResIds.add(resId2);
                     imagePagerAdapter.updateImage(imageResIds);
 
                     // 데이터 변경 후 viewpager 강제 재로드
@@ -150,17 +192,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    // 선택된 페이지에 해당하는 인디케이터의 색상을 변경하는 메서드
-    private void updateIndicators(int position) {
-        for (int i = 0; i < indicatorLayout.getChildCount(); i++) {
-            View indicator = indicatorLayout.getChildAt(i);
-            if (i == position) {
-                // 선택된 페이지일 때 선택된 원의 배경색을 설정합니다.
-                indicator.setBackgroundResource(R.drawable.selected_circle_shape);
-            } else {
-                // 선택되지 않은 페이지일 때 선택되지 않은 원의 배경색을 설정합니다.
-                indicator.setBackgroundResource(R.drawable.unselected_circle_shape);
-            }
+    private void saveScanResultToDatabase(String scanResult) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userId = user.getUid();
+            DatabaseReference userRef = databaseReference.child("users").child(userId).child("personal_color");
+            userRef.setValue(scanResult).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d("HomeFragment", "Scan result saved to database.");
+                } else {
+                    Log.e("HomeFragment", "Failed to save scan result to database.", task.getException());
+                }
+            });
+        } else {
+            Log.e("HomeFragment", "User is not authenticated.");
         }
     }
 }

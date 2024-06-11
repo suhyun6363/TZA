@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".TotalRecommendFragment">
 
-    <!-- 제목 텍스트뷰 추가 -->
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"

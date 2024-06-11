@@ -1,0 +1,4 @@
+<resources>
+    <!-- RecyclerView 아이템 간격 -->
+    <dimen name="recycler_item_spacing">6dp</dimen>
+</resources>

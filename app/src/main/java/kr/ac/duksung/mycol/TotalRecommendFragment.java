@@ -79,6 +79,7 @@ public class TotalRecommendFragment extends Fragment {
             }
         }
 
+
         // TabLayout2의 각 탭에 사용할 사용자 정의 뷰를 설정합니다.
         for (int i = 0; i < tabLayout2.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout2.getTabAt(i);
@@ -208,10 +209,27 @@ public class TotalRecommendFragment extends Fragment {
                                 String productName = document.getString("name");
                                 String optionName = document.getString("option_name");
                                 String number = document.getString("number"); // number 필드 가져오기
-                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Number: " + number);
+                                List<Double> optionRgbList = (List<Double>) document.get("option_rgb"); // option_rgb 필드를 배열로 가져옴
+
+                                // optionRgbList를 List<Integer>로 변환
+                                List<Integer> optionRgbIntList = null;
+                                if (optionRgbList != null) {
+                                    optionRgbIntList = new ArrayList<>();
+                                    for (Double rgbValue : optionRgbList) {
+                                        optionRgbIntList.add(rgbValue.intValue());
+                                    }
+                                }
+
+                                // optionRgbIntList를 문자열로 변환
+                                String optionRgb = null;
+                                if (optionRgbIntList != null) {
+                                    optionRgb = optionRgbIntList.toString(); // 배열을 문자열로 변환
+                                }
+
+                                Log.d(TAG, "Product Name: " + productName + ", Option Name: " + optionName + ", Option RGB: " + optionRgb);
 
                                 if (imageUrl != null && productName != null && optionName != null && number != null && !productNames.contains(productName)) {
-                                    Product product = new Product(productName, optionName, imageUrl, number);
+                                    Product product = new Product(productName, optionName, imageUrl, number, optionRgb);
                                     productList.add(product);
                                     productNames.add(productName);
                                     count++;
@@ -226,6 +244,8 @@ public class TotalRecommendFragment extends Fragment {
                             Toast.makeText(getContext(), "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     }
+
+
                 });
     }
 }

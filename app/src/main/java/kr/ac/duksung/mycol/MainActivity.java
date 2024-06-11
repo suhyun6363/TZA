@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.menu_frame_layout, fragmentRecommend).commitAllowingStateLoss();
                     break;
                 case R.id.menu_makeup:
-                    transaction.replace(R.id.menu_frame_layout, fragmentMakeup).commitAllowingStateLoss();
-                    break;
+                    Intent intent = new Intent(MainActivity.this, ARMakeupActivity.class);
+                    startActivity(intent);
+                    return true;
                 case R.id.menu_mypage:
                     transaction.replace(R.id.menu_frame_layout, fragmentMypage).commitAllowingStateLoss();
                     break;
@@ -88,3 +89,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+

@@ -35,11 +35,11 @@
         android:fontFamily="@font/laundryregular"
         android:inputType="textPassword" />
 
-<!--    <CheckBox-->
-<!--        android:id="@+id/checkBoxAuto"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="로그인 정보 기억하기" />-->
+    <CheckBox
+        android:id="@+id/checkBoxAuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 정보 기억하기" />
 
     <android.widget.Button
         android:layout_width="120dp"

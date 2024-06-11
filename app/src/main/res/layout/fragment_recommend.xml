@@ -46,7 +46,7 @@
 
     <android.widget.Button
         android:id="@+id/nextbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="132dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="Next"
