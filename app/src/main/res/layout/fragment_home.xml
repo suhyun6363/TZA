@@ -2,16 +2,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/scanQRResult"
-        android:layout_width="wrap_content"
+    <!-- ViewPager -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="진단 결과 화면 불러오기"
-        android:fontFamily="@font/laundrybold"
-        android:textSize="20sp"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_above="@id/scanQRButton"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical" />
 
+<!--    &lt;!&ndash; TextView &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:id="@+id/scanQRResult"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="12dp"-->
+<!--        android:fontFamily="@font/laundrybold"-->
+<!--        android:hint="진단 결과 화면 불러오기"-->
+<!--        android:textSize="20sp" />-->
+
+    <!-- Button -->
     <Button
         android:id="@+id/scanQRButton"
         android:layout_width="wrap_content"
@@ -19,18 +31,10 @@
         android:text="QR 코드 스캔하기"
         android:textSize="16sp"
         android:fontFamily="@font/laundrybold"
-        android:layout_below="@id/scanQRResult"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:background="@drawable/button_round"
-        android:layout_centerHorizontal="true"/>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scanQRButton"
-        android:layout_marginTop="16dp"
-
-        android:orientation="vertical"/>
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_round" />
 
 </RelativeLayout>

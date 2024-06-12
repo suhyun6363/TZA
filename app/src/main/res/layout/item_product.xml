@@ -49,7 +49,7 @@
                 android:text="Product Name"
                 android:fontFamily="@font/laundrybold"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/optionName"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="Option Name"
                 android:fontFamily="@font/laundryregular"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textColor="#888"
                 android:layout_marginTop="2dp" />
         </LinearLayout>

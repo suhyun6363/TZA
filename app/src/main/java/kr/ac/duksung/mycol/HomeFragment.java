@@ -45,7 +45,7 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         scanQRButton = rootView.findViewById(R.id.scanQRButton);
-        scanQRResult = rootView.findViewById(R.id.scanQRResult);
+        //scanQRResult = rootView.findViewById(R.id.scanQRResult);
         viewPager = rootView.findViewById(R.id.viewPager);
 
         sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
@@ -133,15 +133,15 @@ public class HomeFragment extends Fragment {
         scannedResult = scanResult;
 
         // 스캔 결과를 설정하는 부분
-        if (scanQRResult != null) {
-            if (scannedResult.startsWith("N-")) {
-                scanQRResult.setText("Neutral Tone");
-            } else {
-                scanQRResult.setText(scannedResult);
-            }
-        } else {
-            Log.e("HomeFragment", "scanQRResult TextView is null.");
-        }
+//        if (scanQRResult != null) {
+//            if (scannedResult.startsWith("N-")) {
+//                scanQRResult.setText("Neutral Tone");
+//            } else {
+//                scanQRResult.setText(scannedResult);
+//            }
+//        } else {
+//            Log.e("HomeFragment", "scanQRResult TextView is null.");
+//        }
 
 
         // 이미지 업데이트
