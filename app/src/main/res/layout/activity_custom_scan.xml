@@ -16,6 +16,7 @@
             android:layout_marginBottom="30dp"
             android:background="@drawable/button_round"
             android:text="뒤로 가기"
+            android:textSize="18sp"
             android:fontFamily="@font/laundrybold"/>
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
@@ -28,6 +29,7 @@
         android:textColor="#FFFFFF"
         android:background="#80000000"
         android:padding="8dp"
+        android:textSize="16sp"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="100dp"/>
 
