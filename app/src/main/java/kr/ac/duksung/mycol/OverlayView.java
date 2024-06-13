@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +54,6 @@ public class OverlayView extends View {
     // Context 멤버 변수 선언
     private Context context;
 
-
     private List<Integer> upperLipIndex, lowerLipIndex, leftCheekIndex, rightCheekIndex;
 
     static {
@@ -87,8 +85,11 @@ public class OverlayView extends View {
                 13, 312, 311, 310, 415, 308, 324, 318, 402, 317,
                 14, 87, 178, 88, 95, 78, 191, 80, 81, 82
         );
-        leftCheekIndex = Arrays.asList(230, 120, 100, 36, 50, 117, 229);
-        rightCheekIndex = Arrays.asList(450, 349, 329, 371, 266, 280, 346, 449);
+        //leftCheekIndex = Arrays.asList(230, 120, 100, 36, 50, 117, 229);
+        leftCheekIndex = Arrays.asList(230, 231, 121, 47, 126, 142, 36, 205, 187, 147, 123, 116, 111, 31, 228, 229);
+        //rightCheekIndex = Arrays.asList(450, 349, 329, 371, 266, 280, 346, 449);
+        rightCheekIndex = Arrays.asList(450, 451, 349, 329, 371, 266, 425, 411, 376, 401, 366, 447, 345, 340, 448, 449);
+
         lipMask = new Mat();
         cheekMask = new Mat();
         originalMat = new Mat();
@@ -139,14 +140,19 @@ public class OverlayView extends View {
         Mat leftCheekMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
         Mat rightCheekMask = Mat.zeros(imageHeight, imageWidth, CvType.CV_8UC4);
 
-        makeCircleMask(leftCheekMask, leftCheekPoints);
-        makeCircleMask(rightCheekMask, rightCheekPoints);
+        makePolygonMask(leftCheekMask, leftCheekPoints);
+        makePolygonMask(rightCheekMask, rightCheekPoints);
 
         cheekMask = new Mat();
         Core.add(leftCheekMask, rightCheekMask, cheekMask);
 
+        // Apply Gaussian Blur to create a stronger gradient effect
+        Imgproc.GaussianBlur(cheekMask, cheekMask, new Size(101, 101), 0);
+
         Log.d(TAG, "Blush filter created with leftCheekMask and rightCheekMask.");
     }
+
+
 
     private void createLipFilter(List<Point> upperLipPoints, List<Point> lowerLipPoints) {
         if (upperLipPoints.isEmpty() || lowerLipPoints.isEmpty()) {
@@ -186,7 +192,14 @@ public class OverlayView extends View {
     }
 
     public void setBlushColor(int color) {
-        this.blushColor = color;
+        // 명도를 낮춘 색상 계산
+        int alpha = Color.alpha(color);
+        int red = (int) (Color.red(color) * 0.6); // 명도를 60%로 줄임
+        int green = (int) (Color.green(color) * 0.6); // 명도를 60%로 줄임
+        int blue = (int) (Color.blue(color) * 0.6); // 명도를 60%로 줄임
+        int darkenedColor = Color.argb(alpha, red, green, blue);
+
+        this.blushColor = darkenedColor;
         Log.d(TAG, "blushColor: " + blushColor);
 
         if (originalMat.empty() || cheekMask.empty()) {
@@ -194,63 +207,39 @@ public class OverlayView extends View {
             return;
         }
 
-        // 블러셔 원의 중심을 위한 원색 부분 생성
-        Mat centerOverlay = new Mat(cheekMask.size(), cheekMask.type());
-        Scalar blushScalar = colorToScalar(blushColor, 255);  // 원색 유지
-        centerOverlay.setTo(blushScalar, cheekMask);
+        Mat overlayCheek = new Mat(cheekMask.size(), cheekMask.type());
+        Scalar blushScalar = colorToScalar(blushColor, 255);  // 중심부는 불투명하게
 
-        // 원의 중심에서 멀어질수록 블러링이 심해지는 효과 적용
-        Mat blurredOverlay = new Mat(cheekMask.size(), cheekMask.type());
-        Scalar transparentScalar = colorToScalar(blushColor, 100);  // 투명도 조정
-        blurredOverlay.setTo(transparentScalar, cheekMask);
+        overlayCheek.setTo(blushScalar, cheekMask);
 
-        // 큰 커널 크기로 가우시안 블러 적용
-        Imgproc.GaussianBlur(blurredOverlay, blurredOverlay, new Size(75, 75), 0);
+        // Apply GaussianBlur to create a gradient effect
+        Imgproc.GaussianBlur(overlayCheek, overlayCheek, new Size(101, 101), 0);
 
-        // 중심과 블러링된 부분을 합쳐서 자연스러운 블러셔 효과 생성
-        Mat combinedOverlay = new Mat();
-        Core.addWeighted(centerOverlay, 0.5, blurredOverlay, 0.5, 0.0, combinedOverlay);
+        // Create a gradient mask for blending
+        Mat gradientMask = new Mat(overlayCheek.size(), CvType.CV_8UC4);
+        Core.multiply(overlayCheek, new Scalar(1, 1, 1, 0.5), gradientMask); // 알파 값을 0.5로 줄임
 
-        // 원본 이미지와 블러셔 이미지를 혼합
+        // Adjust alpha channel for gradient effect
+        List<Mat> channels = new ArrayList<>(4);
+        Core.split(overlayCheek, channels);
+        Mat alphaChannel = channels.get(3);
+        Imgproc.GaussianBlur(alphaChannel, alphaChannel, new Size(101, 101), 0);
+        channels.set(3, alphaChannel);
+        Core.merge(channels, overlayCheek);
+
         Mat blendedCheek = new Mat();
-        Core.addWeighted(originalMat, 0.8, combinedOverlay, 0.2, 0.0, blendedCheek);
+        Core.addWeighted(originalMat, 0.8, overlayCheek, 0.2, 0.0, blendedCheek);  // 원본의 비율을 높이고 오버레이 비율을 낮춤
 
         blushMakeupBitmap = Bitmap.createBitmap(blendedCheek.cols(), blendedCheek.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(blendedCheek, blushMakeupBitmap);
 
-        Log.d(TAG, "Blush makeup applied and bitmap created.");
+        Log.d(TAG, "Blush makeup applied and bitmap created with gradient effect.");
 
         invalidate();
     }
-/*
-    public void setBlushColor(int color) {
-        this.blushColor = color;
-        Log.d(TAG, "blushColor: " + blushColor);
 
-        if (originalMat.empty() || blushTemplateBitmap == null) {
-            Log.e(TAG, "OriginalMat or blushTemplateBitmap is empty, cannot apply blush");
-            return;
-        }
 
-        // 템플릿 비트맵을 변환
-        Bitmap coloredBlushBitmap = applyColorToBlushTemplate(blushTemplateBitmap, color);
 
-        // 변환된 비트맵을 Mat으로 변환
-        Mat blushMat = new Mat();
-        Utils.bitmapToMat(coloredBlushBitmap, blushMat);
-
-        // 원본 이미지와 블러셔 이미지를 혼합
-        Mat blendedCheek = new Mat();
-        Core.addWeighted(originalMat, 0.8, blushMat, 0.2, 0.0, blendedCheek);
-
-        blushMakeupBitmap = Bitmap.createBitmap(blendedCheek.cols(), blendedCheek.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(blendedCheek, blushMakeupBitmap);
-
-        Log.d(TAG, "Blush makeup applied and bitmap created.");
-
-        invalidate(); // 뷰 다시 그리기
-    }
-*/
     private Bitmap applyColorToBlushTemplate(Bitmap template, int color) {
         Bitmap coloredTemplate = template.copy(Bitmap.Config.ARGB_8888, true);
         int width = coloredTemplate.getWidth();
@@ -298,32 +287,10 @@ public class OverlayView extends View {
         this.isLipMakeup = isLipMakeup;
     }
 
-    public static void makeCircleMask(Mat mask, List<Point> points) {
-        Point center = calculateCenter(points);
-        int radius = calculateRadius(points, center);
-        Log.d(TAG, "radius: " + radius);
-
-        Imgproc.circle(mask, center, radius, new Scalar(255, 255, 255), -1);
-    }
-
-    public static Point calculateCenter(List<Point> points) {
-        double sumX = 0, sumY = 0;
-        for (Point point : points) {
-            sumX += point.x;
-            sumY += point.y;
-        }
-        return new Point(sumX / points.size(), sumY / points.size());
-    }
-
-    public static int calculateRadius(List<Point> points, Point center) {
-        double maxDistance = 0;
-        for (Point point : points) {
-            double distance = Math.sqrt(Math.pow(point.x - center.x, 2) + Math.pow(point.y - center.y, 2));
-            if (distance > maxDistance) {
-                maxDistance = distance;
-            }
-        }
-        return (int) Math.round(maxDistance);
+    public static void makePolygonMask(Mat mask, List<Point> points) {
+        MatOfPoint matOfPoint = new MatOfPoint();
+        matOfPoint.fromList(points);
+        Imgproc.fillConvexPoly(mask, matOfPoint, new Scalar(255, 255, 255, 255));
     }
 
     public void setResults(FaceLandmarkerResult faceLandmarkerResults, Bitmap bitmap, int imageHeight, int imageWidth, RunningMode runningMode) {
@@ -372,4 +339,3 @@ public class OverlayView extends View {
 
     private static final String TAG = "Face Landmarker Overlay";
 }
-
