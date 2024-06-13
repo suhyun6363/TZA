@@ -1,7 +1,10 @@
 package kr.ac.duksung.mycol;
 // BottomSheetFragment.java
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,6 +45,7 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
     private String selectedCategory;
     private OverlayView overlayView;
     private OnSelectedListener selectedListener;
+    private TextView textView;
 
     private static final String TAG = "ColorOptionFragment";
 
@@ -61,6 +66,24 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
         selectedListener = null;
     }
 
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+        return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 다이얼로그가 시작될 때 배경을 투명하게 설정
+        BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +91,12 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
 
         colorRecyclerView = view.findViewById(R.id.colorRecyclerView);
         tabLayout = view.findViewById(R.id.tabLayout);
+        textView = view.findViewById(R.id.categoryTextView);
+
+        textView.setText(selectedCategory);
+        if (selectedCategory == "베이스") {
+            textView.setText("블러셔");
+        }
 
         // RecyclerView 설정
         colorRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
