@@ -64,6 +64,9 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.tzalogo);
+
         previewView = findViewById(R.id.previewView);
         captureButton = findViewById(R.id.captureButton);
         galleryButton = findViewById(R.id.galleryButton);

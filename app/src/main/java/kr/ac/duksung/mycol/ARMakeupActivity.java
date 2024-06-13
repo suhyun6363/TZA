@@ -56,6 +56,9 @@ public class ARMakeupActivity extends AppCompatActivity implements FaceLandmarke
         binding = ActivityArmakeupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.tzalogo);
+
         binding.blushIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
