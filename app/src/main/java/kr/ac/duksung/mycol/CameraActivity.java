@@ -216,10 +216,13 @@ public class CameraActivity extends AppCompatActivity {
         Matrix matrix = new Matrix();
         // 이미지 회전
         matrix.postRotate(rotationDegrees);
-        // 이미지 수평 반전
-        matrix.postScale(-1, 1, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
+        // 전면 카메라일 경우에만 이미지 수평 반전
+        if (cameraFacing == CameraSelector.LENS_FACING_FRONT) {
+            matrix.postScale(-1, 1, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
+        }
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
