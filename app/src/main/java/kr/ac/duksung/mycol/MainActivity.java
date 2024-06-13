@@ -14,11 +14,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_MAKEUP = 100; // 메이크업 Activity 요청 코드
+
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private HomeFragment fragmentHome = new HomeFragment();
     private RecommendFragment fragmentRecommend = new RecommendFragment();
     private MakeupFragment fragmentMakeup = new MakeupFragment();
     private MypageFragment fragmentMypage = new MypageFragment();
+
+    private BottomNavigationView bottomNavigationView;
+    private int selectedItemId = R.id.menu_home; // 기본 선택 항목 ID
+    private int previousItemId = R.id.menu_home; // 메이크업 탭을 누르기 전 선택 항목 ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.menu_frame_layout, fragmentHome).commitAllowingStateLoss();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.menu_buttom_navigation);
+        bottomNavigationView = findViewById(R.id.menu_buttom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
 
@@ -47,16 +53,20 @@ public class MainActivity extends AppCompatActivity {
 
             switch (menuItem.getItemId()) {
                 case R.id.menu_home:
+                    selectedItemId = menuItem.getItemId(); // 선택된 항목 ID를 저장
                     transaction.replace(R.id.menu_frame_layout, fragmentHome).commitAllowingStateLoss();
                     break;
                 case R.id.menu_recommend:
+                    selectedItemId = menuItem.getItemId(); // 선택된 항목 ID를 저장
                     transaction.replace(R.id.menu_frame_layout, fragmentRecommend).commitAllowingStateLoss();
                     break;
                 case R.id.menu_makeup:
+                    previousItemId = selectedItemId; // 메이크업 탭을 누르기 전에 선택된 항목 ID를 저장
                     Intent intent = new Intent(MainActivity.this, CameraActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_MAKEUP); // startActivityForResult로 메이크업 Activity 시작
                     return true;
                 case R.id.menu_mypage:
+                    selectedItemId = menuItem.getItemId(); // 선택된 항목 ID를 저장
                     transaction.replace(R.id.menu_frame_layout, fragmentMypage).commitAllowingStateLoss();
                     break;
             }
@@ -81,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
                 fragmentHome.setScanResult(scanResult);
                 fragmentHome.updateImageView(scanResult);
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_MAKEUP) {
+            // 메이크업 Activity에서 돌아온 경우, 이전의 선택 상태를 복원
+            bottomNavigationView.setSelectedItemId(previousItemId);
         }
     }
 }

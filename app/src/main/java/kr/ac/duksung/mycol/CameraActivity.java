@@ -72,7 +72,7 @@ public class CameraActivity extends AppCompatActivity {
         rotateButton = findViewById(R.id.rotateButton);
 
         if (allPermissionsGranted()) {
-            startCamera();
+            previewView.post(this::startCamera); // Ensure the previewView is ready before starting the camera
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
@@ -95,12 +95,12 @@ public class CameraActivity extends AppCompatActivity {
 
                 preview = new Preview.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                        .setTargetRotation(previewView.getDisplay().getRotation())
+                        .setTargetRotation(previewView.getDisplay() != null ? previewView.getDisplay().getRotation() : 0) // Check for null
                         .build();
 
                 imageCapture = new ImageCapture.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                        .setTargetRotation(previewView.getDisplay().getRotation())
+                        .setTargetRotation(previewView.getDisplay() != null ? previewView.getDisplay().getRotation() : 0) // Check for null
                         .build();
 
                 CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(cameraFacing).build();
