@@ -16,12 +16,12 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
     private List<ColorItem> colorList;
     private String selectedCategory;
-    private ColorOptionFragment fragment;
+    private OnSelectedListener selectedListener;
 
-    public ColorAdapter(List<ColorItem> colorList, String selectedCategory, ColorOptionFragment fragment) {
+    public ColorAdapter(List<ColorItem> colorList, String selectedCategory, OnSelectedListener selectedListener) {
         this.colorList = colorList;
         this.selectedCategory = selectedCategory;
-        this.fragment = fragment;
+        this.selectedListener = selectedListener;
     }
 
     @NonNull
@@ -45,8 +45,11 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Makeup 선택 상태 업데이트
+                selectedListener.onMakeupSelected(selectedCategory);
+
                 // 색상이 선택되었음을 ColorOptionFragment에 알림
-                fragment.onColorSelected(color, selectedCategory);
+                selectedListener.onColorSelected(selectedCategory, color);
 
                 // productName과 optionName을 Toast 메시지로 출력
                 Context context = v.getContext();

@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <!-- 카메라 미리보기 SurfaceView -->
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,8 @@
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp">
 
         <!-- 상단 아이콘 줄 -->
         <LinearLayout
@@ -88,7 +89,6 @@
                     android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>
-
         <!-- 하단 아이콘 줄 -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,64 +98,63 @@
             android:layout_marginTop="16dp">
 
             <LinearLayout
-                android:id="@+id/galleryButton"
-                android:layout_width="wrap_content"
+                android:id="@+id/backButton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:layout_marginEnd="90dp">
+                android:onClick="onBackButtonClick">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_gallery"
-                    android:contentDescription="갤러리" />
+                    android:src="@drawable/ic_back"
+                    android:contentDescription="뒤로 가기" />
                 <TextView
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="갤러리"
+                    android:text="뒤로 가기"
                     android:fontFamily="@font/laundryregular"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/captureButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginEnd="90dp">
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/capture_button"
-                    android:contentDescription="캡쳐" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/rotateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center">
+                <!-- Empty space to center align the buttons -->
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:onClick="onSaveButtonClick">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_rotate"
-                    android:contentDescription="회전" />
+                    android:src="@drawable/ic_save"
+                    android:contentDescription="저장" />
                 <TextView
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="회전"
+                    android:text="저장"
                     android:fontFamily="@font/laundryregular"
                     android:textColor="@color/black"
                     android:textStyle="bold"/>
             </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

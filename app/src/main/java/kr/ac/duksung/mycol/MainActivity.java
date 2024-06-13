@@ -1,19 +1,14 @@
 package kr.ac.duksung.mycol;
 
-import static kr.ac.duksung.mycol.HomeFragment.REQUEST_SCAN_QR;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -58,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     transaction.replace(R.id.menu_frame_layout, fragmentRecommend).commitAllowingStateLoss();
                     break;
                 case R.id.menu_makeup:
-                    Intent intent = new Intent(MainActivity.this, ARMakeupActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CameraActivity.class);
                     startActivity(intent);
                     return true;
                 case R.id.menu_mypage:

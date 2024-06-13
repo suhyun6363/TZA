@@ -40,7 +40,7 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
     private String selectedResult = "Spring warm light"; // 기본값 설정
     private String selectedCategory;
     private OverlayView overlayView;
-    private OnColorSelectedListener colorListener;
+    private OnSelectedListener selectedListener;
 
     private static final String TAG = "ColorOptionFragment";
 
@@ -52,17 +52,13 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         // Activity가 인터페이스를 구현하는지 확인
-        colorListener = (OnColorSelectedListener) context;
+        selectedListener = (OnSelectedListener) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        colorListener = null;
-    }
-
-    public void onColorSelected(int color, String type) {
-        colorListener.onColorSelected(type, color);
+        selectedListener = null;
     }
 
     @Nullable
@@ -84,7 +80,7 @@ public class ColorOptionFragment extends BottomSheetDialogFragment {
         db = FirebaseFirestore.getInstance(); // FirebaseFirestore 객체 초기화
         itemList = new ArrayList<>();
 
-        colorAdapter = new ColorAdapter(itemList, selectedCategory, this);
+        colorAdapter = new ColorAdapter(itemList, selectedCategory, selectedListener);
         colorRecyclerView.setAdapter(colorAdapter);
 
         // TabLayout 설정

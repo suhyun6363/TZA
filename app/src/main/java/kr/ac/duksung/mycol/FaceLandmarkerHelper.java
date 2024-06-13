@@ -92,7 +92,6 @@ public class FaceLandmarkerHelper {
     public void setupFaceLandmarker() {
         BaseOptions.Builder baseOptionBuilder = BaseOptions.builder();
 
-        // 모델을 실행할 하드웨어 지정 (기본값: CPU)
         switch (currentDelegate) {
             case DELEGATE_CPU:
                 baseOptionBuilder.setDelegate(Delegate.CPU);
@@ -105,9 +104,7 @@ public class FaceLandmarkerHelper {
         baseOptionBuilder.setModelAssetPath(MP_FACE_LANDMARKER_TASK);
 
         if (runningMode == RunningMode.LIVE_STREAM && faceLandmarkerHelperListener == null) {
-            throw new IllegalStateException(
-                    "faceLandmarkerHelperListener는 runningMode가 LIVE_STREAM일 때 설정되어야 합니다."
-            );
+            throw new IllegalStateException("faceLandmarkerHelperListener는 runningMode가 LIVE_STREAM일 때 설정되어야 합니다.");
         }
 
         try {
@@ -131,18 +128,15 @@ public class FaceLandmarkerHelper {
 
             FaceLandmarker.FaceLandmarkerOptions options = optionsBuilder.build();
             faceLandmarker = FaceLandmarker.createFromOptions(context, options);
+            Log.d(TAG, "Face Landmarker initialized successfully");
         } catch (IllegalStateException e) {
             if (faceLandmarkerHelperListener != null) {
-                faceLandmarkerHelperListener.onError(
-                        "Face Landmarker 초기화 실패. 오류 로그를 참조하세요.", OTHER_ERROR
-                );
+                faceLandmarkerHelperListener.onError("Face Landmarker 초기화 실패. 오류 로그를 참조하세요.", OTHER_ERROR);
             }
             Log.e(TAG, "MediaPipe가 오류로 인해 작업을 로드하지 못했습니다: " + e.getMessage());
         } catch (RuntimeException e) {
             if (faceLandmarkerHelperListener != null) {
-                faceLandmarkerHelperListener.onError(
-                        "Face Landmarker 초기화 실패. 오류 로그를 참조하세요.", GPU_ERROR
-                );
+                faceLandmarkerHelperListener.onError("Face Landmarker 초기화 실패. 오류 로그를 참조하세요.", GPU_ERROR);
             }
             Log.e(TAG, "Face Landmarker가 모델을 로드하지 못했습니다: " + e.getMessage());
         }
@@ -188,24 +182,6 @@ public class FaceLandmarkerHelper {
         }
     }
 
-    private void saveBitmap(Bitmap bitmap) {
-        // 파일 저장 경로 설정
-        File directory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "TZA");
-        if (!directory.exists()) {
-            directory.mkdirs(); // 디렉토리가 없으면 생성
-        }
-
-        String fileName = "lip_mask_" + System.currentTimeMillis() + ".png";
-        File file = new File(directory, fileName);
-
-        // 파일 출력 스트림을 사용하여 비트맵 저장
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // 비트맵을 PNG 형식으로 압축하여 저장
-            Log.d(TAG, "Bitmap saved to " + file.getAbsolutePath());
-        } catch (IOException e) {
-            Log.e(TAG, "Failed to save bitmap", e);
-        }
-    }
 /*
     // 사용자의 갤러리에서 로드된 비디오 파일의 URI를 받아서 비디오에 얼굴 랜드마커 추론을 실행
     public VideoResultBundle detectVideoFile(Uri videoUri, long inferenceIntervalMs) {
@@ -264,13 +240,11 @@ public class FaceLandmarkerHelper {
         return didErrorOccurred ? null : new VideoResultBundle(resultList, inferenceTimePerFrameMs, height, width);
     }
 */
-    /*
+
     // Bitmap을 받아서 얼굴 랜드마커 추론을 실행하고 결과 반환
-    public ResultBundle detectImage(Bitmap image) {
+    public void detectImage(Bitmap image) {
         if (runningMode != RunningMode.IMAGE) {
-            throw new IllegalArgumentException(
-                    "RunningMode.IMAGE가 아닌 상태에서 detectImage를 호출하려고 합니다."
-            );
+            throw new IllegalArgumentException("RunningMode.IMAGE가 아닌 상태에서 detectImage를 호출하려고 합니다.");
         }
 
         long startTime = SystemClock.uptimeMillis();
@@ -279,15 +253,16 @@ public class FaceLandmarkerHelper {
 
         if (landmarkResult != null) {
             long inferenceTimeMs = SystemClock.uptimeMillis() - startTime;
-            return new ResultBundle(landmarkResult, inferenceTimeMs, image.getHeight(), image.getWidth());
+            if (faceLandmarkerHelperListener != null) {
+                faceLandmarkerHelperListener.onResults(new ResultBundle(landmarkResult, inferenceTimeMs, image.getHeight(), image.getWidth()));
+            }
         } else {
             if (faceLandmarkerHelperListener != null) {
-                faceLandmarkerHelperListener.onError("Face Landmarker가 감지에 실패했습니다.");
+                faceLandmarkerHelperListener.onError("Face Landmarker가 감지에 실패했습니다.", OTHER_ERROR);
             }
-            return null;
         }
     }
-    */
+
     // 얼굴 랜드마크 결과를 반환
     private void returnLivestreamResult(FaceLandmarkerResult result, MPImage input) {
         if (result.faceLandmarks().size() > 0) {
@@ -295,7 +270,7 @@ public class FaceLandmarkerHelper {
             long inferenceTime = finishTimeMs - result.timestampMs();
 
             if (faceLandmarkerHelperListener != null) {
-                faceLandmarkerHelperListener.onResults(new ResultBundle(result, inferenceTime, rotatedBitmap, input.getHeight(), input.getWidth()));
+                faceLandmarkerHelperListener.onResults(new ResultBundle(result, inferenceTime, input.getHeight(), input.getWidth()));
             }
         } else {
             if (faceLandmarkerHelperListener != null) {
@@ -315,14 +290,12 @@ public class FaceLandmarkerHelper {
     public static class ResultBundle {
         private final FaceLandmarkerResult result;
         private final long inferenceTime;
-        private final Bitmap bitmap;
         private final int inputImageHeight;
         private final int inputImageWidth;
 
-        public ResultBundle(FaceLandmarkerResult result, long inferenceTime, Bitmap bitmap, int inputImageHeight, int inputImageWidth) {
+        public ResultBundle(FaceLandmarkerResult result, long inferenceTime, int inputImageHeight, int inputImageWidth) {
             this.result = result;
             this.inferenceTime = inferenceTime;
-            this.bitmap = bitmap;
             this.inputImageHeight = inputImageHeight;
             this.inputImageWidth = inputImageWidth;
         }
@@ -334,8 +307,6 @@ public class FaceLandmarkerHelper {
         public long getInferenceTime() {
             return inferenceTime;
         }
-
-        public Bitmap getBitmap() { return bitmap; }
 
         public int getInputImageHeight() {
             return inputImageHeight;
