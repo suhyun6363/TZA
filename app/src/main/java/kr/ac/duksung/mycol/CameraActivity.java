@@ -54,7 +54,6 @@ public class CameraActivity extends AppCompatActivity {
     private Preview preview;
     private ImageCapture imageCapture;
     private LinearLayout captureButton, galleryButton, rotateButton;
-    private String lastPhotoPath;  // 방금 찍은 사진 경로를 저장하기 위한 변수
     private ArrayList<String> imageList = new ArrayList<>(); // 이미지를 저장할 리스트
 
     private static final String TAG = "CameraActivity";
@@ -119,21 +118,13 @@ public class CameraActivity extends AppCompatActivity {
     // 갤러리 열기
     private void openGallery() {
         if (imageList.isEmpty()) {
-            Toast.makeText(this, "캡쳐된 이미지가 없습니다.", Toast.LENGTH_SHORT).show();
+            showToast(this, "캡쳐된 이미지가 없습니다.");
             return;
         }
 
-        // 여러 이미지를 갤러리에서 볼 수 있도록 Intent 설정
-        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        intent.setType("image/*");
-        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, getUrisFromPaths());
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(Intent.createChooser(intent, "Select an app to view images"));
-        } else {
-            Toast.makeText(this, "No app available to view the photos.", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(this, GalleryActivity.class);
+        intent.putParcelableArrayListExtra("imageUris", getUrisFromPaths());
+        startActivity(intent);
     }
 
     // 파일 경로 리스트를 URI 리스트로 변환
@@ -146,6 +137,7 @@ public class CameraActivity extends AppCompatActivity {
         }
         return uris;
     }
+
 
     // 카메라 회전
     private void rotateCamera() {
@@ -160,6 +152,7 @@ public class CameraActivity extends AppCompatActivity {
         imageCapture.takePicture(ContextCompat.getMainExecutor(this), new ImageCapture.OnImageCapturedCallback() {
             @Override
             public void onCaptureSuccess(@NonNull ImageProxy image) {
+                imageList.clear();
                 new ProcessImageTask(image).execute();
             }
 
