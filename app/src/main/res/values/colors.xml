@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="mp_color_primary">#007F8B</color>
     <color name="pink">#FF4081</color>
+    <color name="gray">#687175</color>
 </resources>

@@ -10,12 +10,31 @@
     android:padding="16dp"
     tools:context=".LoginActivity">
 
-    <ImageView
+    <FrameLayout
         android:layout_width="273dp"
         android:layout_height="142dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_tza" />
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_tza" />
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="62dp"
+            android:text="당신의 퍼스널 컬러를 알아보세요"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:textSize="16sp"/>
+
+    </FrameLayout>
+
 
     <EditText
         android:id="@+id/editTextEmail"
