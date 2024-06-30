@@ -1,0 +1,83 @@
+/* WebcamCapture.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
+
+#video-container {
+  position: relative;
+  border: 4px solid #e91e63;
+  border-radius: 12px;
+  width: 648px; /* Container width */
+  height: 496px; /* Container height */
+  overflow: hidden;
+}
+
+#video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* 이미지 위에서의 이벤트를 비활성화합니다. */
+}
+
+/* 촬영버튼 스타일 */
+.webcam-capture-button {
+
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Laundry";
+}
+
+.webcam-capture-button:hover {
+  background-color: #ff4081;
+  color: #fff;
+}
+
+/* 카운트다운 표시 */
+.countdown-indicator {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
+  color: #fff;
+  font-family: "Laundry";
+}
+
+/* 안경 경고 문구 */
+.glasses-warning {
+  position: absolute;
+  bottom: 40px; /* 조정: 원하는 위치로 조절하세요 */
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: #ff4081;
+  font-weight: bold;
+  font-family: "Laundry";
+}

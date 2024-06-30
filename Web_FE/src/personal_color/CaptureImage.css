@@ -1,0 +1,65 @@
+/* CaptureImage.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+
+.capture-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.capture-image-container h2 {
+  color: #e91e63;
+  font-size: 45px;
+  margin-top: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: "LaundryBold";
+}
+
+.capture-image-container img {
+  max-width: 100%;
+  border: 4px solid #e91e63;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.button-container-captureimage {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 180px;
+  cursor: pointer;
+}
+
+.retake-button,
+.result-button {
+  bottom: 50px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 20px;
+  font-family: "Laundry";
+  margin-top: 10%;
+}
+
+.retake-button {
+  /* margin-left: -130px; */
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.result-button {
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-left: 140px;
+}

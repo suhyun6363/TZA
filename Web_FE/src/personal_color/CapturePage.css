@@ -1,0 +1,27 @@
+/* CapturePage.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+
+.capture-page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.capture-page-container h2 {
+  color: #e91e63;
+  font-size: 45px;
+  margin-bottom: 20px;
+  position: absolute;
+  top: 10px; /* 조절 필요한 경우, 원하는 위치로 상단 여백을 조절합니다. */
+  font-family: "Laundry";
+}

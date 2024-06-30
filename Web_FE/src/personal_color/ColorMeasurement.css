@@ -1,0 +1,84 @@
+/* ColorMeasurement.css */
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
+
+.color-measurement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 40px;
+  transition: background-color 0.3s ease;
+}
+
+.measurement-screen {
+  background-color: #fff;
+  margin: 20px 20px;
+  padding: 50px 100px 50px 100px;
+  border: 4px solid #e91e63;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  font-family: "Apple";
+  text-align: center;
+}
+
+.measurement-screen h2 {
+  color: #e91e63;
+  font-size: 47px;
+  text-align: center;
+  font-family: "LaundryBold";
+  position: static !important;
+  margin-bottom: 40px;
+}
+
+.start-button {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ff4081;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Laundry";
+}
+
+#click-msg {
+  font-size: 40px;
+  color: #555;
+  margin-top: 20px;
+  text-align: center;
+  font-family: "Apple";
+}
+
+.color-measurement p {
+  font-size: 20px;
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 0;
+  text-align: center;
+  font-family: "Apple";
+}
+
+.color-measurement p1 {
+  font-size: 15px;
+  color: #555;
+  text-align: center;
+  margin-bottom: 0;
+  font-family: "Apple";
+}

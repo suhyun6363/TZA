@@ -1,0 +1,45 @@
+/* 기본 스타일 */
+.App-logo {
+  height: 40vmin; /* 로고의 크기를 조정 */
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh; /* 최소 높이 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 아이패드 가로 방향일 때 적용 */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  .App-header {
+    min-height: 50vh; /* 높이를 상황에 맞게 조정 */
+    padding: 20px; /* 패딩 추가 */
+  }
+
+  .App-logo {
+    animation: App-logo-spin infinite 10s linear; /* 애니메이션 속도 조정 */
+  }
+
+  .App-link {
+    font-size: calc(12px + 2vmin); /* 폰트 크기를 적절하게 조정 */
+  }
+}

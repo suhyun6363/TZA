@@ -1,0 +1,90 @@
+@font-face {
+  font-family: "AbhayaLibre";
+  src: url("./font/AbhayaLibre-ExtraBold.ttf");
+}
+
+@font-face {
+  font-family: "Apple";
+  src: url("./font/AppleSDGothicNeoUL.ttf");
+}
+
+@font-face {
+  font-family: "LaundryBold";
+  src: url("./font/LaudryGothicBold.woff");
+}
+
+@font-face {
+  font-family: "Laundry";
+  src: url("./font/LaudryGothicRegular.woff");
+}
+
+#result3-check-result {
+  color: #e91e63;
+  text-align: center;
+  font-size: 45px;
+  font-family: "LaundryBold";
+  margin-top: 0;
+  margin-bottom: 60px; /* 간격을 조정하여 하단 마진을 50px로 설정 */
+}
+
+.result3-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.result3-flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.result3-section {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.result3-section p {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-family: "Laundry";
+}
+
+.result3-button-container {
+  display: flex;
+  justify-content: center; /* 버튼들을 중앙에 배치 */
+  align-items: center;
+  margin-top: 5%;
+}
+
+#result3-back-button {
+  font-family: "Laundry";
+  background-color: #ff4081;
+  font-size: 20px;
+  color: white;
+  padding: 13.5px 25px;
+  border: none;
+  cursor: pointer;
+  margin-right: 20px; /* 오른쪽 버튼과의 간격을 설정 */
+  border-radius: 6px;
+}
+
+#result3-etc-button {
+  font-family: "Laundry";
+  background-color: #ff4081;
+  font-size: 20px;
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.result3-flex-container > div {
+  margin-right: 20px; /* 오른쪽에 20px 마진 추가 */
+}
+.result3-flex-container > div:last-child {
+  margin-right: 0; /* 마지막 요소는 마진을 0으로 설정 */
+}
