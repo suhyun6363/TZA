@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="블러셔"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/laundryregular"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <!-- TabLayout 정의 -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:tabIndicatorColor="@color/pink"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabMode="scrollable"
+        android:background="@drawable/rectangle_underline"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="3dp"
+        android:contentDescription="퍼컬" />
+
+    <!-- 수평 스크롤 가능한 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/colorRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        tools:listitem="@layout/color_item" />
+</LinearLayout>

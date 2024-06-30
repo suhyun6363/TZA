@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MypageFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- 고객센터/공지사항 텍스트 -->
+        <TextView
+            android:id="@+id/customerServiceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_customer_service"
+            android:drawablePadding="15dp"
+            android:text="고객센터/공지사항"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/laundryregular"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <!-- 고객센터/공지사항 정보를 표시할 뷰 -->
+        <TextView
+            android:id="@+id/customerServiceInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="12dp" />
+
+        <!-- 1:1문의 텍스트 -->
+        <TextView
+            android:id="@+id/oneOnOneInquiryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_one_on_one"
+            android:drawablePadding="15dp"
+            android:text="1:1문의"
+            android:fontFamily="@font/laundryregular"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+
+        <!-- 1:1문의 정보를 표시할 뷰 -->
+        <TextView
+            android:id="@+id/oneOnOneInquiryInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:visibility="gone"
+            android:padding="12dp" />
+
+        <!-- 로그아웃 버튼 -->
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:drawableLeft="@drawable/ic_logout"
+            android:drawablePadding="15dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/laundryregular"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="로그아웃" />
+
+        <!-- 구분선 -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- 회사명 -->
+        <TextView
+            android:id="@+id/companyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LANOSREP"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 인스타그램 아이디 -->
+        <TextView
+            android:id="@+id/instagramId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/instagram_id"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/instagramLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/instagram_logo"
+            android:contentDescription="인스타그램 로고"/>
+    </LinearLayout>
+
+</FrameLayout>

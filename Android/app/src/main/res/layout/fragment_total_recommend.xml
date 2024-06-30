@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TotalRecommendFragment">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="퍼스널 컬러 별 메이크업 랭킹"
+        android:fontFamily="@font/laundrybold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/titleTextView"
+        app:tabIndicatorColor="@color/pink"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabMode="scrollable"
+        android:background="@drawable/rectangle_underline"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="3dp"
+        android:contentDescription="퍼컬" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/tabLayout1"
+        app:tabIndicatorColor="@color/pink"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/darker_gray"
+        android:background="@drawable/rectangle_underline"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="3dp"
+        android:contentDescription="제품" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_below="@id/tabLayout2"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
+        tools:listitem="@layout/item_product" />
+
+
+</RelativeLayout>

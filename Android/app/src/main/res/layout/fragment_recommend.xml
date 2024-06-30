@@ -1,0 +1,63 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecommendFragment">
+
+    <!-- 제목 텍스트뷰 추가 -->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="QR 인식 후 확인 가능해요"
+        android:fontFamily="@font/laundrybold"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="10dp"
+        android:textSize="20sp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleTextView"
+        android:layout_marginBottom="10dp"
+        app:tabIndicatorColor="@color/pink"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabMode="scrollable"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="3dp"
+        android:fontFamily="@font/laundrybold"
+        android:background="@drawable/rectangle_underline"
+        android:contentDescription="추천 제품 탭"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_below="@id/tabLayout"
+        android:layout_marginBottom="70dp"
+        android:layout_alignParentBottom="true"
+        tools:listitem="@layout/item_product" />
+
+
+    <android.widget.Button
+        android:id="@+id/nextbutton"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="종합 랭킹"
+        android:textSize="18sp"
+        android:fontFamily="@font/laundrybold"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_round"
+        android:textColor="@color/white"/>
+
+
+
+</RelativeLayout>

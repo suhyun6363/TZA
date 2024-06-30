@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/colorImageView"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:background="@drawable/color_rounded_rectangle"
+        android:scaleType="centerInside" />
+</LinearLayout>

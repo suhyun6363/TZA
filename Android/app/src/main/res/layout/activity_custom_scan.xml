@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_round"
+            android:text="뒤로 가기"
+            android:textSize="18sp"
+            android:fontFamily="@font/laundrybold"/>
+    </com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+    <TextView
+        android:id="@+id/custom_prompt_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="qr코드를 인식해주세요"
+        android:fontFamily="@font/laundryregular"
+        android:textColor="#FFFFFF"
+        android:background="#80000000"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="100dp"/>
+
+</FrameLayout>

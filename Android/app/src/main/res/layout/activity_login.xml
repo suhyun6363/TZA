@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    tools:context=".LoginActivity">
+
+    <FrameLayout
+        android:layout_width="273dp"
+        android:layout_height="142dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_tza" />
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="62dp"
+            android:text="당신의 퍼스널 컬러를 알아보세요"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@color/gray"
+            android:textSize="16sp"/>
+
+    </FrameLayout>
+
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:hint="이메일"
+        android:fontFamily="@font/laundryregular"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/editTextPw"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:hint="비밀번호"
+        android:fontFamily="@font/laundryregular"
+        android:inputType="textPassword" />
+
+    <CheckBox
+        android:id="@+id/checkBoxAuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="로그인 정보 기억하기" />
+
+    <android.widget.Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_round"
+        android:onClick="onLoginButtonClick"
+        android:text="로그인"
+        android:fontFamily="@font/laundryregular"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <android.widget.Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_round"
+        android:onClick="onSignupButtonClick"
+        android:text="회원가입"
+        android:fontFamily="@font/laundryregular"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
