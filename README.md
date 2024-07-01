@@ -1,7 +1,7 @@
 # TZA - 톤잘알
 ### : 당신에게 어울리는 톤을 잘 알려드립니다 </br></br>
-![tza로고](https://github.com/suhyun6363/TZA/assets/90364745/420c2daf-eeb4-4880-a572-54ab08a554c9.png)
-</br>
+![tza로고](https://github.com/suhyun6363/TZA/assets/90364745/420c2daf-eeb4-4880-a572-54ab08a554c9.png) </br>
+[논문] [안면 색상 데이터 분석 기반의 퍼스널 컬러 진단 및 가상 메이크업 애플리케이션 개발](https://doi.org/10.14728/KCP.2024.22.02.041)
 
 ## 목차   
 - [TZA 소개](#TZA-소개)
