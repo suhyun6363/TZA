@@ -27,16 +27,17 @@ ___
 + 피부 영역 픽셀 기반 퍼스널 컬러 진단
    + [Mediapipe의 face landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker)을 이용하여 안면의 피부 영역을 제외한 모든 부위 제거
    + 피부 영역 이미지 픽셀을 K-means clustering, `K=8`
-   + 군집화 영역 K 중 `픽셀 수가 가장 많은 클러스터`(Most Pixels), 이 클러스터를 기준으로 `color distance가 짧은 클러스터 2개`(1st Smallest Color Distance, 2nd Smallest Color Distance)를 구해 3개의 클러스터의 가중 평균을 통한 `대표 피부색`(Total Weighted Mean Color) 추출 </br>
+   + 군집화 영역 K 중 `픽셀 수가 가장 많은 클러스터`(Most Pixels), 이 클러스터를 기준으로 `color distance가 짧은 클러스터 2개`(1st Smallest Color Distance, 2nd Smallest Color Distance)를 구해 3개의 클러스터의 가중 평균을 통한 `대표 피부색`(Total Weighted Mean Color) 추출   
    <br>
-   <img src="https://github.com/suhyun6363/TZA/assets/90364745/610b255e-5b62-4873-9b24-e803cf691fbc.png" width=250> </br>
-   <br>
+        <img src="https://github.com/suhyun6363/TZA/assets/90364745/610b255e-5b62-4873-9b24-e803cf691fbc.png" width=250>   
+  
    + [퍼스널 컬러 스킨 톤 유형 분류의 정량적 평가 모델 구축에 대한 연구](https://dx.doi.org/10.5850/JKSCT.2018.42.1.121) 논문의 기준값(`(V0, b*0, S0)=(65.20, 18.50, 33)`)을 참고
    + 위 논문은 측색기를 이용한 측색값 표본으로 구한 기준값이므로 [20대~30대 한국 여성의 베스트컬러에 관한연구](https://www.doi.org/10.23174/hongik.000000000376.11064.0000164) 논문을 참고하여 대표 피부색에서 오차 `V값 +12`, `S값 –4` 피부값 보정
    + 기준값을 기준, 대표 피부색 Lab 색공간의 b(황색도)값으로 `웜톤/쿨톤`을 구분, 대표 피부색 HSV 색공간의 V(명도)와 S(채도)로 계절별 세부 톤을 구분하여 `봄 웜 라이트/봄 웜 브라이트/여름 쿨 라이트/여름 쿨 뮤트/가을 웜 뮤트/가을 웜 딥/겨울 쿨 브라이트/겨울 쿨 딥`을 진단</br>
    <br>
-  <img src="https://github.com/suhyun6363/TZA/assets/90364745/a603c0e9-9363-476a-ac94-2dd3c6c656ee.png" width=250> </br>
-   <br>
+        <img src="https://github.com/suhyun6363/TZA/assets/90364745/a603c0e9-9363-476a-ac94-2dd3c6c656ee.png" width=250>
+
+
    + 대표 피부색 Lab 색공간의 b가 `17 <= b* <20`인 경우, `뉴트럴 톤` 진단 </br>
    + 일련의 과정은 [Web_BE/mycol_app/facemesh.py](https://github.com/suhyun6363/TZA/blob/fda24433b90075dcde63d8c8b3034faddb437635/Web_BE/mycol_app/facemesh.py)에서 코드로 확인 가능
    <br>
