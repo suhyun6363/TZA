@@ -19,7 +19,7 @@
 
 |              **제작한 진단 부스**               |                **안드로이드 애플리케이션**                |
 |:----------------------------------------:|:----------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/18b720c4-79f2-4427-bb9d-46e7151ec484.png" width=250> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/a10bb862-95e5-46df-9561-9240937ac246.png" width=250> |
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/08aa20dd-72ab-40c2-9b13-0169cf285a2e.png" width=250> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/8215255b-7d39-47ee-a136-e52835044f02.png" width=250> |
 ### 주요 기능
 #### 웹
 + 피부 영역 픽셀 기반 퍼스널 컬러 진단
@@ -85,28 +85,31 @@
 
 ## 구현 결과
 ### 웹
-|                 **시작 화면**                  |             **퍼스널 컬러 진단 결과 화면**              |           **해당 퍼스널 컬러의 대표 연예인 화면**            |                               **QR코드 화면**                                |
+|                 **시작 화면**                  |             **사진 촬영 화면**              |           **진단 결과 화면**            |
 |:------------------------------------------:|:--------------------------------------------:|:---------------------------------------------:|:------------------------------------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/e1bb4a27-f5e9-46e8-8880-a91fbd5d52e2.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/e58577fb-6da2-4c9f-afce-05c32505ac80.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/e654782d-91fc-4aa5-9899-85b02b88e30c.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/af8a0046-3f5d-4c49-a250-b2dd67feee48.png" width=300> <br/> QR코드를 통해 앱으로 진단 결과 전송 |        
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/b7d087d5-e407-4f67-8cc0-9d0d7f601594.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/5fc40cb6-a682-494d-af60-4fd06756b2f9.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/59465385-1a9a-4945-89fa-b200fb4fa672.png" width=300> |
+|                 **해당 퍼스널 컬러 유형의 대표 연예인 화면**                  |                 **가상 드레이핑 화면**                  |            **QR코드 화면**            | 
+|:--------------------------------------------:|:--------------------------------------------:|:--------------------------------------------:|
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/a42a88a8-2cef-472c-89e6-6a3845a957e4.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/bd129f39-2bc0-4c1f-8b1b-9f02ee324e7d.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/fe30d67e-146c-4f9b-928c-3a18203a5049.png" width=300> <br/> QR코드를 통해 앱으로 진단 결과 전송 |
 
 ### 안드로이드 애플리케이션
 |                 **런처 화면**                  |            **회원가입 화면**            |                                                    **로그인 화면**                                                    |
 |:--------------------------------------------:|:--------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/ab4aba58-d932-4673-a208-f6cd8be73291.png" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/538b0b46-239c-4e34-b47c-f0a497e26f45.png" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/e97300da-5b9c-463b-a2a9-b10cffce1999.png" width=200> |
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/f301da95-8c44-4293-8116-75fe240729f3.png" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/b9219dc8-e02c-497c-83c1-c2d66fb98285.png" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/cb99532f-1c89-4821-86af-23900f52fc52.png" width=200> |
 
 |                 **메인/홈 화면**                  |            **퍼스널 컬러 맞춤 추천 제품 화면**            |                **종합 랭킹 화면**                 |
 |:--------------------------------------------:|:--------------------------------------------:|:-------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/ca5489de-2abb-45f9-aca3-e14b5dc7f222.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/b6de3680-f422-4e75-bc2e-bdc7303ba2bb.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/c976d408-4c33-4636-8ade-c8a917766765.gif" width=200> |
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/8b24f3d5-03fb-477d-a5ab-f2afaae78bcf.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/571eaeba-6910-4f72-8388-a0ecc0879bb9.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/815215ab-8c66-4430-89c0-f1e8352e9d61.gif" width=200> |
 
 |                                             **블러셔/립 컬러칩 대표 색상 리스트**                                              |            **가상 메이크업 화면**            |                **마이페이지 화면**                 |
 |:----------------------------------------------------------------------------------------------------------------:|:--------------------------------------------:|:-------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/d51435d7-abd8-4ace-9ff7-b9388fcb624d.gif" width=200><br><img src="https://github.com/suhyun6363/TZA/assets/90364745/6a5db60a-bdea-442e-aaf6-cf431a9b436e.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/3bb8c3a7-c1a9-4023-92a4-b2f6c1fb5d22.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/8afb3983-ba83-46d3-9104-51c967f03d6a.png" width=200> |
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/05b028c2-e6ab-48dd-9ac8-22994ccf5a4b.gif" width=200><br><img src="https://github.com/suhyun6363/TZA/assets/90364745/576cec09-47ca-4e0b-a1d7-34c07ec7c381.gif" width=200> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/fd6bbaae-5f1a-4b8e-ba72-28e282deb1f1.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/ba55b553-e1a8-4d3c-a986-5849f348d05f.png" width=200> |
 
 
 ## 팀원
 |**안예은**|**이규빈**|                                                                                                                          **정수현**                                                                                                                          | **김희수** |
 |:-----:|:-----:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:-------:|
-| [<img src="https://github.com/suhyun6363/TZA/assets/90364745/da036737-c0d9-4f5c-bb3b-60b9d93a36d8.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/yeeunAhn) | [<img src="https://github.com/suhyun6363/TZA/assets/90364745/43d7cac9-4349-4601-b909-1cc7e7c2d0d4.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/gyubb) | [<img src="https://github.com/suhyun6363/TZA/assets/90364745/657d2e8f-3697-43e1-a729-3336f1523a39.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/suhyun6363) |         |
+| [<img src="https://github.com/suhyun6363/TZA/assets/90364745/72f7a08b-7b51-4c3e-8539-173646436b37.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/yeeunAhn) | [<img src="https://github.com/suhyun6363/TZA/assets/90364745/e9d0370e-5674-471b-a12f-78eb98e111b1.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/gyubb) | [<img src="https://github.com/suhyun6363/TZA/assets/90364745/657d2e8f-3697-43e1-a729-3336f1523a39.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/suhyun6363) | [<img src="https://github.com/suhyun6363/TZA/assets/90364745/cd34d380-9eb9-404c-b207-ae74ce8a21f6.png" width=100> <br/> <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width=25>](https://github.com/heesoo235) |
 
 
 
