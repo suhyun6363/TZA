@@ -87,7 +87,8 @@
 ### 웹
 |                 **시작 화면**                  |             **사진 촬영 화면**              |           **진단 결과 화면**            |
 |:------------------------------------------:|:--------------------------------------------:|:---------------------------------------------:|
-| <img src="https://github.com/suhyun6363/TZA/assets/90364745/b7d087d5-e407-4f67-8cc0-9d0d7f601594.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/5fc40cb6-a682-494d-af60-4fd06756b2f9.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/59465385-1a9a-4945-89fa-b200fb4fa672.png" width=300> |
+| <img src="https://github.com/suhyun6363/TZA/assets/90364745/b7d087d5-e407-4f67-8cc0-9d0d7f601594.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/5fc40cb6-a682-494d-af60-4fd06756b2f9.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/59465385-1a9a-4945-89fa-b200fb4fa672.png" width=300> |   
+
 |                 **해당 퍼스널 컬러 유형의 대표 연예인 화면**                  |                 **가상 드레이핑 화면**                  |            **QR코드 화면**            | 
 |:--------------------------------------------:|:--------------------------------------------:|:--------------------------------------------:|
 | <img src="https://github.com/suhyun6363/TZA/assets/90364745/a42a88a8-2cef-472c-89e6-6a3845a957e4.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/bd129f39-2bc0-4c1f-8b1b-9f02ee324e7d.png" width=300> | <img src="https://github.com/suhyun6363/TZA/assets/90364745/fe30d67e-146c-4f9b-928c-3a18203a5049.png" width=300> <br/> QR코드를 통해 앱으로 진단 결과 전송 |
