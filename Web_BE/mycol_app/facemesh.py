@@ -274,13 +274,27 @@ def process_uploaded_image(uploaded_images):
     total_rgb_sum_weighted = (most_pixels_rgb_sum + selected_cluster_1_rgb_sum + selected_cluster_2_rgb_sum)
     # total_rgb_mean_weighted = total_rgb_sum_weighted / (most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
 
+#########진단이 안됐던 이유
+    # total_rgb_mean_weighted_before = total_rgb_sum_weighted / (
+    #             most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+    #
+    # brightness_factor = 1.5  # 10%증가
+    #
+    # total_rgb_mean_weighted = tuple(
+    #     min(int(channel * brightness_factor), 255) for channel in total_rgb_mean_weighted_before)
+
+##########수정
     total_rgb_mean_weighted_before = total_rgb_sum_weighted / (
-                most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+            cluster_sizes[most_pixels_cluster] + cluster_sizes[selected_cluster_1] + cluster_sizes[
+        selected_cluster_2])
 
     brightness_factor = 1.5  # 10%증가
 
     total_rgb_mean_weighted = tuple(
         min(int(channel * brightness_factor), 255) for channel in total_rgb_mean_weighted_before)
+
+    # **중요 수정**: numpy 배열로 변환
+    total_rgb_mean_weighted = np.array(total_rgb_mean_weighted)
 
     # print(f'=============================Color distance계산=============================')
     #
