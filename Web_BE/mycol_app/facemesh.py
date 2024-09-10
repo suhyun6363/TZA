@@ -437,51 +437,51 @@ def process_uploaded_image(uploaded_images):
 
 ####### 기준값 변경 #######
 
-    # L, b, s, v 값
-    L_value = format(average_lab.lab_l, ".2f")  # L 값
-    a_value = format(average_lab.lab_a, ".2f")  # a 값
-    b_value = format(average_lab.lab_b + 3, ".2f")  # b 값
-    h_value = format(average_hsv.hsv_h, ".2f")
-    s_value = format(average_hsv.hsv_s * 100 - 20, ".2f")  # s 값
-    v_value = format(average_hsv.hsv_v * 100 + 8, ".2f")  # v 값
+    # L, b, s, v 값 계산
+    L_value = round(average_lab.lab_l, 2)  # L 값
+    a_value = round(average_lab.lab_a, 2)  # a 값
+    b_value = round(average_lab.lab_b + 3, 2)  # b 값
+    h_value = round(average_hsv.hsv_h, 2)
+    s_value = round(average_hsv.hsv_s * 100 - 20, 2)  # s 값
+    v_value = round(average_hsv.hsv_v * 100 + 8, 2)  # v 값
 
     result = None
     second_result = None
 
     # 평균값에 따라 첫 번째 타입 분류
-    if 18.00 <= float(b_value) < 19.00:
-        if float(v_value) > 65.20 and float(b_value) - 18.50 >= 0 and float(s_value) > 33:
+    if 18.00 <= b_value < 19.00:
+        if v_value > 65.20 and b_value - 18.50 >= 0 and s_value > 33:
             result = "N-Spring warm bright"
-        elif float(v_value) > 65.20 and float(b_value) - 18.50 >= 0 and float(s_value) <= 33:
+        elif v_value > 65.20 and b_value - 18.50 >= 0 and s_value <= 33:
             result = "N-Spring warm light"
-        elif float(v_value) > 65.20 and float(b_value) - 18.50 < 0 and float(s_value) <= 33:
+        elif v_value > 65.20 and b_value - 18.50 < 0 and s_value <= 33:
             result = "N-Summer cool light"
-        elif float(v_value) <= 65.20 and float(b_value) - 18.50 < 0 and float(s_value) <= 33:
+        elif v_value <= 65.20 and b_value - 18.50 < 0 and s_value <= 33:
             result = "N-Summer cool mute"
-        elif float(v_value) <= 65.20 and float(b_value) - 18.50 >= 0 and float(s_value) <= 33:
+        elif v_value <= 65.20 and b_value - 18.50 >= 0 and s_value <= 33:
             result = "N-Autumn warm mute"
-        elif float(v_value) <= 65.20 and float(b_value) - 18.50 >= 0 and float(s_value) > 33:
+        elif v_value <= 65.20 and b_value - 18.50 >= 0 and s_value > 33:
             result = "N-Autumn warm deep"
-        elif float(v_value) <= 65.20 and float(b_value) - 18.50 < 0 and float(s_value) > 33:
+        elif v_value <= 65.20 and b_value - 18.50 < 0 and s_value > 33:
             result = "N-Winter cool deep"
-        elif float(v_value) > 65.20 and float(b_value) - 18.50 < 0 and float(s_value) > 33:
+        elif v_value > 65.20 and b_value - 18.50 < 0 and s_value > 33:
             result = "N-Winter cool bright"
     else:
-        if float(v_value) > 65.20 and float(b_value) >= 19.00 and float(s_value) > 33:
+        if v_value > 65.20 and b_value >= 19.00 and s_value > 33:
             result = "Spring warm bright"
-        elif float(v_value) > 65.20 and float(b_value) >= 19.00 and float(s_value) <= 33:
+        elif v_value > 65.20 and b_value >= 19.00 and s_value <= 33:
             result = "Spring warm light"
-        elif float(v_value) > 65.20 and float(b_value) < 18.00 and float(s_value) <= 33:
+        elif v_value > 65.20 and b_value < 18.00 and s_value <= 33:
             result = "Summer cool light"
-        elif float(v_value) <= 65.20 and float(b_value) < 18.00 and float(s_value) <= 33:
+        elif v_value <= 65.20 and b_value < 18.00 and s_value <= 33:
             result = "Summer cool mute"
-        elif float(v_value) <= 65.20 and float(b_value) >= 19.00 and float(s_value) <= 33:
+        elif v_value <= 65.20 and b_value >= 19.00 and s_value <= 33:
             result = "Autumn warm mute"
-        elif float(v_value) <= 65.20 and float(b_value) >= 19.00 and float(s_value) > 33:
+        elif v_value <= 65.20 and b_value >= 19.00 and s_value > 33:
             result = "Autumn warm deep"
-        elif float(v_value) <= 65.20 and float(b_value) < 18.00 and float(s_value) > 33:
+        elif v_value <= 65.20 and b_value < 18.00 and s_value > 33:
             result = "Winter cool deep"
-        elif float(v_value) > 65.20 and float(b_value) < 18.00 and float(s_value) > 33:
+        elif v_value > 65.20 and b_value < 18.00 and s_value > 33:
             result = "Winter cool bright"
 
     print(f'v_value: {v_value}')
