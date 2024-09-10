@@ -450,7 +450,7 @@ def process_uploaded_image(uploaded_images):
 
     # 평균값에 따라 첫 번째 타입 분류
 
-    if 17.0 <= b_value < 20.0:
+    if 18.0 <= b_value < 19.0:
         if v_value > 65.20 and b_value-18.50 >= 0 and s_value > 33:
             result = "N-Spring warm bright"
         elif v_value > 65.20 and b_value-18.50 >= 0 and s_value <= 33:
