@@ -468,21 +468,21 @@ def process_uploaded_image(uploaded_images):
         elif v_value > 65.20 and b_value-18.50 < 0 and s_value > 33:
             result = "N-Winter cool bright"
     else:
-        if v_value > 65.20 and b_value >= 20 and s_value > 33:
+        if v_value > 65.20 and b_value >= 19 and s_value > 33:
             result = "Spring warm bright"
-        elif v_value > 65.20 and b_value >= 20 and s_value <= 33:
+        elif v_value > 65.20 and b_value >= 19 and s_value <= 33:
             result = "Spring warm light"
-        elif v_value > 65.20 and b_value < 17 and s_value <= 33:
+        elif v_value > 65.20 and b_value < 18 and s_value <= 33:
             result = "Summer cool light"
-        elif v_value <= 65.20 and b_value < 17 and s_value <= 33:
+        elif v_value <= 65.20 and b_value < 18 and s_value <= 33:
             result = "Summer cool mute"
-        elif v_value <= 65.20 and b_value >= 20 and s_value <= 33:
+        elif v_value <= 65.20 and b_value >= 19 and s_value <= 33:
             result = "Autumn warm mute"
-        elif v_value <= 65.20 and b_value >= 20 and s_value > 33:
+        elif v_value <= 65.20 and b_value >= 19 and s_value > 33:
             result = "Autumn warm deep"
-        elif v_value <= 65.20 and b_value < 17 and s_value > 33:
+        elif v_value <= 65.20 and b_value < 18 and s_value > 33:
             result = "Winter cool deep"
-        elif v_value > 65.20 and b_value < 17 and s_value > 33:
+        elif v_value > 65.20 and b_value < 18 and s_value > 33:
             result = "Winter cool bright"
 
     print(f'v_value: {v_value}')
