@@ -272,7 +272,15 @@ def process_uploaded_image(uploaded_images):
     selected_cluster_2_rgb_mean_weighted = selected_cluster_2_rgb_sum / selected_cluster_2_size
 
     total_rgb_sum_weighted = (most_pixels_rgb_sum + selected_cluster_1_rgb_sum + selected_cluster_2_rgb_sum)
-    total_rgb_mean_weighted = total_rgb_sum_weighted / (most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+    # total_rgb_mean_weighted = total_rgb_sum_weighted / (most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+
+    total_rgb_mean_weighted_before = total_rgb_sum_weighted / (
+                most_pixels_cluster_size + selected_cluster_1_size + selected_cluster_2_size)
+
+    brightness_factor = 1.5  # 10%증가
+
+    total_rgb_mean_weighted = tuple(
+        min(int(channel * brightness_factor), 255) for channel in total_rgb_mean_weighted_before)
 
     # print(f'=============================Color distance계산=============================')
     #
