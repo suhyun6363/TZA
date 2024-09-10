@@ -450,40 +450,80 @@ def process_uploaded_image(uploaded_images):
 
     # 평균값에 따라 첫 번째 타입 분류
 
+    # if 18.0 <= b_value < 19.0:
+    #     if v_value > 65.20 and b_value-18.50 >= 0 and s_value > 33:
+    #         result = "N-Spring warm bright"
+    #     elif v_value > 65.20 and b_value-18.50 >= 0 and s_value <= 33:
+    #         result = "N-Spring warm light"
+    #     elif v_value > 65.20 and b_value-18.50 < 0 and s_value <= 33:
+    #         result = "N-Summer cool light"
+    #     elif v_value <= 65.20 and b_value-18.50 < 0 and s_value <= 33:
+    #         result = "N-Summer cool mute"
+    #     elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value <= 33:
+    #         result = "N-Autumn warm mute"
+    #     elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value > 33:
+    #         result = "N-Autumn warm deep"
+    #     elif v_value <= 65.20 and b_value-18.50 < 0 and s_value > 33:
+    #         result = "N-Winter cool deep"
+    #     elif v_value > 65.20 and b_value-18.50 < 0 and s_value > 33:
+    #         result = "N-Winter cool bright"
+    #
+    # elif v_value > 65.20 and b_value >= 19 and s_value > 33:
+    #     result = "Spring warm bright"
+    # elif v_value > 65.20 and b_value >= 19 and s_value <= 33:
+    #     result = "Spring warm light"
+    # elif v_value > 65.20 and b_value < 18 and s_value <= 33:
+    #     result = "Summer cool light"
+    # elif v_value <= 65.20 and b_value < 18 and s_value <= 33:
+    #     result = "Summer cool mute"
+    # elif v_value <= 65.20 and b_value >= 19 and s_value <= 33:
+    #     result = "Autumn warm mute"
+    # elif v_value <= 65.20 and b_value >= 19 and s_value > 33:
+    #     result = "Autumn warm deep"
+    # elif v_value <= 65.20 and b_value < 18 and s_value > 33:
+    #     result = "Winter cool deep"
+    # elif v_value > 65.20 and b_value < 18 and s_value > 33:
+    #     result = "Winter cool bright"
+
+    b_diff = b_value - 18.50
+
+    # 먼저 b_value가 18.0 이상 19.0 미만인 경우에만 'N-' 접두사를 처리
     if 18.0 <= b_value < 19.0:
-        if v_value > 65.20 and b_value-18.50 >= 0 and s_value > 33:
+        if v_value > 65.20 and b_diff >= 0 and s_value > 33:
             result = "N-Spring warm bright"
-        elif v_value > 65.20 and b_value-18.50 >= 0 and s_value <= 33:
+        elif v_value > 65.20 and b_diff >= 0 and s_value <= 33:
             result = "N-Spring warm light"
-        elif v_value > 65.20 and b_value-18.50 < 0 and s_value <= 33:
+        elif v_value > 65.20 and b_diff < 0 and s_value <= 33:
             result = "N-Summer cool light"
-        elif v_value <= 65.20 and b_value-18.50 < 0 and s_value <= 33:
+        elif v_value <= 65.20 and b_diff < 0 and s_value <= 33:
             result = "N-Summer cool mute"
-        elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value <= 33:
+        elif v_value <= 65.20 and b_diff >= 0 and s_value <= 33:
             result = "N-Autumn warm mute"
-        elif v_value <= 65.20 and b_value-18.50 >= 0 and s_value > 33:
+        elif v_value <= 65.20 and b_diff >= 0 and s_value > 33:
             result = "N-Autumn warm deep"
-        elif v_value <= 65.20 and b_value-18.50 < 0 and s_value > 33:
+        elif v_value <= 65.20 and b_diff < 0 and s_value > 33:
             result = "N-Winter cool deep"
-        elif v_value > 65.20 and b_value-18.50 < 0 and s_value > 33:
+        elif v_value > 65.20 and b_diff < 0 and s_value > 33:
             result = "N-Winter cool bright"
 
-    elif v_value > 65.20 and b_value >= 19 and s_value > 33:
-        result = "Spring warm bright"
-    elif v_value > 65.20 and b_value >= 19 and s_value <= 33:
-        result = "Spring warm light"
-    elif v_value > 65.20 and b_value < 18 and s_value <= 33:
-        result = "Summer cool light"
-    elif v_value <= 65.20 and b_value < 18 and s_value <= 33:
-        result = "Summer cool mute"
-    elif v_value <= 65.20 and b_value >= 19 and s_value <= 33:
-        result = "Autumn warm mute"
-    elif v_value <= 65.20 and b_value >= 19 and s_value > 33:
-        result = "Autumn warm deep"
-    elif v_value <= 65.20 and b_value < 18 and s_value > 33:
-        result = "Winter cool deep"
-    elif v_value > 65.20 and b_value < 18 and s_value > 33:
-        result = "Winter cool bright"
+    # 그 외 경우에는 'N-' 접두사가 붙지 않는 결과를 처리
+    else:
+        if v_value > 65.20 and b_value >= 19 and s_value > 33:
+            result = "Spring warm bright"
+        elif v_value > 65.20 and b_value >= 19 and s_value <= 33:
+            result = "Spring warm light"
+        elif v_value > 65.20 and b_value < 18 and s_value <= 33:
+            result = "Summer cool light"
+        elif v_value <= 65.20 and b_value < 18 and s_value <= 33:
+            result = "Summer cool mute"
+        elif v_value <= 65.20 and b_value >= 19 and s_value <= 33:
+            result = "Autumn warm mute"
+        elif v_value <= 65.20 and b_value >= 19 and s_value > 33:
+            result = "Autumn warm deep"
+        elif v_value <= 65.20 and b_value < 18 and s_value > 33:
+            result = "Winter cool deep"
+        elif v_value > 65.20 and b_value < 18 and s_value > 33:
+            result = "Winter cool bright"
 
     print(f'v_value: {v_value}')
     print(f'b_value: {b_value}')
